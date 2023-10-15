@@ -1,11 +1,9 @@
-import { Inter } from 'next/font/google';
 import Script from 'next/script';
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import ProgressBarProvider from '@/components/ProgressBarProvider';
 import '../../styles/globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
     title: 'WebWowZer',
@@ -26,9 +24,11 @@ export default function RootLayout({ children }) {
                 <link rel="stylesheet" href="/assets/css/style.css" />
             </head>
 
-            <body className={inter.className}>
+            <body>
                 <Header />
-                <main>{children}</main>
+                <main>
+                    <ProgressBarProvider>{children}</ProgressBarProvider>
+                </main>
                 <Footer />
 
                 {/* Required Script */}
