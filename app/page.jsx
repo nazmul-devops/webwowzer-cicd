@@ -1,4 +1,4 @@
-export default function Page() {
+export default function HomePage() {
     return (
         <main className="main">
             <section className="homebanner">
