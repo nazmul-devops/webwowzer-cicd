@@ -1,6 +1,15 @@
+/* eslint-disable no-unused-expressions */
+
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+    const pathname = usePathname();
+
+    const isLinkActive = (href) => (pathname === href ? 'active' : '');
+
     return (
         <header className="header">
             <div className="container position-relative">
@@ -46,27 +55,43 @@ export default function Header() {
                                 {/* <!-- MOBILE-LIST --> */}
                                 <ul className="mobilelist">
                                     <li className="mobilelist-item">
-                                        <Link href="/" className="mobilelist-link active">
+                                        <Link
+                                            href="/"
+                                            className={`mobilelist-link ${isLinkActive('/')}`}
+                                        >
                                             Home
                                         </Link>
                                     </li>
 
                                     <li className="mobilelist-item">
-                                        <Link href="/about" className="mobilelist-link">
+                                        <Link
+                                            href="/about"
+                                            className={`mobilelist-link ${isLinkActive('/about')}`}
+                                        >
                                             {' '}
                                             About us{' '}
                                         </Link>
                                     </li>
 
                                     <li className="mobilelist-item">
-                                        <Link href="/pricing" className="mobilelist-link">
+                                        <Link
+                                            href="/pricing"
+                                            className={`mobilelist-link ${isLinkActive(
+                                                '/pricing'
+                                            )}`}
+                                        >
                                             {' '}
                                             Pricing{' '}
                                         </Link>
                                     </li>
 
                                     <li className="mobilelist-item">
-                                        <Link href="/templates" className="mobilelist-link">
+                                        <Link
+                                            href="/templates"
+                                            className={`mobilelist-link ${isLinkActive(
+                                                '/templates'
+                                            )}`}
+                                        >
                                             Templates
                                         </Link>
                                     </li>
@@ -178,7 +203,10 @@ export default function Header() {
                                     </li>
 
                                     <li className="mobilelist-item">
-                                        <Link href="/faq" className="mobilelist-link">
+                                        <Link
+                                            href="/faq"
+                                            className={`mobilelist-link ${isLinkActive('/faq')}`}
+                                        >
                                             {' '}
                                             FAQs{' '}
                                         </Link>
@@ -187,13 +215,19 @@ export default function Header() {
 
                                 <ul className="authlist">
                                     <li className="authlist-item">
-                                        <Link href="/login" className="login-link">
+                                        <Link
+                                            href="/login"
+                                            className={`login-link ${isLinkActive('/login')}`}
+                                        >
                                             Sign in
                                         </Link>
                                     </li>
 
                                     <li className="authlist-item">
-                                        <Link href="/register" className="register-link">
+                                        <Link
+                                            href="/register"
+                                            className={`register-link ${isLinkActive('/register')}`}
+                                        >
                                             Sign up
                                         </Link>
                                     </li>
@@ -211,25 +245,34 @@ export default function Header() {
                     <div className="d-none d-lg-block">
                         <ul className="desktoplist">
                             <li className="desktoplist-item">
-                                <Link href="/" className="desktoplist-link active">
+                                <Link href="/" className={`desktoplist-link ${isLinkActive('/')}`}>
                                     Home
                                 </Link>
                             </li>
 
                             <li className="desktoplist-item">
-                                <Link href="/about" className="desktoplist-link">
+                                <Link
+                                    href="/about"
+                                    className={`desktoplist-link ${isLinkActive('/about')}`}
+                                >
                                     About us
                                 </Link>
                             </li>
 
                             <li className="desktoplist-item">
-                                <Link href="/pricing" className="desktoplist-link">
+                                <Link
+                                    href="/pricing"
+                                    className={`desktoplist-link ${isLinkActive('/pricing')}`}
+                                >
                                     Pricing
                                 </Link>
                             </li>
 
                             <li className="desktoplist-item">
-                                <Link href="/templates" className="desktoplist-link">
+                                <Link
+                                    href="/templates"
+                                    className={`desktoplist-link ${isLinkActive('/templates')}`}
+                                >
                                     Templates
                                 </Link>
                             </li>
@@ -327,7 +370,10 @@ export default function Header() {
                             </li>
 
                             <li className="desktoplist-item">
-                                <Link href="/faq" className="desktoplist-link">
+                                <Link
+                                    href="/faq"
+                                    className={`desktoplist-link ${isLinkActive('/faq')}`}
+                                >
                                     FAQs
                                 </Link>
                             </li>
@@ -368,13 +414,19 @@ export default function Header() {
                         <div className="d-none d-lg-block">
                             <ul className="authlist">
                                 <li className="authlist-item">
-                                    <Link href="/login" className="login-link">
+                                    <Link
+                                        href="/login"
+                                        className={`login-link ${isLinkActive('/login')}`}
+                                    >
                                         Sign In
                                     </Link>
                                 </li>
 
                                 <li className="authlist-item">
-                                    <Link href="/register" className="register-link">
+                                    <Link
+                                        href="/register"
+                                        className={`register-link ${isLinkActive('/register')}`}
+                                    >
                                         Sign Up
                                     </Link>
                                 </li>
