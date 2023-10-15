@@ -187,16 +187,13 @@ export default function Header() {
 
                                 <ul className="authlist">
                                     <li className="authlist-item">
-                                        <Link href="/authentications/login" className="login-link">
+                                        <Link href="/login" className="login-link">
                                             Sign in
                                         </Link>
                                     </li>
 
                                     <li className="authlist-item">
-                                        <Link
-                                            href="authentications/register.html"
-                                            className="register-link"
-                                        >
+                                        <Link href="/register" className="register-link">
                                             Sign up
                                         </Link>
                                     </li>
@@ -371,16 +368,13 @@ export default function Header() {
                         <div className="d-none d-lg-block">
                             <ul className="authlist">
                                 <li className="authlist-item">
-                                    <Link href="authentications/login" className="login-link">
+                                    <Link href="/login" className="login-link">
                                         Sign In
                                     </Link>
                                 </li>
 
                                 <li className="authlist-item">
-                                    <Link
-                                        href="/authentications/register"
-                                        className="register-link"
-                                    >
+                                    <Link href="/register" className="register-link">
                                         Sign Up
                                     </Link>
                                 </li>
