@@ -1,3 +1,7 @@
+import Link from 'next/link';
+
+import PotentialSection from '@/components/PotentialSection';
+
 export default function BlogsPage() {
     return (
         <main className="main">
@@ -23,7 +27,7 @@ export default function BlogsPage() {
                     <div className="container" data-aos="fade-up">
                         <div className="row gx-4 gy-5">
                             <div className="col-md-6" data-aos="fade-right">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -44,11 +48,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-left">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -68,11 +72,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-right">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -92,11 +96,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-left">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -116,11 +120,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-right">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -140,11 +144,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-left">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -164,11 +168,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-right">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -189,11 +193,11 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="col-md-6" data-aos="fade-left">
-                                <a href="blog-details.html" className="bloglink">
+                                <Link href="/blogs/blog-details" className="bloglink">
                                     <div className="cardblog">
                                         <div className="cardblog-header">
                                             <figure className="blogthumbnail">
@@ -213,7 +217,7 @@ export default function BlogsPage() {
                                             </p>
                                         </div>
                                     </div>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -291,51 +295,7 @@ export default function BlogsPage() {
             </section>
             {/* <!-- BLOG-SECTION END --> */}
 
-            {/* <!-- POTENTIAL-SECTION START --> */}
-            <section className="potential" data-aos="flip-up">
-                <div className="container">
-                    <div className="potential-content">
-                        <div className="potential-info">
-                            <div className="row g-4">
-                                <div className="offset-xl-1 offset-0 col-xl-6 col-lg-8">
-                                    <div className="leftinfo">
-                                        <h2 className="display-6">
-                                            Unlock your product’s full potential
-                                        </h2>
-
-                                        <div className="info">
-                                            <p className="text">
-                                                Webwowzer is one of the few that offer a great
-                                                website builder with free templates, widgets and
-                                                Aps. With our builder, you can create the best DIY
-                                                e-commerce websites for your business. Our
-                                                custom-made website services have a wide variety of
-                                                templates and formats available for use immediately.
-                                            </p>
-                                        </div>
-
-                                        <div className="started">
-                                            <a href="workinginprogress.html" className="btn-order">
-                                                Start Building
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="offset-xl-1 offset-0 col-lg-4">
-                                    <figure className="potential-thumbnail">
-                                        <img
-                                            src="assets/images/home/potential-thumbnail.png"
-                                            alt="potential-thumbnail"
-                                        />
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {/* <!-- POTENTIAL-SECTION END --> */}
+            <PotentialSection />
         </main>
     );
 }

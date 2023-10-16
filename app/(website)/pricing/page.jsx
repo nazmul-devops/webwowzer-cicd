@@ -1,3 +1,7 @@
+import Link from 'next/link';
+
+import PotentialSection from '@/components/PotentialSection';
+
 export default function PricingPage() {
     return (
         <main className="main">
@@ -63,12 +67,9 @@ export default function PricingPage() {
                                                 </div>
 
                                                 <div className="cardprice-body">
-                                                    <a
-                                                        href="authentications/register.html"
-                                                        className="btn-build"
-                                                    >
+                                                    <Link href="/register" className="btn-build">
                                                         Start Building
-                                                    </a>
+                                                    </Link>
 
                                                     <ul className="packagelist">
                                                         <li className="packagelist-item">
@@ -269,12 +270,9 @@ export default function PricingPage() {
                                                 </div>
 
                                                 <div className="cardprice-body">
-                                                    <a
-                                                        href="authentications/register.html"
-                                                        className="btn-build"
-                                                    >
+                                                    <Link href="/register" className="btn-build">
                                                         Start Building
-                                                    </a>
+                                                    </Link>
 
                                                     <ul className="packagelist">
                                                         <li className="packagelist-item">
@@ -617,12 +615,9 @@ export default function PricingPage() {
                                                 </div>
 
                                                 <div className="cardprice-body">
-                                                    <a
-                                                        href="authentications/register.html"
-                                                        className="btn-build"
-                                                    >
+                                                    <Link href="/register" className="btn-build">
                                                         Start Building
-                                                    </a>
+                                                    </Link>
 
                                                     <ul className="packagelist">
                                                         <li className="packagelist-item">
@@ -1837,9 +1832,9 @@ export default function PricingPage() {
 
                                 <div className="info" data-aos="fade-up">
                                     <p className="text">
-                                        <a href="contact.html" className="link">
+                                        <Link href="/contact" className="link">
                                             Drop us a message
-                                        </a>
+                                        </Link>
                                         anytime.
                                     </p>
                                 </div>
@@ -1851,50 +1846,7 @@ export default function PricingPage() {
             {/* <!-- DROP-MESSGAGE END --> */}
 
             {/* <!-- POTENTIAL-SECTION START --> */}
-            <section className="potential" data-aos="flip-up">
-                <div className="container">
-                    <div className="potential-content">
-                        <div className="potential-info">
-                            <div className="row g-4">
-                                <div className="offset-xl-1 offset-0 col-xl-6 col-lg-8">
-                                    <div className="leftinfo">
-                                        <h2 className="display-6">
-                                            Unlock your product’s full potential
-                                        </h2>
-
-                                        <div className="info">
-                                            <p className="text">
-                                                Webwowzer is one of the few that offer a great
-                                                website builder with free templates, widgets and
-                                                Aps. With our builder, you can create the best DIY
-                                                e-commerce websites for your business. Our
-                                                custom-made website services have a wide variety of
-                                                templates and formats available for use immediately.
-                                            </p>
-                                        </div>
-
-                                        <div className="started">
-                                            <a href="workinginprogress.html" className="btn-order">
-                                                Start Building
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="offset-xl-1 offset-0 col-lg-4">
-                                    <figure className="potential-thumbnail">
-                                        <img
-                                            src="assets/images/home/potential-thumbnail.png"
-                                            alt="potential-thumbnail"
-                                        />
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {/* <!-- POTENTIAL-SECTION END --> */}
+            <PotentialSection />
         </main>
     );
 }

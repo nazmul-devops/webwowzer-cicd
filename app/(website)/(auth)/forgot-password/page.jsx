@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function ForgotPasswordPage() {
     return (
         <main className="authmain">
@@ -52,12 +54,12 @@ export default function ForgotPasswordPage() {
                                                         Next
                                                     </button>
 
-                                                    <a
-                                                        href="changepassword.html"
+                                                    <Link
+                                                        href="/change-password"
                                                         className="btn-submit"
                                                     >
                                                         Next
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>

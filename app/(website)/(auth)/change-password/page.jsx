@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
-export default function LoginPage() {
+export default function ChangePassword() {
     return (
         <main className="authmain">
             <div className="container">
@@ -9,44 +8,30 @@ export default function LoginPage() {
                     <div className="col-lg-6 mx-lg-auto">
                         <div className="authmain-details" data-aos="fade-up">
                             <div className="authmain-header">
-                                <h1 className="display-6 fw-bold text-center">
-                                    Log Into <br />
-                                    Your Account
-                                </h1>
+                                <h1 className="display-6 fw-bold text-center">Reset Password</h1>
                             </div>
 
                             <div className="authmain-body">
                                 <form className="authform">
                                     <div className="authform-header">
-                                        <div className="titlebox">
-                                            <h5 className="authtitle text-center">
-                                                Accelerate your speed of innovation with
-                                                <span className="fw-medium">WebWowZer.</span>
-                                            </h5>
+                                        <h5 className="authtitle fw-medium">Set New Password</h5>
+
+                                        <div className="info">
+                                            <p className="text">
+                                                Your new password must be different from previous
+                                                used password.
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div className="authform-body">
                                         <div className="row g-4">
                                             <div className="col-12">
-                                                <div className="inputbox">
-                                                    <input
-                                                        type="email"
-                                                        id="loginemail"
-                                                        placeholder="Enter email address"
-                                                        className="textfield"
-                                                        autoComplete="off"
-                                                        required
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="col-12">
                                                 <div className="inputbox forgotbox">
                                                     <input
                                                         type="password"
-                                                        id="loginpassword"
-                                                        placeholder="Enter your password"
+                                                        id="newpassword"
+                                                        placeholder="New password"
                                                         className="textfield"
                                                         autoComplete="off"
                                                         required
@@ -100,53 +85,69 @@ export default function LoginPage() {
                                                 </div>
                                             </div>
 
-                                            <div className="col-12 mb-3">
-                                                <div className="d-flex align-items-center justify-content-between">
-                                                    <div className="customcheck">
-                                                        <input
-                                                            type="checkbox"
-                                                            name="checkprivacy"
-                                                            id="rememberme"
-                                                            className="checkprivacy"
-                                                            hidden
-                                                        />
+                                            <div className="col-12">
+                                                <div className="inputbox forgotbox">
+                                                    <input
+                                                        type="password"
+                                                        id="confirmnewpassword"
+                                                        placeholder="Confirm new password"
+                                                        className="textfield"
+                                                        autoComplete="off"
+                                                        required
+                                                    />
 
-                                                        <label
-                                                            htmlFor="rememberme"
-                                                            className="checklabel"
+                                                    <button type="button" className="btn-showhide">
+                                                        <svg
+                                                            width="24"
+                                                            height="24"
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
                                                         >
-                                                            Remember me.
-                                                        </label>
-                                                    </div>
-
-                                                    <Link
-                                                        href="/forgot-password"
-                                                        className="authlink"
-                                                    >
-                                                        Forgot Password?
-                                                    </Link>
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                clipRule="evenodd"
+                                                                d="M14.5837 12.053C14.5837 13.4805 13.426 14.6373 11.9985 14.6373C10.571 14.6373 9.41406 13.4805 9.41406 12.053C9.41406 10.6246 10.571 9.46777 11.9985 9.46777C13.426 9.46777 14.5837 10.6246 14.5837 12.053Z"
+                                                                stroke="#0B2330"
+                                                                strokeWidth="1.22638"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                            />
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                clipRule="evenodd"
+                                                                d="M11.9985 18.023C15.1119 18.023 17.9595 15.7845 19.5628 12.053C17.9595 8.32155 15.1119 6.08301 11.9985 6.08301H12.0018C8.88843 6.08301 6.04078 8.32155 4.4375 12.053C6.04078 15.7845 8.88843 18.023 12.0018 18.023H11.9985Z"
+                                                                stroke="#0B2330"
+                                                                strokeWidth="1.22638"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                            />
+                                                        </svg>
+                                                    </button>
                                                 </div>
                                             </div>
 
-                                            <div className="col-12">
-                                                <Link
-                                                    href="/dashboard"
-                                                    className="btn-submit w-100"
-                                                >
-                                                    Login
-                                                </Link>
+                                            <div className="col-12 mt-5">
+                                                <div className="d-flex align-items-center justify-content-end gap-5">
+                                                    <button
+                                                        className="login-link fw-bold"
+                                                        type="submit"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        className="btn-submit d-none"
+                                                        type="submit"
+                                                    >
+                                                        Reset
+                                                    </button>
+
+                                                    <Link href="/confirmed" className="btn-submit">
+                                                        Reset
+                                                    </Link>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="authform-footer">
-                                        <p className="authtext">
-                                            Don’t have an account?
-                                            <Link href="/register" className="marked fw-medium">
-                                                Signup
-                                            </Link>
-                                            here.
-                                        </p>
                                     </div>
                                 </form>
                             </div>

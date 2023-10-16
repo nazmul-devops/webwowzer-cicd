@@ -2,8 +2,11 @@
 
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
+import brandLogo from '../public/assets/images/logo/logo.svg';
 
 export default function Header() {
     const pathname = usePathname();
@@ -37,7 +40,12 @@ export default function Header() {
                         <div className="offcanvas-header">
                             {/* <!-- BRAND-LOGO --> */}
                             <Link href="/" className="logo">
-                                <img src="assets/images/logo/logo.svg" alt="brand-logo" />
+                                <Image
+                                    src={brandLogo}
+                                    alt="brand-logo"
+                                    width={brandLogo.width}
+                                    height={brandLogo.height}
+                                />
                             </Link>
 
                             <button

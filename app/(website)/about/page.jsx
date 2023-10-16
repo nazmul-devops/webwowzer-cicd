@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function AboutPage() {
     return (
         <main className="main">
@@ -343,12 +345,9 @@ export default function AboutPage() {
                                         </div>
 
                                         <div className="started">
-                                            <a
-                                                href="workinginprogress.html"
-                                                className="btn-started"
-                                            >
+                                            <Link href="/work-in-progress" className="btn-started">
                                                 Start Building
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

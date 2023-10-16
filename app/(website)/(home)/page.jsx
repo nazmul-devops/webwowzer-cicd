@@ -1,3 +1,7 @@
+import Link from 'next/link';
+
+import PotentialSection from '@/components/PotentialSection';
+
 export default function HomePage() {
     return (
         <main className="main">
@@ -32,9 +36,9 @@ export default function HomePage() {
                                             <button type="submit" className="btn-search d-none">
                                                 Search
                                             </button>
-                                            <a href="domainsearch.html" className="btn-search">
+                                            <Link href="/domain-search" className="btn-search">
                                                 Search
-                                            </a>
+                                            </Link>
                                         </form>
                                     </div>
                                 </div>
@@ -228,12 +232,12 @@ export default function HomePage() {
                                     <div className="col-12 mt-5" data-aos="fade-up">
                                         <div className="d-flex justify-content-center mt-5">
                                             <div className="start">
-                                                <a
-                                                    href="workinginprogress.html"
+                                                <Link
+                                                    href="/work-in-progress"
                                                     className="btn-building"
                                                 >
                                                     Start Building
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -274,13 +278,13 @@ export default function HomePage() {
                                     </div>
 
                                     <div className="actions">
-                                        <a href="workinginprogress.html" className="btn-building">
+                                        <Link href="/work-in-progress" className="btn-building">
                                             Start Building
-                                        </a>
-                                        <a href="pricing.html" className="btn-submit">
+                                        </Link>
+                                        <Link href="/pricing" className="btn-submit">
                                             {' '}
                                             See Pricing{' '}
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -425,12 +429,9 @@ export default function HomePage() {
                                         </div>
 
                                         <div className="start">
-                                            <a
-                                                href="workinginprogress.html"
-                                                className="btn-building"
-                                            >
+                                            <Link href="/work-in-progress" className="btn-building">
                                                 Start Building
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -689,12 +690,12 @@ export default function HomePage() {
                                     </div>
 
                                     <div className="actions">
-                                        <a href="workinginprogress.html" className="btn-building">
+                                        <Link href="/work-in-progress" className="btn-building">
                                             Start Building
-                                        </a>
-                                        <a href="contact.html" className="btn-submit">
+                                        </Link>
+                                        <Link href="/contact" className="btn-submit">
                                             Help
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -953,9 +954,9 @@ export default function HomePage() {
                     </div>
 
                     <div className="mt-5 d-flex justify-content-center">
-                        <a href="workinginprogress.html" className="btn-started">
+                        <Link href="/work-in-progress" className="btn-started">
                             Start Building
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -1236,49 +1237,7 @@ export default function HomePage() {
             </section>
 
             {/* <!-- POTENTIAL-SECTION START --> */}
-            <section className="potential" data-aos="flip-up">
-                <div className="container">
-                    <div className="potential-content">
-                        <div className="potential-info">
-                            <div className="row g-4">
-                                <div className="offset-xl-1 offset-0 col-xl-6 col-lg-8">
-                                    <div className="leftinfo">
-                                        <h2 className="display-6">
-                                            Unlock your product’s full potential
-                                        </h2>
-
-                                        <div className="info">
-                                            <p className="text">
-                                                Webwowzer is one of the few that offer a great
-                                                website builder with free templates, widgets and
-                                                Aps. With our builder, you can create the best DIY
-                                                e-commerce websites for your business. Our
-                                                custom-made website services have a wide variety of
-                                                templates and formats available for use immediately.
-                                            </p>
-                                        </div>
-
-                                        <div className="started">
-                                            <a href="workinginprogress.html" className="btn-order">
-                                                Start Building
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="offset-xl-1 offset-0 col-lg-4">
-                                    <figure className="potential-thumbnail">
-                                        <img
-                                            src="assets/images/home/potential-thumbnail.png"
-                                            alt="potential-thumbnail"
-                                        />
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <PotentialSection />
         </main>
     );
 }
