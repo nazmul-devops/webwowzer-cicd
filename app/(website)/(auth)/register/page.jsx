@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function RegisterPage() {
     return (
         <main className="main">
@@ -145,12 +147,9 @@ export default function RegisterPage() {
                                                         </h2>
                                                         <p className="logtext">
                                                             Have an account?
-                                                            <a
-                                                                href="login.html"
-                                                                className="loglink"
-                                                            >
+                                                            <Link href="/login" className="loglink">
                                                                 LOG IN
-                                                            </a>
+                                                            </Link>
                                                         </p>
                                                     </div>
 

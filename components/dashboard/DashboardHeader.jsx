@@ -1,6 +1,12 @@
+'use client';
+
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardHeader() {
+    const router = useRouter();
+
     return (
         <header className="loggedinheader">
             <div className="container">
@@ -128,7 +134,19 @@ export default function DashboardHeader() {
                                     </li>
 
                                     <li className="droplist-item">
-                                        <Link href="/login" className="droplist-link">
+                                        <Link
+                                            className="droplist-link"
+                                            href="#"
+                                            onClick={(event) => {
+                                                event.preventDefault();
+
+                                                signOut({
+                                                    redirect: false,
+                                                });
+
+                                                router.push('/login');
+                                            }}
+                                        >
                                             Log Out
                                         </Link>
                                     </li>

@@ -1,7 +1,37 @@
-import Link from 'next/link';
+'use client';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 export default function LoginPage() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const router = useRouter();
+
+    const handleLogin = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await signIn('credentials', {
+                email,
+                password,
+                redirect: false,
+            });
+
+            if (response.error) {
+                console.log(response.error);
+            }
+
+            router.replace('/dashboard');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <main className="authmain">
             <div className="container">
@@ -37,6 +67,7 @@ export default function LoginPage() {
                                                         className="textfield"
                                                         autoComplete="off"
                                                         required
+                                                        onChange={(e) => setEmail(e.target.value)}
                                                     />
                                                 </div>
                                             </div>
@@ -50,6 +81,9 @@ export default function LoginPage() {
                                                         className="textfield"
                                                         autoComplete="off"
                                                         required
+                                                        onChange={(e) =>
+                                                            setPassword(e.target.value)
+                                                        }
                                                     />
 
                                                     <button type="button" className="btn-showhide">
@@ -129,12 +163,13 @@ export default function LoginPage() {
                                             </div>
 
                                             <div className="col-12">
-                                                <Link
-                                                    href="/dashboard"
+                                                <button
+                                                    type="button"
+                                                    onClick={handleLogin}
                                                     className="btn-submit w-100"
                                                 >
                                                     Login
-                                                </Link>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
