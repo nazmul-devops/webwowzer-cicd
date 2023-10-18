@@ -8,6 +8,12 @@ import { usePathname } from 'next/navigation';
 
 import brandLogo from '../public/assets/images/logo/logo.svg';
 
+import '@/public/assets/css/back-top/back-top.css';
+import '@/public/assets/css/bootstrap/bootstrap.min.css';
+import '@/public/assets/css/swiper/swiper-bundle.min.css';
+
+import '@/public/assets/css/style.css';
+
 export default function Header() {
     const pathname = usePathname();
 
