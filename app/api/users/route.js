@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
-import User from '@/models/UserModel';
+import User from '@/models/User';
 
 export async function GET() {
     await connectMongoDB();
