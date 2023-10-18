@@ -22,10 +22,6 @@ const BlogSchema = new mongoose.Schema({
     image: {
         type: String,
     },
-    authorName: {
-        type: String,
-        required: true,
-    },
     estimatedReadingTime: {
         type: Number,
         required: true,
