@@ -4,6 +4,15 @@
 npm install
 ```
 
+- after installing all the dependencies, setup the `.env` file in the root directory of the project.
+
+```bash
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+
+MONGODB_URI=
+```
+
 ## Table of Contents
 
 ### Editor Setup (Optional)
@@ -104,6 +113,9 @@ You need to install Below Plagins
         "jest": true
     },
     "rules": {
+        "jsx-a11y/anchor-is-valid": 0,
+        "import/extensions": 0,
+        "import/no-unresolved": 0,
         "react/react-in-jsx-scope": 0,
         "react-hooks/rules-of-hooks": "error",
         "no-console": 0,
