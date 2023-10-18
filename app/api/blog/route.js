@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
-import Blog from '@/models/BlogModel';
+import Blog from '@/models/Blog';
 
 export async function GET() {
     await connectMongoDB();
@@ -10,21 +10,22 @@ export async function GET() {
 
     return NextResponse.json({ blogs });
 }
+
 export async function POST(request) {
     try {
         // Extract data from the request body
-        const { title, content, author, image, authorName, estimatedReadingTime } =
+        const { title, blog_content, author_name, blog_cover_img, read_time } =
             await request.json();
+
         await connectMongoDB();
 
         // Create a new blog post
         const newBlogPost = new Blog({
             title,
-            content,
-            author,
-            image,
-            authorName,
-            estimatedReadingTime,
+            blog_content,
+            author_name,
+            blog_cover_img,
+            read_time,
         });
 
         // Save the new blog post to the database
