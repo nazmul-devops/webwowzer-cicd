@@ -26,6 +26,15 @@ function Sidebar() {
                         <span>Users</span>
                     </Link>
                 </li>
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link ${isLinkActive('/admin/blogs')}`}
+                        href="/admin/blogs"
+                    >
+                        <i className="bi bi-grid" />
+                        <span>Blogs</span>
+                    </Link>
+                </li>
             </ul>
         </aside>
     );
