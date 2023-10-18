@@ -4,6 +4,12 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import '@/public/assets/css/back-top/back-top.css';
+import '@/public/assets/css/bootstrap/bootstrap.min.css';
+import '@/public/assets/css/swiper/swiper-bundle.min.css';
+
+import '@/public/assets/css/style.css';
+
 export default function DashboardHeader() {
     const router = useRouter();
 
