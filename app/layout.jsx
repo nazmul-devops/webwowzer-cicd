@@ -16,10 +16,6 @@ export default function RootLayout({ children }) {
                     rel="stylesheet"
                     href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css"
                 />
-                <link rel="stylesheet" href="/assets/css/swiper/swiper-bundle.min.css" />
-                <link rel="stylesheet" href="/assets/css/back-top/back-top.css" />
-                <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.min.css" />
-                <link rel="stylesheet" href="/assets/css/style.css" />
             </head>
 
             <body>

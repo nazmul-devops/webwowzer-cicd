@@ -1,6 +1,5 @@
+import { ObjectId } from 'mongodb';
 import { Schema, model, models } from 'mongoose';
-
-const { ObjectId } = require('mongodb');
 
 const BlogSchema = new Schema({
     title: {

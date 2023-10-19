@@ -10,20 +10,23 @@ export async function GET() {
 
     return NextResponse.json({ blogs });
 }
+
 export async function POST(request) {
     try {
         // Extract data from the request body
-        const { title, blog_cover_img, author_name, read_time, blog_content } =
+        const { title, content, author, image, authorName, estimatedReadingTime } =
             await request.json();
+
         await connectMongoDB();
 
         // Create a new blog post
         const newBlogPost = new Blog({
             title,
-            blog_cover_img,
-            author_name,
-            read_time,
-            blog_content,
+            content,
+            author,
+            image,
+            authorName,
+            estimatedReadingTime,
         });
         const savedBlogPost = await newBlogPost.save();
 
