@@ -1,8 +1,7 @@
-import mongoose, { model, models } from 'mongoose';
+import { ObjectId } from 'mongodb';
+import { Schema, model, models } from 'mongoose';
 
-const { ObjectId } = require('mongodb');
-
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,

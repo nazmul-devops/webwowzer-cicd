@@ -1,8 +1,8 @@
+import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import Blog from '@/models/Blog';
-import { ObjectId } from 'mongodb';
 
 export async function PUT(request, { params }) {
     const { id } = params;
