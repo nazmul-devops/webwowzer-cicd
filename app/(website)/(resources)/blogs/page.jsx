@@ -12,7 +12,6 @@ async function getBlogs() {
 
 export default async function BlogsPage() {
     const data = await getBlogs();
-    console.log(data.blogs.length);
     return (
         <main className="main">
             {/* <!-- BLOG-SECTION START --> */}

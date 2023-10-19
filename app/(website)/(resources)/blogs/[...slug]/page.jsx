@@ -3,7 +3,6 @@ import Image from 'next/image';
 import PotentialSection from '@/components/PotentialSection';
 
 async function getBlog(id) {
-    console.log(id);
     const res = await fetch(`http://localhost:3000/api/blog/${id}`, { cache: 'no-store' });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
@@ -13,8 +12,6 @@ async function getBlog(id) {
 
 export default async function BlogDetails({ params }) {
     const data = await getBlog(params.slug[1]);
-    console.log('blog', data);
-    console.log('ok ss ', params.slug[1]);
     return (
         <main className="main">
             {/* <!-- BLOG-DETAILS START --> */}
@@ -57,7 +54,7 @@ export default async function BlogDetails({ params }) {
                                         />
                                     ) : (
                                         <Image
-                                            src="/assets/images/blogs/blog-1.png" // Replace with the path to your default image
+                                            src="/assets/images/blogs/blog-1.png"
                                             alt="default-blog-thumbnail"
                                             width={700}
                                             height={400}
