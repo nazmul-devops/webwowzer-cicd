@@ -1,14 +1,17 @@
-'use client';
+import axios from '@/lib/axios';
 
 async function getBlogs() {
-    const res = await fetch('http://localhost:3000/api/blog', { cache: 'no-store' });
-    if (!res.ok) {
+    const response = await axios('/api/blog');
+
+    if (response.status !== 200) {
         throw new Error('Failed to fetch data');
     }
-    return res.json();
+    return response.data;
 }
+
 export default async function BlogPage() {
     const data = await getBlogs();
+
     return (
         <div>
             <section className="section">
@@ -33,7 +36,7 @@ export default async function BlogPage() {
                                     </thead>
                                     <tbody>
                                         {data.blogs.map((blog, index) => (
-                                            <tr key={index}>
+                                            <tr key={blog._id}>
                                                 <th scope="row">{index + 1}</th>
                                                 <td>{blog.title}</td>
                                                 <td>
