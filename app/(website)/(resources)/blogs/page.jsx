@@ -1,17 +1,21 @@
 import Link from 'next/link';
 
 import PotentialSection from '@/components/PotentialSection';
+import axios from '@/lib/axios';
 
 async function getBlogs() {
-    const res = await fetch('http://localhost:3000/api/blog', { cache: 'no-store' });
-    if (!res.ok) {
+    const response = await axios.get('/api/blog');
+
+    if (response.status !== 200) {
         throw new Error('Failed to fetch data');
     }
-    return res.json();
+
+    return response.data;
 }
 
 export default async function BlogsPage() {
     const data = await getBlogs();
+
     return (
         <main className="main">
             {/* <!-- BLOG-SECTION START --> */}

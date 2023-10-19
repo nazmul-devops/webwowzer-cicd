@@ -1,17 +1,20 @@
 import Image from 'next/image';
 
 import PotentialSection from '@/components/PotentialSection';
+import axios from '@/lib/axios';
 
 async function getBlog(id) {
-    const res = await fetch(`http://localhost:3000/api/blog/${id}`, { cache: 'no-store' });
-    if (!res.ok) {
+    const response = await axios.get(`/api/blog/${id}`);
+
+    if (response.status !== 200) {
         throw new Error('Failed to fetch data');
     }
-    return res.json();
+    return response.data;
 }
 
 export default async function BlogDetails({ params }) {
     const data = await getBlog(params.slug[1]);
+
     return (
         <main className="main">
             {/* <!-- BLOG-DETAILS START --> */}

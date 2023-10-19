@@ -8,7 +8,7 @@ export async function GET() {
 
     const blogs = await Blog.find();
 
-    return NextResponse.json({ blogs });
+    return NextResponse.json({ blogs }, { status: 200 });
 }
 
 export async function POST(request) {
