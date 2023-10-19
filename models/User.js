@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { model, models } from 'mongoose';
 
 const { ObjectId } = require('mongodb');
 

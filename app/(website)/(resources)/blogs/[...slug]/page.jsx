@@ -2,7 +2,19 @@ import Image from 'next/image';
 
 import PotentialSection from '@/components/PotentialSection';
 
-export default function BlogDetails() {
+async function getBlog(id) {
+    console.log(id);
+    const res = await fetch(`http://localhost:3000/api/blog/${id}`, { cache: 'no-store' });
+    if (!res.ok) {
+        throw new Error('Failed to fetch data');
+    }
+    return res.json();
+}
+
+export default async function BlogDetails({ params }) {
+    const data = await getBlog(params.slug[1]);
+    console.log('blog', data);
+    console.log('ok ss ', params.slug[1]);
     return (
         <main className="main">
             {/* <!-- BLOG-DETAILS START --> */}
@@ -17,13 +29,15 @@ export default function BlogDetails() {
                                         To Follow In 2021
                                     </p>
 
-                                    <h1 className="fw-bold display-5">
-                                        3 Effective And Professional Web Design Tips To Follow In
-                                        2021
-                                    </h1>
+                                    <h1 className="fw-bold display-5">{data?.blog?.title}</h1>
 
                                     <p className="toptext">
-                                        By James Dempsey • 28 Dec, 2021 • 7 min read
+                                        By {data?.blog?.author_name} •{' '}
+                                        {new Date(data?.blog?.created_at).toLocaleDateString(
+                                            'en-US',
+                                            { year: 'numeric', month: 'short', day: 'numeric' }
+                                        )}{' '}
+                                        • {data?.blog?.read_time} min read
                                     </p>
                                 </div>
                             </div>
@@ -34,12 +48,21 @@ export default function BlogDetails() {
                         <div className="row w-100">
                             <div className="col-lg-7 mx-lg-auto">
                                 <figure className="blogthumb">
-                                    <Image
-                                        src="/assets/images/blog-details/blog-thumbnail.png"
-                                        alt="blog-thumbnail"
-                                        width={700}
-                                        height={400}
-                                    />
+                                    {data?.blog.blog_cover_img ? (
+                                        <Image
+                                            src={data?.blog.blog_cover_img}
+                                            alt="blog-thumbnail"
+                                            width={700}
+                                            height={400}
+                                        />
+                                    ) : (
+                                        <Image
+                                            src="/assets/images/blogs/blog-1.png" // Replace with the path to your default image
+                                            alt="default-blog-thumbnail"
+                                            width={700}
+                                            height={400}
+                                        />
+                                    )}
                                 </figure>
                             </div>
                         </div>
@@ -48,107 +71,7 @@ export default function BlogDetails() {
                     <div className="container" data-aos="fade-up">
                         <div className="row w-100">
                             <div className="col-lg-8 mx-lg-auto">
-                                <div className="detailscontent">
-                                    <div className="info">
-                                        <p className="text">
-                                            If you really think about it, design is a very
-                                            subjective element when it comes to websites. Different
-                                            users will prefer different designs, which explains why
-                                            there are many tips out there for you to improve your
-                                            website’s design. But that’s just like throwing blind
-                                            arrows. To truly ensure your website’s success through
-                                            web design, you need to take tips from professionals.
-                                            So, we’ve scavenged the internet and gathered the best
-                                            ones for you to follow when you create your own website.
-                                            Here you go!
-                                        </p>
-                                    </div>
-
-                                    <div className="details">
-                                        <h5 className="title">
-                                            Follow the Less Is More Approach Religiously
-                                        </h5>
-
-                                        <div className="descriptions">
-                                            <p className="text">
-                                                When it comes to website design, simplicity is key.
-                                                But some businesses tend to overdo their websites,
-                                                and that doesn’t do much for their ranking. The fact
-                                                is that most visitors on your website don’t care
-                                                much about the design.
-                                            </p>
-
-                                            <p className="text">
-                                                What they do care about is usability. If you go all
-                                                out on the design, there is a chance that you’ll
-                                                make it too crowded, which will make it harder for
-                                                users to navigate through the pages. As a general
-                                                rule of thumb, keep the website clutter-free and
-                                                minimalistic. Make sure the elements people need to
-                                                see aren’t hard to find.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="details">
-                                        <h5 className="title">
-                                            Make Sure Your Website’s Design Is in Line with The
-                                            Industry You Operate In
-                                        </h5>
-
-                                        <div className="descriptions">
-                                            <p className="text">
-                                                Your website should be a clear reflection of your
-                                                business. Depending on which industry you’re part
-                                                of, you’ll have a target audience. Your design
-                                                elements should be in line with your target
-                                                audiences’ preferences and expectations.
-                                            </p>
-
-                                            <p className="text">
-                                                For instance, if you’re an interior designing
-                                                company—you may want to have more artistic elements
-                                                on your website to showcase your business’s creative
-                                                capability. On the other hand, a simple, modern web
-                                                design should work fine for you if you run something
-                                                like a dentist&apos;s clinic. Moreover, since your
-                                                website represents your brand, it’s important to
-                                                choose design elements that will help build brand
-                                                awareness.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="details">
-                                        <h5 className="title">Incorporate Visual Elements</h5>
-
-                                        <div className="descriptions">
-                                            <p className="text">
-                                                Humans are visual learners. A majority of us retain
-                                                a lot more information from images and videos rather
-                                                than text. So, if you need to tell your audience
-                                                something important about your business, it makes
-                                                sense to use graphics instead of plain written
-                                                content.
-                                            </p>
-
-                                            <p className="text">
-                                                Visual elements like videos, images, and
-                                                infographics help engage leads, resulting in more
-                                                conversions for the business. Web design can seem
-                                                complicated, and the truth is, it mostly is—unless
-                                                you’re using an online website builder like
-                                                WebWowZer!
-                                            </p>
-
-                                            <p className="text">
-                                                It’s one of the best free website builders, and we
-                                                offer custom-made website designs that allow you to
-                                                create a professional, high-ranking website.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div className="detailscontent">{data?.blog?.blog_content}</div>
                             </div>
                         </div>
                     </div>
