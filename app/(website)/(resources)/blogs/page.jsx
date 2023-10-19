@@ -2,7 +2,17 @@ import Link from 'next/link';
 
 import PotentialSection from '@/components/PotentialSection';
 
-export default function BlogsPage() {
+async function getBlogs() {
+    const res = await fetch('http://localhost:3000/api/blog', { cache: 'no-store' });
+    if (!res.ok) {
+        throw new Error('Failed to fetch data');
+    }
+    return res.json();
+}
+
+export default async function BlogsPage() {
+    const data = await getBlogs();
+    console.log(data.blogs.length);
     return (
         <main className="main">
             {/* <!-- BLOG-SECTION START --> */}
@@ -26,199 +36,43 @@ export default function BlogsPage() {
 
                     <div className="container" data-aos="fade-up">
                         <div className="row gx-4 gy-5">
-                            <div className="col-md-6" data-aos="fade-right">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-1.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
+                            {data.blogs.map((blog) => (
+                                <div className="col-md-6" data-aos="fade-right" key={blog._id}>
+                                    <Link
+                                        href={`/blogs/blog-details/${blog._id}`}
+                                        className="bloglink"
+                                    >
+                                        <div className="cardblog">
+                                            <div className="cardblog-header">
+                                                <figure className="blogthumbnail">
+                                                    {blog.blog_cover_img ? (
+                                                        <img
+                                                            src={blog.blog_cover_img}
+                                                            alt="blog-thumbnail"
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            src="assets/images/blogs/blog-1.png"
+                                                            alt="default-avatar"
+                                                        />
+                                                    )}
+                                                </figure>
+                                            </div>
 
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                3 Effective And Professional Web Design Tips To
-                                                Follow In 2021
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
+                                            <div className="cardblog-body">
+                                                <h5 className="blogtitle">{blog.title}</h5>
+                                                <p className="blogtext">
+                                                    By {blog.author_name}
+                                                    {new Date(
+                                                        blog.created_at
+                                                    ).toLocaleDateString()}{' '}
+                                                    {blog.read_time} min read
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-left">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-2.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                9 essential tips for modern business website design
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-right">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-3.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                4 visual design principles for web designers
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-left">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-4.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                Top 10 reasons your design team should use WebWowZer
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-right">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-5.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                The pros and cons of icons in web design
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-left">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-6.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                Best practices for prototyping websites
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-right">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-7.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                3 Effective And Professional Web Design Tips To
-                                                Follow In 2021
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-left">
-                                <Link href="/blogs/blog-details" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <img
-                                                    src="assets/images/blogs/blog-8.png"
-                                                    alt="blog-thumbnail"
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                10 best practices for responsive web design
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
+                                    </Link>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
