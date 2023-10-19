@@ -93,3 +93,25 @@ export async function GET(request, { params }) {
     ]);
     return NextResponse.json({ blog: blog[0] }, { status: 200 });
 }
+
+export async function PATCH(request, { params }) {
+    const { id } = params;
+    const { active } = await request.json();
+
+    await connectMongoDB();
+
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(id, { active }, { new: true });
+
+        if (!updatedBlog) {
+            return NextResponse.error('Blog not found', { status: 404 });
+        }
+
+        return NextResponse.json(
+            { message: 'Active status updated', blogPost: updatedBlog },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.error('Failed to update active status', { status: 500 });
+    }
+}
