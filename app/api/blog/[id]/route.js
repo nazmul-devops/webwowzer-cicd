@@ -115,3 +115,28 @@ export async function PATCH(request, { params }) {
         return NextResponse.error('Failed to update active status', { status: 500 });
     }
 }
+
+// Import necessary modules and dependencies
+
+export async function DELETE(request, { params }) {
+    const { id } = params;
+
+    // Connect to your MongoDB database
+    await connectMongoDB();
+
+    try {
+        // Use MongoDB's `findByIdAndDelete` to delete the blog post
+        const deletedBlog = await Blog.findByIdAndDelete(id);
+
+        if (!deletedBlog) {
+            return NextResponse.error('Blog not found', { status: 404 });
+        }
+
+        return NextResponse.json(
+            { message: 'Blog deleted', blogPost: deletedBlog },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.error('Failed to delete the blog', { status: 500 });
+    }
+}
