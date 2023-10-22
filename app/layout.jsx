@@ -1,6 +1,7 @@
 import Script from 'next/script';
 
 import ProgressBarProvider from '@/components/ProgressBarProvider';
+import ToasterProvider from '@/components/ToastProvider';
 import '../styles/globals.css';
 
 export const metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
 
             <body>
                 <ProgressBarProvider>{children}</ProgressBarProvider>
+                <ToasterProvider />
             </body>
 
             {/* Required Script */}

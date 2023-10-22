@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -22,13 +23,17 @@ export default function LoginPage() {
                 redirect: false,
             });
 
+            if (response.ok) {
+                toast.success('Successfully logged in.');
+            }
+
             if (response.error) {
-                console.log(response.error);
+                toast.error('Please check your credentials and try again.');
             }
 
             router.replace('/dashboard');
         } catch (error) {
-            console.log(error);
+            toast.error('Something went wrong. Please try again.');
         }
     };
 
