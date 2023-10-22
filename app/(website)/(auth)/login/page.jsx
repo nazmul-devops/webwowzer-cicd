@@ -1,10 +1,10 @@
 'use client';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
@@ -12,6 +12,17 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
 
     const router = useRouter();
+    const { data: session } = useSession();
+
+    useEffect(() => {
+        if (session) {
+            if (session.user.role === 'client') {
+                router.push('/dashboard');
+            } else if (session.user.role === 'admin') {
+                window.location.href = '/admin';
+            }
+        }
+    }, [session, router]);
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -23,15 +34,22 @@ export default function LoginPage() {
                 redirect: false,
             });
 
-            if (response.ok) {
-                toast.success('Successfully logged in.');
-            }
-
             if (response.error) {
                 toast.error('Please check your credentials and try again.');
             }
 
-            router.replace('/dashboard');
+            if (response.ok) {
+                if (session) {
+                    if (session.user.role === 'client') {
+                        router.push('/dashboard');
+                    } else if (session.user.role === 'admin') {
+                        // push to admin dashboard with reload
+                        window.location.href = '/admin';
+                    }
+                }
+
+                toast.success('Successfully logged in.');
+            }
         } catch (error) {
             toast.error('Something went wrong. Please try again.');
         }
@@ -169,7 +187,7 @@ export default function LoginPage() {
 
                                             <div className="col-12">
                                                 <button
-                                                    type="button"
+                                                    type="submit"
                                                     onClick={handleLogin}
                                                     className="btn-submit w-100"
                                                 >

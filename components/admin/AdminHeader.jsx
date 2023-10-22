@@ -1,7 +1,10 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import '../../public/admin/assets/css/style.css';
 import '../../public/admin/assets/vendor/bootstrap-icons/bootstrap-icons.css';
@@ -10,6 +13,15 @@ import '../../public/admin/assets/vendor/boxicons/css/boxicons.min.css';
 import '../../public/admin/assets/vendor/simple-datatables/style.css';
 
 export default function AdminHeader() {
+    const router = useRouter();
+    const { data: session } = useSession();
+
+    useEffect(() => {
+        if (!session?.user) {
+            router.push('/login');
+        }
+    }, [session, router]);
+
     return (
         <header id="header" className="header fixed-top d-flex align-items-center">
             <div className="d-flex align-items-center justify-content-between">

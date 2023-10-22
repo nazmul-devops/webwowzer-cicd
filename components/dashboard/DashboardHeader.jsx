@@ -1,8 +1,10 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 import '@/public/assets/css/back-top/back-top.css';
 import '@/public/assets/css/bootstrap/bootstrap.min.css';
@@ -12,6 +14,13 @@ import '@/public/assets/css/style.css';
 
 export default function DashboardHeader() {
     const router = useRouter();
+    const { data: session } = useSession();
+
+    useEffect(() => {
+        if (!session?.user) {
+            router.push('/login');
+        }
+    }, [session, router]);
 
     return (
         <header className="loggedinheader">
@@ -150,7 +159,7 @@ export default function DashboardHeader() {
                                                     redirect: false,
                                                 });
 
-                                                router.push('/login');
+                                                toast.success('Logged out successfully!');
                                             }}
                                         >
                                             Log Out

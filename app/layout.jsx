@@ -1,5 +1,6 @@
 import Script from 'next/script';
 
+import AuthProvider from '@/components/AuthProvider';
 import ProgressBarProvider from '@/components/ProgressBarProvider';
 import ToasterProvider from '@/components/ToastProvider';
 import '../styles/globals.css';
@@ -20,8 +21,10 @@ export default function RootLayout({ children }) {
             </head>
 
             <body>
-                <ProgressBarProvider>{children}</ProgressBarProvider>
-                <ToasterProvider />
+                <AuthProvider>
+                    <ProgressBarProvider>{children}</ProgressBarProvider>
+                    <ToasterProvider />
+                </AuthProvider>
             </body>
 
             {/* Required Script */}
