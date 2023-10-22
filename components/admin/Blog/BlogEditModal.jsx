@@ -1,3 +1,5 @@
+import { globalJoditConfig } from '@/lib/joditConfig';
+import JoditEditor from 'jodit-react';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
@@ -32,7 +34,7 @@ export default function BlogEditModal({ show, onHide, blog, onSave }) {
     };
 
     return (
-        <Modal show={show} onHide={onHide}>
+        <Modal show={show} onHide={onHide} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>Edit Blog</Modal.Title>
             </Modal.Header>
@@ -76,11 +78,12 @@ export default function BlogEditModal({ show, onHide, blog, onSave }) {
                     </Form.Group>
                     <Form.Group controlId="formContent">
                         <Form.Label>Content</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="blog_content"
+                        <JoditEditor
                             value={formData.blog_content}
-                            onChange={handleFormChange}
+                            config={globalJoditConfig}
+                            onChange={(content) =>
+                                setFormData({ ...formData, blog_content: content })
+                            }
                         />
                     </Form.Group>
                 </Form>

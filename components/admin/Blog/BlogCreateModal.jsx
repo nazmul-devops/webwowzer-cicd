@@ -1,3 +1,5 @@
+import { globalJoditConfig } from '@/lib/joditConfig';
+import JoditEditor from 'jodit-react'; // Import Jodit editor
 import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
@@ -13,6 +15,10 @@ export default function BlogCreateModal({ show, onHide, onSave }) {
     const handleFormChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleEditorChange = (content) => {
+        setFormData({ ...formData, blog_content: content });
     };
 
     const handleSave = () => {
@@ -64,11 +70,10 @@ export default function BlogCreateModal({ show, onHide, onSave }) {
                     </Form.Group>
                     <Form.Group controlId="formContent">
                         <Form.Label>Content</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="blog_content"
+                        <JoditEditor
+                            config={globalJoditConfig}
                             value={formData.blog_content}
-                            onChange={handleFormChange}
+                            onChange={handleEditorChange}
                         />
                     </Form.Group>
                 </Form>

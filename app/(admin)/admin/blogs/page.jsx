@@ -105,8 +105,9 @@ export default function BlogPage() {
                                     Add
                                 </button>
 
-                                {/* <!-- Table with stripped rows --> */}
-                                <table className="table">
+                             <div className="table-responsive nowrap-table">
+                                   {/* <!-- Table with stripped rows --> */}
+                                   <table className="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -141,12 +142,14 @@ export default function BlogPage() {
                                                         <th scope="row">{index + 1}</th>
                                                         <td>{blog.title}</td>
                                                         <td>
-                                                            {blog.blog_content.length > 30
-                                                                ? `${blog.blog_content.slice(
-                                                                      0,
-                                                                      30
-                                                                  )}...`
-                                                                : blog.blog_content}
+                                                            {blog.blog_content.length > 30 ? (
+                                                                `${blog.blog_content.slice(
+                                                                    0,
+                                                                    30
+                                                                )}...`
+                                                            ) : (
+                                                            blog.blog_content,
+                                                            )}
                                                         </td>
 
                                                         <td>
@@ -205,6 +208,7 @@ export default function BlogPage() {
                                     </tbody>
                                 </table>
                                 {/* <!-- End Table with stripped rows --> */}
+                             </div>
                             </div>
                         </div>
                     </div>

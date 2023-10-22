@@ -72,7 +72,10 @@ export default async function BlogDetails({ params }) {
                     <div className="container" data-aos="fade-up">
                         <div className="row w-100">
                             <div className="col-lg-8 mx-lg-auto">
-                                <div className="detailscontent">{data?.blog?.blog_content}</div>
+                                <div
+                                    dangerouslySetInnerHTML={{ __html: data?.blog?.blog_content }}
+                                    className="detailscontent"
+                                />
                             </div>
                         </div>
                     </div>
