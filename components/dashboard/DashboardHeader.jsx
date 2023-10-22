@@ -1,9 +1,7 @@
 'use client';
 
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 import '@/public/assets/css/back-top/back-top.css';
@@ -11,16 +9,19 @@ import '@/public/assets/css/bootstrap/bootstrap.min.css';
 import '@/public/assets/css/swiper/swiper-bundle.min.css';
 
 import '@/public/assets/css/style.css';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardHeader() {
     const router = useRouter();
-    const { data: session } = useSession();
 
-    useEffect(() => {
-        if (!session?.user) {
+    const handleLoggedOut = () => {
+        signOut({
+            redirect: false,
+        }).then(() => {
             router.push('/login');
-        }
-    }, [session, router]);
+            toast.success('Logged out successfully!');
+        });
+    };
 
     return (
         <header className="loggedinheader">
@@ -152,15 +153,7 @@ export default function DashboardHeader() {
                                         <Link
                                             className="droplist-link"
                                             href="#"
-                                            onClick={(event) => {
-                                                event.preventDefault();
-
-                                                signOut({
-                                                    redirect: false,
-                                                });
-
-                                                toast.success('Logged out successfully!');
-                                            }}
+                                            onClick={handleLoggedOut}
                                         >
                                             Log Out
                                         </Link>

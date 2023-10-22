@@ -16,9 +16,9 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (session) {
-            if (session.user.role === 'client') {
+            if (session?.user?.role === 'client') {
                 router.push('/dashboard');
-            } else if (session.user.role === 'admin') {
+            } else if (session?.user?.role === 'admin') {
                 window.location.href = '/admin';
             }
         }

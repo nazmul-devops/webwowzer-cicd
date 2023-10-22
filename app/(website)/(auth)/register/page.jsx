@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -17,6 +18,8 @@ export default function RegisterPage() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const router = useRouter();
 
     const countryOptions = [
         { value: 'Bangladesh', label: 'Bangladesh' },
@@ -61,23 +64,55 @@ export default function RegisterPage() {
             return;
         }
 
-        const response = axios.post('/api/users', {
-            firstName,
-            lastName,
-            country,
-            city,
-            region,
-            postalCode,
-            email,
-            phoneNumber,
-            password,
-        });
+        const response = axios
+            .post('/api/users', {
+                firstName,
+                lastName,
+                country,
+                city,
+                region,
+                postalCode,
+                email,
+                phoneNumber,
+                password,
+            })
+            .then((res) => {
+                if (res.status === 201) {
+                    toast(res.data.message, {
+                        icon: '✅',
+                        style: {
+                            borderRadius: '10px',
+                            background: '#333',
+                            color: '#fff',
+                        },
+                    });
 
-        toast.promise(response, {
-            loading: 'Registering...',
-            success: (data) => data.message,
-            error: (err) => err.response.data.message,
-        });
+                    setFirstName('');
+                    setLastName('');
+                    setCountry('');
+                    setCity('');
+                    setRegion('');
+                    setPostalCode('');
+                    setEmail('');
+                    setPhoneNumber('');
+                    setPassword('');
+                    setConfirmPassword('');
+
+                    router.push('/login');
+                }
+            })
+            .catch((err) => {
+                toast(err.response.data.message, {
+                    icon: '🔴',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                });
+            });
+
+        console.log(response);
     }
 
     return (

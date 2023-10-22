@@ -1,6 +1,19 @@
+import { redirect } from 'next/navigation';
 import Script from 'next/script';
 
-export default function AdminFooter() {
+import { getAuthSession } from '@/lib/auth';
+
+export default async function AdminFooter() {
+    const session = await getAuthSession();
+
+    if (session?.user?.role !== 'admin') {
+        redirect('/login');
+    }
+
+    if (session?.user?.role !== 'admin') {
+        return null;
+    }
+
     return (
         <>
             <footer id="footer" className="footer">

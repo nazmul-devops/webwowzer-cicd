@@ -1,4 +1,18 @@
-export default function DashboardFooter() {
+import { redirect } from 'next/navigation';
+
+import { getAuthSession } from '@/lib/auth';
+
+export default async function DashboardFooter() {
+    const session = await getAuthSession();
+
+    if (session?.user?.role !== 'client') {
+        redirect('/login');
+    }
+
+    if (session?.user?.role !== 'client') {
+        return null;
+    }
+
     return (
         <footer className="loggedfooter">
             <div className="container">
