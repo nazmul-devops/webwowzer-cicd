@@ -27,6 +27,18 @@ export async function POST(request) {
         } = await request.json();
         await connectMongoDB();
 
+        // Check if a user with the same email or phone number already exists
+        const existingUser = await User.findOne({
+            $or: [{ email }, { phone_number: phoneNumber }],
+        });
+
+        if (existingUser) {
+            return NextResponse.json(
+                { message: 'Email or phone number is already in use' },
+                { status: 400 }
+            );
+        }
+
         // Hash the password
         const salt = bcrypt.genSaltSync(10); // Generate a salt
         const hashedPassword = bcrypt.hashSync(password, salt);
