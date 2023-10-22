@@ -1,23 +1,21 @@
 'use client';
 
+import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
+import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
 import axios from '@/lib/axios';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
-// async function getBlogs() {
-//     const response = await axios('/api/blog');
-
-//     if (response.status !== 200) {
-//         throw new Error('Failed to fetch data');
-//     }
-//     return response.data;
-// }
+import toast from 'react-hot-toast';
 
 export default function BlogPage() {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedBlog, setSelectedBlog] = useState(null);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     async function fetchBlog() {
         try {
-            const response = await axios.get('/api/blog');
+            const response = await axios.get(`/api/blog`);
             console.log(response.data.blogs);
             setLoading(false);
             setBlogs(response.data.blogs);
@@ -33,7 +31,7 @@ export default function BlogPage() {
         try {
             const response = await axios.patch(`/api/blog/${blogId}`, { active: !isActive });
             if (response.status === 200) {
-                alert(response.data.message);
+                toast.success(response.data.message);
                 fetchBlog();
             }
         } catch (error) {
@@ -46,29 +44,68 @@ export default function BlogPage() {
             try {
                 const response = await axios.delete(`/api/blog/${id}`);
                 if (response.status === 200) {
-                    alert(response.data.message);
+                    toast.success(response.data.message);
                     fetchBlog();
                 } else {
-                    alert('Failed to delete the blog post');
+                    toast.error('Failed to delete the blog post');
                 }
             } catch (err) {
                 console.error(err);
             }
         }
     };
+    const handleEdit = (blog) => {
+        setSelectedBlog(blog);
+        setShowEditModal(true);
+    };
+
+    const handleAdd = () => {
+        setSelectedBlog(null); // Reset selectedBlog for adding
+        setShowCreateModal(true);
+    };
+
+    const handleSaveBlog = async (formData) => {
+        try {
+            if (selectedBlog) {
+                // Editing an existing blog
+                const response = await axios.put(`/api/blog/${selectedBlog._id}`, formData);
+                if (response.status === 200) {
+                    alert(response.data.message);
+                }
+            } else {
+                // Adding a new blog
+                const response = await axios.post('/api/blog', formData);
+                if (response.status === 200) {
+                    toast.success(response.data.message);
+                }
+            }
+            fetchBlog();
+            window.location.reload();
+        } catch (error) {
+            console.error('Error saving the blog', error);
+        }
+        setShowCreateModal(false);
+        setShowEditModal(false);
+    };
 
     return (
-        <div>
-            <section className="section">
+        <>
+            <div className="section">
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">All Blogs</h5>
-                                <button className="btn btn-success">Add</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    onClick={handleAdd}
+                                >
+                                    Add
+                                </button>
 
                                 {/* <!-- Table with stripped rows --> */}
-                                <table className="table datatable">
+                                <table className="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -83,7 +120,9 @@ export default function BlogPage() {
                                     </thead>
                                     <tbody>
                                         {loading ? (
-                                            <p>Loading ...</p>
+                                            <tr>
+                                                <td>Loading ...</td>
+                                            </tr>
                                         ) : (
                                             <>
                                                 {blogs.map((blog, index) => (
@@ -100,12 +139,15 @@ export default function BlogPage() {
                                                         </td>
 
                                                         <td>
-                                                            <img
+                                                            <Image
                                                                 src={
                                                                     blog.blog_cover_img
                                                                         ? blog.blog_cover_img
-                                                                        : 'jpath'
+                                                                        : '/jpath'
                                                                 }
+                                                                height={100}
+                                                                className="img-thumbnail"
+                                                                width={100}
                                                                 alt="blog thumb "
                                                             />
                                                         </td>
@@ -128,7 +170,15 @@ export default function BlogPage() {
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td className="d-flex gap-2">
+                                                            <button
+                                                                onClick={() => handleEdit(blog)}
+                                                                type="button"
+                                                                className="btn btn-primary btn-small"
+                                                            >
+                                                                Edit
+                                                            </button>
+
                                                             <button
                                                                 onClick={() => deleteBlog(blog._id)}
                                                                 type="button"
@@ -148,7 +198,18 @@ export default function BlogPage() {
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+            <BlogCreateModal
+                show={showCreateModal}
+                onHide={() => setShowCreateModal(false)}
+                onSave={handleSaveBlog}
+            />
+            <BlogEditModal
+                show={showEditModal}
+                onHide={() => setShowEditModal(false)}
+                blog={selectedBlog}
+                onSave={handleSaveBlog}
+            />
+        </>
     );
 }

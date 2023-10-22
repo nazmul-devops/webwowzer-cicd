@@ -6,7 +6,7 @@ import Blog from '@/models/Blog';
 export async function GET() {
     await connectMongoDB();
 
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().sort({ _id: -1 });
 
     return NextResponse.json({ blogs }, { status: 200 });
 }
@@ -29,7 +29,11 @@ export async function POST(request) {
         });
         const savedBlogPost = await newBlogPost.save();
 
-        return NextResponse.json({ success: true, blogPost: savedBlogPost });
+        return NextResponse.json({
+            success: true,
+            blogPost: savedBlogPost,
+            message: 'Blog created successfully',
+        });
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message }, 500);
     }
