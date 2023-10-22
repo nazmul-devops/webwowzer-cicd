@@ -1,12 +1,13 @@
 'use client';
 
-import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
-import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
-import axios from '@/lib/axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Placeholder } from 'react-bootstrap';
 import toast from 'react-hot-toast';
+
+import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
+import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
+import axios from '@/lib/axios';
 
 export default function BlogPage() {
     const [blogs, setBlogs] = useState([]);
@@ -74,27 +75,26 @@ export default function BlogPage() {
                     toast.success(response.data.message);
                 } else {
                     console.log(response);
-                } 
+                }
             } else {
                 // Adding a new blog
                 const response = await axios.post('/api/blog', formData);
                 if (response.status === 200) {
                     toast.success(response.data.message);
                 }
-            } 
+            }
             fetchBlog();
             window.location.reload();
             setShowCreateModal(false);
             setShowEditModal(false);
         } catch (error) {
             console.error('Error saving the blog', error);
-            const errorData= error.response.data.error.issues;
-            errorData.forEach((error) => {
-                const errorMessage = `${error.path.join('.')}: ${error.message}`;
+            const errorData = error.response.data.error.issues;
+            errorData.forEach((err) => {
+                const errorMessage = `${err.path.join('.')}: ${err.message}`;
                 toast.error(errorMessage);
-              });
+            });
         }
-    
     };
 
     return (
@@ -113,110 +113,110 @@ export default function BlogPage() {
                                     Add
                                 </button>
 
-                             <div className="table-responsive nowrap-table">
-                                   {/* <!-- Table with stripped rows --> */}
-                                   <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Blog Title</th>
-                                            <th scope="col">Blog Content</th>
-                                            <th scope="col">Blog Image</th>
-                                            <th scope="col">author name</th>
-                                            <th scope="col">Created Date</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {loading ? (
+                                <div className="table-responsive nowrap-table">
+                                    {/* <!-- Table with stripped rows --> */}
+                                    <table className="table">
+                                        <thead>
                                             <tr>
-                                                <td colSpan="7">
-                                                    <Placeholder as="p" animation="glow">
-                                                        <Placeholder xs={12} size="lg" />
-                                                        <Placeholder xs={8} size="lg" />
-                                                        <Placeholder xs={6} size="lg" />
-                                                        <Placeholder xs={3} size="lg" />
-                                                        <Placeholder xs={3} size="lg" />
-                                                        <Placeholder xs={2} size="lg" />
-                                                        <Placeholder xs={3} size="lg" />
-                                                    </Placeholder>
-                                                </td>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Blog Title</th>
+                                                <th scope="col">Blog Content</th>
+                                                <th scope="col">Blog Image</th>
+                                                <th scope="col">author name</th>
+                                                <th scope="col">Created Date</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action </th>
                                             </tr>
-                                        ) : (
-                                            <>
-                                                {blogs.map((blog, index) => (
-                                                    <tr key={blog._id}>
-                                                        <th scope="row">{index + 1}</th>
-                                                        <td>{blog.title}</td>
-                                                        <td>
-                                                            {blog.blog_content.length > 30 ? (
-                                                                `${blog.blog_content.slice(
-                                                                    0,
-                                                                    30
-                                                                )}...`
-                                                            ) : (
-                                                            blog.blog_content,
-                                                            )}
-                                                        </td>
+                                        </thead>
+                                        <tbody>
+                                            {loading ? (
+                                                <tr>
+                                                    <td colSpan="7">
+                                                        <Placeholder as="p" animation="glow">
+                                                            <Placeholder xs={12} size="lg" />
+                                                            <Placeholder xs={8} size="lg" />
+                                                            <Placeholder xs={6} size="lg" />
+                                                            <Placeholder xs={3} size="lg" />
+                                                            <Placeholder xs={3} size="lg" />
+                                                            <Placeholder xs={2} size="lg" />
+                                                            <Placeholder xs={3} size="lg" />
+                                                        </Placeholder>
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                <>
+                                                    {blogs.map((blog, index) => (
+                                                        <tr key={blog._id}>
+                                                            <th scope="row">{index + 1}</th>
+                                                            <td>{blog.title}</td>
+                                                            <td>
+                                                                {blog.blog_content.length > 30
+                                                                    ? `${blog.blog_content.slice(
+                                                                          0,
+                                                                          30
+                                                                      )}...`
+                                                                    : blog.blog_content}
+                                                            </td>
 
-                                                        <td>
-                                                            <Image
-                                                                src={
-                                                                    blog.blog_cover_img
-                                                                        ? blog.blog_cover_img
-                                                                        : '/jpath'
-                                                                }
-                                                                height={100}
-                                                                className="img-thumbnail"
-                                                                width={100}
-                                                                alt="blog thumb "
-                                                            />
-                                                        </td>
-                                                        <td>{blog.author_name}</td>
-                                                        <td>{blog.created_at.split('T')[0]}</td>
-                                                        <td>
-                                                            <div className="form-check form-switch">
-                                                                <input
-                                                                    className="form-check-input"
-                                                                    type="checkbox"
-                                                                    role="button"
-                                                                    onChange={() =>
-                                                                        handleCheckboxChange(
-                                                                            blog._id,
-                                                                            blog.active
-                                                                        )
+                                                            <td>
+                                                                <Image
+                                                                    src={
+                                                                        blog.blog_cover_img
+                                                                            ? blog.blog_cover_img
+                                                                            : '/jpath'
                                                                     }
-                                                                    checked={blog.active}
-                                                                    id={`flexSwitchCheck-${blog._id}`}
+                                                                    height={100}
+                                                                    className="img-thumbnail"
+                                                                    width={100}
+                                                                    alt="blog thumb "
                                                                 />
-                                                            </div>
-                                                        </td>
-                                                        <td className="d-flex gap-2">
-                                                            <button
-                                                                onClick={() => handleEdit(blog)}
-                                                                type="button"
-                                                                className="btn btn-primary btn-small"
-                                                            >
-                                                                Edit
-                                                            </button>
+                                                            </td>
+                                                            <td>{blog.author_name}</td>
+                                                            <td>{blog.created_at.split('T')[0]}</td>
+                                                            <td>
+                                                                <div className="form-check form-switch">
+                                                                    <input
+                                                                        className="form-check-input"
+                                                                        type="checkbox"
+                                                                        role="button"
+                                                                        onChange={() =>
+                                                                            handleCheckboxChange(
+                                                                                blog._id,
+                                                                                blog.active
+                                                                            )
+                                                                        }
+                                                                        checked={blog.active}
+                                                                        id={`flexSwitchCheck-${blog._id}`}
+                                                                    />
+                                                                </div>
+                                                            </td>
+                                                            <td className="d-flex gap-2">
+                                                                <button
+                                                                    onClick={() => handleEdit(blog)}
+                                                                    type="button"
+                                                                    className="btn btn-primary btn-small"
+                                                                >
+                                                                    Edit
+                                                                </button>
 
-                                                            <button
-                                                                onClick={() => deleteBlog(blog._id)}
-                                                                type="button"
-                                                                className="btn btn-danger btn-small"
-                                                            >
-                                                                Delete
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </>
-                                        )}
-                                    </tbody>
-                                </table>
-                                {/* <!-- End Table with stripped rows --> */}
-                             </div>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        deleteBlog(blog._id)
+                                                                    }
+                                                                    type="button"
+                                                                    className="btn btn-danger btn-small"
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                    {/* <!-- End Table with stripped rows --> */}
+                                </div>
                             </div>
                         </div>
                     </div>

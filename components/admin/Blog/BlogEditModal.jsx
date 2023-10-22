@@ -1,7 +1,8 @@
-import { globalJoditConfig } from '@/lib/joditConfig';
 import JoditEditor from 'jodit-react';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+
+import globalJoditConfig from '@/lib/joditConfig';
 
 export default function BlogEditModal({ show, onHide, blog, onSave }) {
     const [formData, setFormData] = useState({

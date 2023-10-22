@@ -35,7 +35,13 @@ export default function LoginPage() {
             });
 
             if (response.error) {
-                toast.error('Please check your credentials and try again.');
+                toast.error('Please check your credentials and try again.', {
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                });
             }
 
             if (response.ok) {
