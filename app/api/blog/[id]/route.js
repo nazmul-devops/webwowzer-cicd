@@ -6,18 +6,14 @@ import Blog from '@/models/Blog';
 
 export async function PUT(request, { params }) {
     const { id } = params;
-    const {
-        newTitle: title,
-        newBlogContent: blog_content,
-        newAuthorName: author_name,
-    } = await request.json();
+    const { title, blog_content, author_name, blog_cover_img, read_time } = await request.json();
 
     await connectMongoDB();
 
     try {
         const updatedBlog = await Blog.findByIdAndUpdate(
             id,
-            { title, blog_content, author_name },
+            { title, blog_content, author_name, blog_cover_img, read_time },
             { new: true }
         );
 

@@ -5,6 +5,7 @@ import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
 import axios from '@/lib/axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { Placeholder } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 
 export default function BlogPage() {
@@ -70,7 +71,7 @@ export default function BlogPage() {
                 // Editing an existing blog
                 const response = await axios.put(`/api/blog/${selectedBlog._id}`, formData);
                 if (response.status === 200) {
-                    alert(response.data.message);
+                    toast.success(response.data.message);
                 }
             } else {
                 // Adding a new blog
@@ -121,7 +122,17 @@ export default function BlogPage() {
                                     <tbody>
                                         {loading ? (
                                             <tr>
-                                                <td>Loading ...</td>
+                                                <td colSpan="7">
+                                                    <Placeholder as="p" animation="glow">
+                                                        <Placeholder xs={12} size="lg" />
+                                                        <Placeholder xs={8} size="lg" />
+                                                        <Placeholder xs={6} size="lg" />
+                                                        <Placeholder xs={3} size="lg" />
+                                                        <Placeholder xs={3} size="lg" />
+                                                        <Placeholder xs={2} size="lg" />
+                                                        <Placeholder xs={3} size="lg" />
+                                                    </Placeholder>
+                                                </td>
                                             </tr>
                                         ) : (
                                             <>

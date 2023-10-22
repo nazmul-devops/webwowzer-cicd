@@ -15,6 +15,7 @@ async function getBlogs() {
 
 export default async function BlogsPage() {
     const data = await getBlogs();
+    const activeItems = data.blogs.filter((item) => item.active);
 
     return (
         <main className="main">
@@ -39,7 +40,7 @@ export default async function BlogsPage() {
 
                     <div className="container" data-aos="fade-up">
                         <div className="row gx-4 gy-5">
-                            {data.blogs.map((blog) => (
+                            {activeItems.map((blog) => (
                                 <div className="col-md-6" data-aos="fade-right" key={blog._id}>
                                     <Link
                                         href={`/blogs/blog-details/${blog._id}`}

@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import PotentialSection from '@/components/PotentialSection';
 import axios from '@/lib/axios';
+import Link from 'next/link';
 
 async function getBlog(id) {
     const response = await axios.get(`/api/blog/${id}`);
@@ -92,58 +93,45 @@ export default async function BlogDetails({ params }) {
 
                     <div className="container">
                         <div className="row g-4">
-                            <div className="col-md-6" data-aos="fade-right">
-                                <a href="blog-details.html" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <Image
-                                                    src="/assets/images/blog-details/blog-thumbnail.png"
-                                                    alt="blog-thumbnail"
-                                                    width={700}
-                                                    height={400}
-                                                />
-                                            </figure>
-                                        </div>
+                            {data?.blog?.more?.map((moreBlog) => (
+                                <div className="col-md-6" key={moreBlog._id} data-aos="fade-right">
+                                    <Link
+                                        href={`/blogs/blog-details/${moreBlog._id}`}
+                                        className="bloglink"
+                                    >
+                                        <div className="cardblog">
+                                            <div className="cardblog-header">
+                                                <figure className="blogthumbnail">
+                                                    <Image
+                                                        src={
+                                                            moreBlog.blog_cover_img ||
+                                                            '/assets/images/blog-details/blog-thumbnail.png'
+                                                        }
+                                                        alt="blog-thumbnail"
+                                                        width={700}
+                                                        height={400}
+                                                    />
+                                                </figure>
+                                            </div>
 
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                3 Effective And Professional Web Design Tips To
-                                                Follow In 2021
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
+                                            <div className="cardblog-body">
+                                                <h5 className="blogtitle">{moreBlog.title}</h5>
+                                                <p className="blogtext">
+                                                    By {moreBlog.author_name} •{' '}
+                                                    {new Date(
+                                                        moreBlog.created_at
+                                                    ).toLocaleDateString('en-US', {
+                                                        year: 'numeric',
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                    })}{' '}
+                                                    • {moreBlog.read_time} min read
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div className="col-md-6" data-aos="fade-left">
-                                <a href="blog-details.html" className="bloglink">
-                                    <div className="cardblog">
-                                        <div className="cardblog-header">
-                                            <figure className="blogthumbnail">
-                                                <Image
-                                                    src="/assets/images/blog-details/blog-thumbnail.png"
-                                                    alt="blog-thumbnail"
-                                                    width={700}
-                                                    height={400}
-                                                />
-                                            </figure>
-                                        </div>
-
-                                        <div className="cardblog-body">
-                                            <h5 className="blogtitle">
-                                                10 best practices for responsive web design
-                                            </h5>
-                                            <p className="blogtext">
-                                                By James Dempsey • 28 Dec, 2021 • 7 min read
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                                    </Link>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
