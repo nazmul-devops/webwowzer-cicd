@@ -2,20 +2,24 @@ import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
+import { blogSchema } from '@/lib/validation';
 import Blog from '@/models/Blog';
 
 export async function PUT(request, { params }) {
     const { id } = params;
     const { title, blog_content, author_name, blog_cover_img, read_time } = await request.json();
 
-    await connectMongoDB();
-
     try {
-        const updatedBlog = await Blog.findByIdAndUpdate(
-            id,
-            { title, blog_content, author_name, blog_cover_img, read_time },
-            { new: true }
-        );
+        const validateData = blogSchema.parse({
+            title,
+            blog_content,
+            author_name,
+            blog_cover_img,
+            read_time,
+        });
+        await connectMongoDB();
+
+        const updatedBlog = await Blog.findByIdAndUpdate(id, validateData, { new: true });
 
         if (!updatedBlog) {
             return NextResponse.error('Blog not found', { status: 404 });
@@ -26,7 +30,7 @@ export async function PUT(request, { params }) {
             { status: 200 }
         );
     } catch (error) {
-        return NextResponse.error('Failed to update blog', { status: 500 });
+        return NextResponse.json({ error }, { status: 500 });
     }
 }
 

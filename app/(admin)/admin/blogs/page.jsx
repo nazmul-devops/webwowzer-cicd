@@ -72,21 +72,29 @@ export default function BlogPage() {
                 const response = await axios.put(`/api/blog/${selectedBlog._id}`, formData);
                 if (response.status === 200) {
                     toast.success(response.data.message);
-                }
+                } else {
+                    console.log(response);
+                } 
             } else {
                 // Adding a new blog
                 const response = await axios.post('/api/blog', formData);
                 if (response.status === 200) {
                     toast.success(response.data.message);
                 }
-            }
+            } 
             fetchBlog();
             window.location.reload();
+            setShowCreateModal(false);
+            setShowEditModal(false);
         } catch (error) {
             console.error('Error saving the blog', error);
+            const errorData= error.response.data.error.issues;
+            errorData.forEach((error) => {
+                const errorMessage = `${error.path.join('.')}: ${error.message}`;
+                toast.error(errorMessage);
+              });
         }
-        setShowCreateModal(false);
-        setShowEditModal(false);
+    
     };
 
     return (

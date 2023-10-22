@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
+import { blogSchema } from '@/lib/validation';
 import Blog from '@/models/Blog';
 
 export async function GET() {
@@ -14,19 +15,15 @@ export async function GET() {
 export async function POST(request) {
     try {
         // Extract data from the request body
-        const { title, blog_content, author_name, blog_cover_img, read_time } =
-            await request.json();
+        const requestData = await request.json();
+
+        // Validate the request data against the schema
+        const validatedData = blogSchema.parse(requestData);
 
         await connectMongoDB();
 
         // Create a new blog post
-        const newBlogPost = new Blog({
-            title,
-            blog_content,
-            author_name,
-            blog_cover_img,
-            read_time,
-        });
+        const newBlogPost = new Blog(validatedData);
         const savedBlogPost = await newBlogPost.save();
 
         return NextResponse.json({
@@ -35,6 +32,6 @@ export async function POST(request) {
             message: 'Blog created successfully',
         });
     } catch (error) {
-        return NextResponse.json({ success: false, error: error.message }, 500);
+        return NextResponse.json({ error }, { status: 500 });
     }
 }
