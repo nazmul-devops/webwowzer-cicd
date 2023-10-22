@@ -14,7 +14,17 @@ export async function GET() {
 
 export async function POST(request) {
     try {
-        const { name, email, password } = await request.json();
+        const {
+            firstName,
+            lastName,
+            country,
+            city,
+            region,
+            postalCode,
+            email,
+            phoneNumber,
+            password,
+        } = await request.json();
         await connectMongoDB();
 
         // Hash the password
@@ -22,8 +32,14 @@ export async function POST(request) {
         const hashedPassword = bcrypt.hashSync(password, salt);
 
         await User.create({
-            name,
+            first_name: firstName,
+            last_name: lastName,
+            country,
+            city,
+            region,
+            postal_code: postalCode,
             email,
+            phone_number: phoneNumber,
             password: hashedPassword,
         });
 

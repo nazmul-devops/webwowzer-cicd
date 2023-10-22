@@ -2,12 +2,42 @@ import { ObjectId } from 'mongodb';
 import { Schema, model, models } from 'mongoose';
 
 const UserSchema = new Schema({
-    name: {
+    first_name: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    last_name: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    country: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    city: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    region: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    postal_code: {
         type: String,
         required: true,
         trim: true,
     },
     email: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    phone_number: {
         type: String,
         required: true,
         trim: true,
