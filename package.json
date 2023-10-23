@@ -20,6 +20,7 @@
         "next-nprogress-bar": "^2.1.2",
         "react": "^18",
         "react-bootstrap": "^2.9.1",
+        "react-data-table-component": "^7.5.4",
         "react-dom": "^18",
         "react-hot-toast": "^2.4.1",
         "zod": "^3.22.4"

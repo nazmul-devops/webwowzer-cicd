@@ -2,8 +2,13 @@
 
 import PotentialSection from '@/components/PotentialSection';
 import axios from 'axios';
+import type { Metadata } from 'next';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+export const metadata: Metadata = {
+    title: '...',
+    description: '...',
+  }
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 export default function ContactPage() {

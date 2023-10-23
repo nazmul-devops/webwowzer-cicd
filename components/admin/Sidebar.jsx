@@ -35,6 +35,15 @@ function Sidebar() {
                         <span>Blogs</span>
                     </Link>
                 </li>
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link ${isLinkActive('/admin/contacts')}`}
+                        href="/admin/contacts"
+                    >
+                        <i className="bi bi-envelope" />
+                        <span>Contacts</span>
+                    </Link>
+                </li>
             </ul>
         </aside>
     );
