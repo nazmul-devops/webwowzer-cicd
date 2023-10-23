@@ -1,6 +1,53 @@
+'use client';
+
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { Placeholder } from 'react-bootstrap';
+import toast from 'react-hot-toast';
+
 import PotentialSection from '@/components/PotentialSection';
+import YouTubeModal from '@/components/dashboard/tutorials/YoutubeModal';
+import axios from '@/lib/axios';
+
+async function getTutorials() {
+    const response = await axios.get('/api/tutorial');
+
+    if (response.status !== 200) {
+        throw new Error('Failed to fetch data');
+    }
+
+    return response?.data;
+}
 
 export default function TutorialPage() {
+    const [showYoutubeModal, setShowYoutubeModal] = useState(false);
+    const [tutorials, setTutorials] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const handleYoutubeShowModal = () => {
+        setShowYoutubeModal(true);
+    };
+
+    const handleCloseYoutubeModal = () => {
+        setShowYoutubeModal(false);
+    };
+
+    const getTutorialsData = async () => {
+        try {
+            const data = await getTutorials();
+            setIsLoading(false);
+            setTutorials(data.tutorials);
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getTutorialsData();
+    }, []);
+
     return (
         <main className="main">
             {/* <!-- TUTORIALS-SECTION START --> */}
@@ -24,425 +71,127 @@ export default function TutorialPage() {
 
                     <div className="container">
                         <div className="row gx-4 gy-5">
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
+                            {isLoading ? (
+                                <>
+                                    <div className="col-lg-4 col-sm-6" data-aos="fade-up">
+                                        <Placeholder as="p" animation="wave">
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                        </Placeholder>
+
+                                        <Placeholder as="p" animation="wave">
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                        </Placeholder>
+                                    </div>
+
+                                    <div className="col-lg-4 col-sm-6" data-aos="fade-up">
+                                        <Placeholder as="p" animation="wave">
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                        </Placeholder>
+
+                                        <Placeholder as="p" animation="wave">
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                        </Placeholder>
+                                    </div>
+
+                                    <div className="col-lg-4 col-sm-6" data-aos="fade-up">
+                                        <Placeholder as="p" animation="wave">
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                        </Placeholder>
+
+                                        <Placeholder as="p" animation="wave">
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                            <Placeholder xs={12} size="xs" />
+                                        </Placeholder>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    {tutorials.map((tutorial) => (
+                                        <div
+                                            className="col-lg-4 col-sm-6"
+                                            data-aos="fade-up"
+                                            key={tutorial._id}
+                                        >
+                                            <div className="cardtutorial">
+                                                <div className="cardtutorial-header">
+                                                    <figure className="tutorial-thumbnail">
+                                                        <Image
+                                                            src={tutorial.thumbnail_img}
+                                                            alt="tutorial-thumbnail"
+                                                            width={560}
+                                                            height={315}
+                                                        />
+                                                    </figure>
+
+                                                    <button
+                                                        type="button"
+                                                        className="btn-play"
+                                                        onClick={handleYoutubeShowModal}
+                                                    >
+                                                        <svg
+                                                            width="16"
+                                                            height="16"
+                                                            viewBox="0 0 16 16"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
+                                                                fill="white"
+                                                            />
+                                                        </svg>
+                                                    </button>
+
+                                                    <span className="overlay" />
+                                                </div>
+
+                                                <div className="cardtutorial-body">
+                                                    <h5 className="tutorialtitle">
+                                                        {tutorial.title}
+                                                    </h5>
+                                                    <p className="durations">
+                                                        {tutorial.duration} min
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <YouTubeModal
+                                                show={showYoutubeModal}
+                                                handleClose={handleCloseYoutubeModal}
+                                                tutorial={tutorial}
                                             />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Edit Page Layout</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Manage Pages</h5>
-                                        <p className="durations">4 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Basic Editor Overview</h5>
-                                        <p className="durations">5 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Personalization</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Global Design</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Site Header</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Using Widgets</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Manage Content</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Dynamic Pages</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Internal Collections</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Navigation</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                <div className="cardtutorial">
-                                    <div className="cardtutorial-header">
-                                        <figure className="tutorial-thumbnail">
-                                            <img
-                                                src="assets/images/tutorials/tutorial-thumbnail.png"
-                                                alt="tutorial-thumbnail"
-                                            />
-                                        </figure>
-
-                                        <button type="button" className="btn-play">
-                                            <svg
-                                                width="16"
-                                                height="16"
-                                                viewBox="0 0 16 16"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M2 2.80278C2 1.60473 3.33522 0.890145 4.33205 1.5547L12.1279 6.75192C13.0185 7.34566 13.0185 8.65434 12.1279 9.24808L4.33205 14.4453C3.33522 15.1099 2 14.3953 2 13.1972V2.80278Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                        </button>
-
-                                        <span className="overlay" />
-                                    </div>
-
-                                    <div className="cardtutorial-body">
-                                        <h5 className="tutorialtitle">Site Comments</h5>
-                                        <p className="durations">3 min</p>
-                                    </div>
-                                </div>
-                            </div>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
