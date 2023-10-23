@@ -1,12 +1,8 @@
-/* eslint-disable no-nested-ternary */
-
 'use client';
-
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import toast from 'react-hot-toast';
+
 
 export default function ContactPage() {
     const [contacts, setContacts] = useState([]);
@@ -44,7 +40,6 @@ export default function ContactPage() {
                 });
 
                 setContacts(updatedContacts);
-                toast.success('Status updated successfully');
             }
         } catch (error) {
             console.error('Error updating status', error);
@@ -72,35 +67,17 @@ export default function ContactPage() {
             selector: 'phone',
             sortable: true,
         },
-
         {
             name: 'Message',
             selector: 'message',
             sortable: true,
-            cell: (row) => {
-                const maxLength = 50; // Set your desired maximum length
-                const message =
-                    row.message.length > maxLength
-                        ? `${row.message.slice(0, maxLength)}...`
-                        : row.message;
-
-                // Show the full message in a tooltip
-                const tooltip = <Tooltip id={`message-tooltip-${row._id}`}>{row.message}</Tooltip>;
-
-                return (
-                    <OverlayTrigger placement="top" overlay={tooltip}>
-                        <span>{message}</span>
-                    </OverlayTrigger>
-                );
-            },
         },
         {
             name: 'Check Privacy',
             selector: 'checkprivacy',
             sortable: true,
-            cell: (row) => <input type="checkbox" checked={row.checkprivacy} disabled />,
+            cell: (row) => (row.checkprivacy ? 'true' : 'false'),
         },
-
         {
             name: 'Status',
             selector: 'status',
@@ -112,14 +89,13 @@ export default function ContactPage() {
                     value={row.status}
                     onChange={(e) => handleStatusChange(row._id, e.target.value)}
                     style={{
-                        backgroundColor:
-                            row.status === 'Pending'
-                                ? 'lightyellow'
-                                : row.status === 'Contacted'
+                        backgroundColor: row.status === 'Pending'
+                            ? 'lightyellow'
+                            : row.status === 'Contacted'
                                 ? 'lightgreen'
                                 : row.status === 'Resolved'
-                                ? 'lightblue'
-                                : 'transparent',
+                                    ? 'lightblue'
+                                    : 'transparent',
                     }}
                 >
                     {statusOptions.map((option) => (
@@ -132,8 +108,7 @@ export default function ContactPage() {
         },
     ];
 
-    const filteredContacts = contacts.filter((contact) =>
-        contact.full_name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredContacts = contacts.filter((contact) => contact.full_name.toLowerCase().includes(searchText.toLowerCase())
     );
 
     return (
@@ -146,8 +121,7 @@ export default function ContactPage() {
                             <input
                                 type="text"
                                 placeholder="Search by Name"
-                                onChange={(e) => setSearchText(e.target.value)}
-                            />
+                                onChange={(e) => setSearchText(e.target.value)} />
                             {contacts.length > 0 && (
                                 <DataTable
                                     title="Contacts"
@@ -155,8 +129,7 @@ export default function ContactPage() {
                                     data={filteredContacts}
                                     pagination
                                     paginationPerPage={perPage}
-                                    onChangeRowsPerPage={setPerPage}
-                                />
+                                    onChangeRowsPerPage={setPerPage} />
                             )}
                         </div>
                     </div>
