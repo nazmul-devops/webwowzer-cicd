@@ -23,9 +23,11 @@ export default function TutorialPage() {
     const [showYoutubeModal, setShowYoutubeModal] = useState(false);
     const [tutorials, setTutorials] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [singleTutorial, setSingleTutorial] = useState({});
 
-    const handleYoutubeShowModal = () => {
+    const handleYoutubeShowModal = (tutorial) => {
         setShowYoutubeModal(true);
+        setSingleTutorial(tutorial);
     };
 
     const handleCloseYoutubeModal = () => {
@@ -155,7 +157,9 @@ export default function TutorialPage() {
                                                     <button
                                                         type="button"
                                                         className="btn-play"
-                                                        onClick={handleYoutubeShowModal}
+                                                        onClick={() => {
+                                                            handleYoutubeShowModal(tutorial);
+                                                        }}
                                                     >
                                                         <svg
                                                             width="16"
@@ -183,11 +187,6 @@ export default function TutorialPage() {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <YouTubeModal
-                                                show={showYoutubeModal}
-                                                handleClose={handleCloseYoutubeModal}
-                                                tutorial={tutorial}
-                                            />
                                         </div>
                                     ))}
                                 </>
@@ -199,6 +198,11 @@ export default function TutorialPage() {
             {/* <!-- TUTORIALS-SECTION END --> */}
 
             <PotentialSection />
+            <YouTubeModal
+                show={showYoutubeModal}
+                handleClose={handleCloseYoutubeModal}
+                tutorial={singleTutorial}
+            />
         </main>
     );
 }
