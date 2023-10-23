@@ -24,10 +24,14 @@ const ContactSchema = new Schema({
     message: {
         type: String,
     },
+    checkprivacy: {
+        type: Boolean,
+    },
     status: {
         type: String,
         enum: ['Pending', 'Contacted', 'Resolved'],
-        required: true,
+        default: 'Pending',
+        reqired: false,
     },
     created_at: {
         type: Date,

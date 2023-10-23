@@ -1,7 +1,89 @@
+'use client';
+
 import PotentialSection from '@/components/PotentialSection';
+import axios from 'axios';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 export default function ContactPage() {
+    const [formData, setFormData] = useState({
+        fullname: '',
+        emailaddress: '',
+        companyname: '',
+        phonenumber: '',
+        message: '',
+        checkprivacy: false,
+    });
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value,
+        });
+    };
+    const resetForm = () => {
+        setFormData({
+            fullname: '',
+            emailaddress: '',
+            companyname: '',
+            phonenumber: '',
+            message: '',
+            checkprivacy: false,
+        });
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.fullname) {
+            toast.error('Field "Full Name" is empty.');
+            return;
+        }
+        if (!formData.emailaddress) {
+            toast.error('Field "Email Address" is empty.');
+            return;
+        }
+        if (!formData.companyname) {
+            toast.error('Field "Company Name" is empty.');
+            return;
+        }
+        if (!formData.phonenumber) {
+            toast.error('Field "Phone Number" is empty.');
+            return;
+        }
+        if (!formData.message) {
+            toast.error('Field "Message" is empty.');
+            return;
+        }
+        try {
+            const requestData = {
+                full_name: formData.fullname,
+                email: formData.emailaddress,
+                company_name: formData.companyname,
+                phone: formData.phonenumber,
+                message: formData.message,
+                checkprivacy: formData.checkprivacy || false,
+                status: 'Pending',
+            };
+
+            const response = await axios.post('/api/contact', requestData);
+
+            if (response.status === 200) {
+                toast.success('Contact form submitted successfully');
+                resetForm();
+            } else {
+                console.error('Failed to submit the contact form');
+            }
+        } catch (error) {
+            console.log(error);
+            console.error('Error submitting the contact form', error.response.data.error);
+            const errorData = error.response.data.error.issues;
+            errorData.forEach((err) => {
+                const errorMessage = `${err.path.join('.')}: ${err.message}`;
+                toast.error(errorMessage);
+            });
+        }
+    };
+
     return (
         <main className="main">
             {/* <!-- CONTACT-SECTION START --> */}
@@ -27,7 +109,7 @@ export default function ContactPage() {
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-6 col-md-10 mx-md-auto">
-                                    <form className="contactform">
+                                    <form className="contactform" onSubmit={handleSubmit}>
                                         <div className="row gx-4 gy-5">
                                             <div className="col-md-6">
                                                 <div className="inputbox">
@@ -40,10 +122,12 @@ export default function ContactPage() {
                                                     <input
                                                         type="text"
                                                         id="fullname"
+                                                        name="fullname"
+                                                        value={formData.fullname}
+                                                        onChange={handleChange}
                                                         placeholder="Enter your name"
                                                         className="textfield"
                                                         autoComplete="off"
-                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -59,10 +143,12 @@ export default function ContactPage() {
                                                     <input
                                                         type="email"
                                                         id="emailaddress"
+                                                        name="emailaddress"
                                                         placeholder="johndoe@example.com"
                                                         className="textfield"
+                                                        value={formData.emailaddress}
+                                                        onChange={handleChange}
                                                         autoComplete="off"
-                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -78,10 +164,12 @@ export default function ContactPage() {
                                                     <input
                                                         type="text"
                                                         id="companyname"
+                                                        name="companyname"
                                                         placeholder="Enter company name"
                                                         className="textfield"
                                                         autoComplete="off"
-                                                        required
+                                                        value={formData.companyname}
+                                                        onChange={handleChange}
                                                     />
                                                 </div>
                                             </div>
@@ -99,8 +187,10 @@ export default function ContactPage() {
                                                         id="phonenumber"
                                                         placeholder="(000) 000-0000"
                                                         className="textfield"
+                                                        name="phonenumber"
+                                                        value={formData.phonenumber}
+                                                        onChange={handleChange}
                                                         autoComplete="off"
-                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -115,8 +205,10 @@ export default function ContactPage() {
                                                         id="message"
                                                         placeholder="Enter your message here..."
                                                         rows="6"
+                                                        name="message"
+                                                        value={formData.message}
+                                                        onChange={handleChange}
                                                         autoComplete="off"
-                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -128,6 +220,8 @@ export default function ContactPage() {
                                                         name="checkprivacy"
                                                         id="checkprivacy"
                                                         className="checkprivacy"
+                                                        checked={formData.checkprivacy}
+                                                        onChange={handleChange}
                                                         hidden
                                                     />
 
