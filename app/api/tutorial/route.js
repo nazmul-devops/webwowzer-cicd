@@ -7,7 +7,7 @@ import Tutorial from '@/models/Tutorial';
 export async function GET() {
     await connectMongoDB();
 
-    const tutorials = await Tutorial.find({ active: true });
+    const tutorials = await Tutorial.find();
 
     return NextResponse.json({ tutorials }, { status: 200 });
 }

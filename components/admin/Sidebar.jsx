@@ -22,7 +22,7 @@ function Sidebar() {
                         className={`nav-link ${isLinkActive('/admin/users')}`}
                         href="/admin/users"
                     >
-                        <i className="bi bi-grid" />
+                        <i className="bi bi-people" />
                         <span>Users</span>
                     </Link>
                 </li>
@@ -31,7 +31,7 @@ function Sidebar() {
                         className={`nav-link ${isLinkActive('/admin/blogs')}`}
                         href="/admin/blogs"
                     >
-                        <i className="bi bi-grid" />
+                        <i className="bi bi-substack" />
                         <span>Blogs</span>
                     </Link>
                 </li>
@@ -42,6 +42,15 @@ function Sidebar() {
                     >
                         <i className="bi bi-envelope" />
                         <span>Contacts</span>
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link ${isLinkActive('/admin/tutorials')}`}
+                        href="/admin/tutorials"
+                    >
+                        <i className="bi bi-play-btn-fill" />
+                        <span>Tutorials </span>
                     </Link>
                 </li>
             </ul>
