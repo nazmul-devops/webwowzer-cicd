@@ -1,6 +1,5 @@
 'use client';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -178,6 +177,7 @@ export default function LoginPage() {
                                                             htmlFor="rememberme"
                                                             className="checklabel"
                                                         >
+                                                            <input type="hidden" />
                                                             Remember me.
                                                         </label>
                                                     </div>
@@ -205,9 +205,13 @@ export default function LoginPage() {
 
                                     <div className="authform-footer">
                                         <p className="authtext">
-                                            Don’t have an account?
-                                            <Link href="/register" className="marked fw-medium">
-                                                Signup
+                                            Don’t have an account? &nbsp;
+                                            <Link
+                                                href="/register"
+                                                className="customlink
+                                                marked fw-medium"
+                                            >
+                                                Signup &nbsp;
                                             </Link>
                                             here.
                                         </p>

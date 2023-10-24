@@ -26,14 +26,3 @@
 .nav-link.active:hover {
     color: #fff;
 }
-
-.custom-table [role="table"] {
-    background-color: red !important;
-}
-
-.customSelect {
-    padding: 6px 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    outline: 0;
-}

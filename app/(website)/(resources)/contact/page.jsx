@@ -1,12 +1,12 @@
 'use client';
 
-import PotentialSection from '@/components/PotentialSection';
 import axios from 'axios';
+import Link from 'next/link';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
+import PotentialSection from '@/components/PotentialSection';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 export default function ContactPage() {
     const [formData, setFormData] = useState({
         fullname: '',
@@ -119,17 +119,17 @@ export default function ContactPage() {
                                                         className="inputlabel"
                                                     >
                                                         Full name
+                                                        <input
+                                                            type="text"
+                                                            id="fullname"
+                                                            name="fullname"
+                                                            value={formData.fullname}
+                                                            onChange={handleChange}
+                                                            placeholder="Enter your name"
+                                                            className="textfield"
+                                                            autoComplete="off"
+                                                        />
                                                     </label>
-                                                    <input
-                                                        type="text"
-                                                        id="fullname"
-                                                        name="fullname"
-                                                        value={formData.fullname}
-                                                        onChange={handleChange}
-                                                        placeholder="Enter your name"
-                                                        className="textfield"
-                                                        autoComplete="off"
-                                                    />
                                                 </div>
                                             </div>
 
@@ -140,17 +140,17 @@ export default function ContactPage() {
                                                         className="inputlabel"
                                                     >
                                                         Email
+                                                        <input
+                                                            type="email"
+                                                            id="emailaddress"
+                                                            name="emailaddress"
+                                                            placeholder="johndoe@example.com"
+                                                            className="textfield"
+                                                            value={formData.emailaddress}
+                                                            onChange={handleChange}
+                                                            autoComplete="off"
+                                                        />
                                                     </label>
-                                                    <input
-                                                        type="email"
-                                                        id="emailaddress"
-                                                        name="emailaddress"
-                                                        placeholder="johndoe@example.com"
-                                                        className="textfield"
-                                                        value={formData.emailaddress}
-                                                        onChange={handleChange}
-                                                        autoComplete="off"
-                                                    />
                                                 </div>
                                             </div>
 
@@ -161,17 +161,17 @@ export default function ContactPage() {
                                                         className="inputlabel"
                                                     >
                                                         Company Name
+                                                        <input
+                                                            type="text"
+                                                            id="companyname"
+                                                            name="companyname"
+                                                            placeholder="Enter company name"
+                                                            className="textfield"
+                                                            autoComplete="off"
+                                                            value={formData.companyname}
+                                                            onChange={handleChange}
+                                                        />
                                                     </label>
-                                                    <input
-                                                        type="text"
-                                                        id="companyname"
-                                                        name="companyname"
-                                                        placeholder="Enter company name"
-                                                        className="textfield"
-                                                        autoComplete="off"
-                                                        value={formData.companyname}
-                                                        onChange={handleChange}
-                                                    />
                                                 </div>
                                             </div>
 
@@ -182,17 +182,17 @@ export default function ContactPage() {
                                                         className="inputlabel"
                                                     >
                                                         Phone
+                                                        <input
+                                                            type="tel"
+                                                            id="phonenumber"
+                                                            placeholder="(000) 000-0000"
+                                                            className="textfield"
+                                                            name="phonenumber"
+                                                            value={formData.phonenumber}
+                                                            onChange={handleChange}
+                                                            autoComplete="off"
+                                                        />
                                                     </label>
-                                                    <input
-                                                        type="tel"
-                                                        id="phonenumber"
-                                                        placeholder="(000) 000-0000"
-                                                        className="textfield"
-                                                        name="phonenumber"
-                                                        value={formData.phonenumber}
-                                                        onChange={handleChange}
-                                                        autoComplete="off"
-                                                    />
                                                 </div>
                                             </div>
 
@@ -200,17 +200,17 @@ export default function ContactPage() {
                                                 <div className="inputbox">
                                                     <label htmlFor="message" className="inputlabel">
                                                         Message
+                                                        <textarea
+                                                            className="textfield"
+                                                            id="message"
+                                                            placeholder="Enter your message here..."
+                                                            rows="6"
+                                                            name="message"
+                                                            value={formData.message}
+                                                            onChange={handleChange}
+                                                            autoComplete="off"
+                                                        />
                                                     </label>
-                                                    <textarea
-                                                        className="textfield"
-                                                        id="message"
-                                                        placeholder="Enter your message here..."
-                                                        rows="6"
-                                                        name="message"
-                                                        value={formData.message}
-                                                        onChange={handleChange}
-                                                        autoComplete="off"
-                                                    />
                                                 </div>
                                             </div>
 
@@ -230,10 +230,11 @@ export default function ContactPage() {
                                                         htmlFor="checkprivacy"
                                                         className="checklabel"
                                                     >
-                                                        You agree to our friendly
-                                                        <a href="#" className="checklink">
+                                                        <input type="hidden" />
+                                                        You agree to our friendly &nbsp;
+                                                        <Link href="#" className="checklink">
                                                             privacy policy.
-                                                        </a>
+                                                        </Link>
                                                     </label>
                                                 </div>
                                             </div>
