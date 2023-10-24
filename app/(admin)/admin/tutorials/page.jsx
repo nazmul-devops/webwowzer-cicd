@@ -1,5 +1,6 @@
 'use client';
 
+import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -12,6 +13,7 @@ export default function TutorialPage() {
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeFilter, setActiveFilter] = useState('all');
+    const [showModal, setShowModal] = useState(false); // State to control the modal visibility
 
     async function fetchTutorials() {
         try {
@@ -46,6 +48,7 @@ export default function TutorialPage() {
         });
         setFilteredData(filtered);
     }, [searchTerm, activeFilter]);
+
     const handleCheckboxChange = async (tutorialId, isActive) => {
         try {
             const response = await axios.patch(`/api/tutorial/${tutorialId}`, {
@@ -53,10 +56,10 @@ export default function TutorialPage() {
             });
             if (response.status === 200) {
                 toast.success(response.data.message);
-                fetchTutorials();
+                fetchTutorials(); // Refresh the tutorial list
             }
         } catch (error) {
-            console.log('cannot change status', error);
+            console.log('Cannot change status', error);
         }
     };
 
@@ -119,6 +122,16 @@ export default function TutorialPage() {
         window.open(videoURL, '_blank'); // Open the video URL in a new tab
     };
 
+    // Function to open the Create Tutorial modal
+    const openCreateModal = () => {
+        setShowModal(true);
+    };
+
+    // Function to close the Create Tutorial modal
+    const closeCreateModal = () => {
+        setShowModal(false);
+    };
+
     return (
         <div>
             <div>
@@ -136,6 +149,7 @@ export default function TutorialPage() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                <button onClick={openCreateModal}>Add Tutorial</button>
             </div>
 
             {filteredData.length > 0 && (
@@ -148,6 +162,13 @@ export default function TutorialPage() {
                     onChangeRowsPerPage={setPerPage}
                 />
             )}
+
+            {/* Create Tutorial Modal */}
+            <TutorialCreateModal
+                show={showModal}
+                onHide={closeCreateModal}
+                onSave={fetchTutorials}
+            />
         </div>
     );
 }
