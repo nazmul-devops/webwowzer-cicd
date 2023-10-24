@@ -1,18 +1,23 @@
 'use client';
 
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { Placeholder } from 'react-bootstrap';
-import toast from 'react-hot-toast';
-
 import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
 import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
-import axios from '@/lib/axios';
+import customStyles from '@/lib/customTables';
+import axios from 'axios';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import toast from 'react-hot-toast';
 
-export default function BlogPage() {
+export default function page() {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedBlog, setSelectedBlog] = useState(null);
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [perPage, setPerPage] = useState(10);
+    const [searchText, setSearchText] = useState('');
+    const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'active', or 'inactive'
+
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     async function fetchBlog() {
@@ -28,7 +33,6 @@ export default function BlogPage() {
     useEffect(() => {
         fetchBlog();
     }, []);
-
     const handleCheckboxChange = async (blogId, isActive) => {
         try {
             const response = await axios.patch(`/api/blog/${blogId}`, { active: !isActive });
@@ -96,143 +100,168 @@ export default function BlogPage() {
             });
         }
     };
+    const filteredBlogs = blogs.filter((blog) => {
+        if (filterStatus === 'all') {
+            return blog.title.toLowerCase().includes(searchText.toLowerCase());
+        }
+        return (
+            blog.active === (filterStatus === 'active') &&
+            blog.title.toLowerCase().includes(searchText.toLowerCase())
+        );
+    });
 
+    const columns = [
+        {
+            name: 'Title',
+            selector: 'title',
+            sortable: true,
+        },
+        {
+            name: 'Blog Content',
+            selector: 'blog_content',
+            sortable: true,
+            cell: (row) => {
+                const maxLength = 50;
+                const content =
+                    row.blog_content.length > maxLength
+                        ? `${row.blog_content.slice(0, maxLength)}...`
+                        : row.blog_content;
+                return <p>{content}</p>;
+            },
+        },
+        {
+            name: 'Blog Image',
+            selector: 'blog_cover_img',
+            sortable: true,
+            cell: (row) => (
+                <Image
+                    src={row.blog_cover_img ? row.blog_cover_img : '/jpath'}
+                    height={100}
+                    className="img-thumbnail my-2"
+                    width={100}
+                    alt="blog thumb "
+                />
+            ),
+        },
+        {
+            name: 'Author',
+            selector: 'author_name',
+            sortable: true,
+        },
+        {
+            name: 'Created',
+            selector: 'created_at',
+            sortable: true,
+            cell: (row) => <p>{row.created_at.split('T')[0]} </p>,
+        },
+        {
+            name: 'Status',
+            selector: 'active',
+            sortable: true,
+            cell: (row) => (
+                <div className="form-check form-switch">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        role="button"
+                        onChange={() => handleCheckboxChange(row._id, row.active)}
+                        checked={row.active}
+                        id={`flexSwitchCheck-${row._id}`}
+                    />
+                </div>
+            ),
+        },
+        {
+            name: 'Action',
+            selector: 'active',
+            sortable: true,
+            cell: (row) => (
+                <div className="d-flex gap-2 align-items-center">
+                    <button
+                        onClick={() => handleEdit(row)}
+                        type="button"
+                        className="btn btn-primary btn-small "
+                    >
+                        <i className="bi bi-pencil-square " />
+                    </button>
+
+                    <button
+                        onClick={() => deleteBlog(row._id)}
+                        type="button"
+                        className="btn btn-danger btn-small"
+                    >
+                        <i className="bi bi-trash" />
+                    </button>
+                </div>
+            ),
+        },
+    ];
     return (
-        <>
-            <div className="section">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <h5 className="card-title">All Blogs</h5>
+        <div>
+            <div className="row">
+                <div className="col-lg-12">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="d-flex justify-content-between align-items-start">
+                                <h5 className="card-title">All Blogs </h5>
                                 <button
                                     type="button"
                                     className="btn btn-success"
                                     onClick={handleAdd}
                                 >
-                                    Add
+                                    <i className="bi bi-plus-circle" /> Add Blog
                                 </button>
-
-                                <div className="table-responsive nowrap-table">
-                                    {/* <!-- Table with stripped rows --> */}
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Blog Title</th>
-                                                <th scope="col">Blog Content</th>
-                                                <th scope="col">Blog Image</th>
-                                                <th scope="col">author name</th>
-                                                <th scope="col">Created Date</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Action </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {loading ? (
-                                                <tr>
-                                                    <td colSpan="7">
-                                                        <Placeholder as="p" animation="glow">
-                                                            <Placeholder xs={12} size="lg" />
-                                                            <Placeholder xs={8} size="lg" />
-                                                            <Placeholder xs={6} size="lg" />
-                                                            <Placeholder xs={3} size="lg" />
-                                                            <Placeholder xs={3} size="lg" />
-                                                            <Placeholder xs={2} size="lg" />
-                                                            <Placeholder xs={3} size="lg" />
-                                                        </Placeholder>
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                <>
-                                                    {blogs.map((blog, index) => (
-                                                        <tr key={blog._id}>
-                                                            <th scope="row">{index + 1}</th>
-                                                            <td>{blog.title}</td>
-                                                            <td>
-                                                                {blog.blog_content.length > 30
-                                                                    ? `${blog.blog_content.slice(
-                                                                          0,
-                                                                          30
-                                                                      )}...`
-                                                                    : blog.blog_content}
-                                                            </td>
-
-                                                            <td>
-                                                                <Image
-                                                                    src={
-                                                                        blog.blog_cover_img
-                                                                            ? blog.blog_cover_img
-                                                                            : '/jpath'
-                                                                    }
-                                                                    height={100}
-                                                                    className="img-thumbnail"
-                                                                    width={100}
-                                                                    alt="blog thumb "
-                                                                />
-                                                            </td>
-                                                            <td>{blog.author_name}</td>
-                                                            <td>{blog.created_at.split('T')[0]}</td>
-                                                            <td>
-                                                                <div className="form-check form-switch">
-                                                                    <input
-                                                                        className="form-check-input"
-                                                                        type="checkbox"
-                                                                        role="button"
-                                                                        onChange={() =>
-                                                                            handleCheckboxChange(
-                                                                                blog._id,
-                                                                                blog.active
-                                                                            )
-                                                                        }
-                                                                        checked={blog.active}
-                                                                        id={`flexSwitchCheck-${blog._id}`}
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td className="d-flex gap-2">
-                                                                <button
-                                                                    onClick={() => handleEdit(blog)}
-                                                                    type="button"
-                                                                    className="btn btn-primary btn-small"
-                                                                >
-                                                                    Edit
-                                                                </button>
-
-                                                                <button
-                                                                    onClick={() =>
-                                                                        deleteBlog(blog._id)
-                                                                    }
-                                                                    type="button"
-                                                                    className="btn btn-danger btn-small"
-                                                                >
-                                                                    Delete
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                    {/* <!-- End Table with stripped rows --> */}
+                            </div>
+                            <div className="d-flex justify-content-between mb-4">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Search by title"
+                                        value={searchText}
+                                        onChange={(e) => setSearchText(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <select
+                                        className="form-select"
+                                        value={filterStatus}
+                                        onChange={(e) => setFilterStatus(e.target.value)}
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
                                 </div>
                             </div>
+
+                            <div className="table-responsive nowrap-table">
+                                {blogs.length > 0 && (
+                                    <DataTable
+                                        columns={columns}
+                                        data={filteredBlogs}
+                                        pagination
+                                        customStyles={customStyles}
+                                        paginationPerPage={perPage}
+                                        onChangeRowsPerPage={setPerPage}
+                                    />
+                                )}
+                            </div>
+                            <BlogCreateModal
+                                show={showCreateModal}
+                                onHide={() => setShowCreateModal(false)}
+                                onSave={handleSaveBlog}
+                            />
+                            <BlogEditModal
+                                show={showEditModal}
+                                onHide={() => setShowEditModal(false)}
+                                blog={selectedBlog}
+                                onSave={handleSaveBlog}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
-            <BlogCreateModal
-                show={showCreateModal}
-                onHide={() => setShowCreateModal(false)}
-                onSave={handleSaveBlog}
-            />
-            <BlogEditModal
-                show={showEditModal}
-                onHide={() => setShowEditModal(false)}
-                blog={selectedBlog}
-                onSave={handleSaveBlog}
-            />
-        </>
+        </div>
     );
 }
