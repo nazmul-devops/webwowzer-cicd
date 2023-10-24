@@ -2,11 +2,11 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { Placeholder } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 
-import PotentialSection from '@/components/PotentialSection';
+import TutorialSkeletonCard from '@/app/(website)/(resources)/tutorials/TutorialSkeletonCard';
 import YouTubeModal from '@/components/dashboard/tutorials/YoutubeModal';
+import PotentialSection from '@/components/website/PotentialSection';
 import axios from '@/lib/axios';
 
 async function getTutorials() {
@@ -75,65 +75,9 @@ export default function TutorialPage() {
                         <div className="row gx-4 gy-5">
                             {isLoading ? (
                                 <>
-                                    <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                        <Placeholder as="p" animation="wave">
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                        </Placeholder>
-
-                                        <Placeholder as="p" animation="wave">
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                        </Placeholder>
-                                    </div>
-
-                                    <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                        <Placeholder as="p" animation="wave">
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                        </Placeholder>
-
-                                        <Placeholder as="p" animation="wave">
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                        </Placeholder>
-                                    </div>
-
-                                    <div className="col-lg-4 col-sm-6" data-aos="fade-up">
-                                        <Placeholder as="p" animation="wave">
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                        </Placeholder>
-
-                                        <Placeholder as="p" animation="wave">
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                            <Placeholder xs={12} size="xs" />
-                                        </Placeholder>
-                                    </div>
+                                    <TutorialSkeletonCard />
+                                    <TutorialSkeletonCard />
+                                    <TutorialSkeletonCard />
                                 </>
                             ) : (
                                 <>
