@@ -27,7 +27,7 @@ export default function BlogCreateModal({ show, onHide, onSave }) {
     };
 
     return (
-        <Modal show={show} onHide={onHide}>
+        <Modal show={show} onHide={onHide} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>Add Blog</Modal.Title>
             </Modal.Header>

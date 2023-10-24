@@ -2,6 +2,7 @@
 
 'use client';
 
+import customStyles from '@/lib/customTables';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -39,14 +40,6 @@ export default function ContactPage() {
             const response = await axios.patch(`/api/contact/${contactId}`, { status: newStatus });
 
             if (response.status === 200) {
-                // const updatedContacts = contacts.map((contact) => {
-                //     if (contact._id === contactId) {
-                //         return { ...contact, status: newStatus };
-                //     }
-                //     return contact;
-                // });
-
-                // setContacts(updatedContacts);
                 fetchContacts();
                 toast.success('Status updated successfully');
             }
@@ -100,12 +93,12 @@ export default function ContactPage() {
                 );
             },
         },
-        {
-            name: 'Check Privacy',
-            selector: 'checkprivacy',
-            sortable: true,
-            cell: (row) => <input type="checkbox" checked={row.checkprivacy} disabled />,
-        },
+        // {
+        //     name: 'Check Privacy',
+        //     selector: 'checkprivacy',
+        //     sortable: true,
+        //     cell: (row) => <input type="checkbox" checked={row.checkprivacy} disabled />,
+        // },
 
         {
             name: 'Status',
@@ -116,14 +109,15 @@ export default function ContactPage() {
                 <select
                     value={row.status}
                     onChange={(e) => handleStatusChange(row._id, e.target.value)}
+                    className="customSelect"
                     style={{
                         backgroundColor:
                             row.status === 'Pending'
-                                ? 'lightyellow'
+                                ? '#fee2e2'
                                 : row.status === 'Contacted'
-                                ? 'lightgreen'
+                                ? '#fef9c3'
                                 : row.status === 'Resolved'
-                                ? 'lightblue'
+                                ? '#dcfce7'
                                 : 'transparent',
                         fontSize: '14px',
                         width: '120px',
@@ -220,6 +214,7 @@ export default function ContactPage() {
                                         columns={columns}
                                         data={filteredContacts}
                                         pagination
+                                        customStyles={customStyles}
                                         paginationPerPage={perPage}
                                         onChangeRowsPerPage={setPerPage}
                                     />
@@ -235,10 +230,10 @@ export default function ContactPage() {
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to delete this contact?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                    <Button variant="secondary" size="sm" onClick={() => setShowDeleteModal(false)}>
                         Cancel
                     </Button>
-                    <Button variant="danger" onClick={handleConfirmDelete}>
+                    <Button variant="danger" size="sm" onClick={handleConfirmDelete}>
                         Delete
                     </Button>
                 </Modal.Footer>
