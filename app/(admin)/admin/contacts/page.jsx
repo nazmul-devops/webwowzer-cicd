@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import toast from 'react-hot-toast';
 
@@ -13,7 +13,10 @@ export default function ContactPage() {
     const [loading, setLoading] = useState(true);
     const [selectedStatus, setSelectedStatus] = useState('');
     const [searchText, setSearchText] = useState('');
-    const [perPage, setPerPage] = useState(10); // Number of rows per page
+    const [perPage, setPerPage] = useState(10);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [contactToDelete, setContactToDelete] = useState(null);
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState('');
 
     async function fetchContacts() {
         try {
@@ -36,19 +39,22 @@ export default function ContactPage() {
             const response = await axios.patch(`/api/contact/${contactId}`, { status: newStatus });
 
             if (response.status === 200) {
-                const updatedContacts = contacts.map((contact) => {
-                    if (contact._id === contactId) {
-                        return { ...contact, status: newStatus };
-                    }
-                    return contact;
-                });
+                // const updatedContacts = contacts.map((contact) => {
+                //     if (contact._id === contactId) {
+                //         return { ...contact, status: newStatus };
+                //     }
+                //     return contact;
+                // });
 
-                setContacts(updatedContacts);
+                // setContacts(updatedContacts);
+                fetchContacts();
                 toast.success('Status updated successfully');
             }
         } catch (error) {
             console.error('Error updating status', error);
         }
+        // Update the selected status filter
+        // setSelectedStatusFilter(newStatus);
     };
 
     const columns = [
@@ -108,7 +114,6 @@ export default function ContactPage() {
             // eslint-disable-next-line react/no-unstable-nested-components
             cell: (row) => (
                 <select
-                    className="form-select"
                     value={row.status}
                     onChange={(e) => handleStatusChange(row._id, e.target.value)}
                     style={{
@@ -120,6 +125,8 @@ export default function ContactPage() {
                                 : row.status === 'Resolved'
                                 ? 'lightblue'
                                 : 'transparent',
+                        fontSize: '14px',
+                        width: '120px',
                     }}
                 >
                     {statusOptions.map((option) => (
@@ -130,38 +137,112 @@ export default function ContactPage() {
                 </select>
             ),
         },
+        {
+            name: 'Actions',
+            cell: (row) => (
+                <div>
+                    <i
+                        className="bi bi-trash3-fill"
+                        onClick={() => handleDeleteClick(row)}
+                        style={{ fontSize: '1.5rem', cursor: 'pointer', color: 'crimson' }}
+                    />
+                </div>
+            ),
+        },
     ];
 
-    const filteredContacts = contacts.filter((contact) =>
-        contact.full_name.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const filteredContacts = contacts
+        .filter((contact) => contact.full_name.toLowerCase().includes(searchText.toLowerCase()))
+        .filter((contact) =>
+            selectedStatusFilter ? contact.status === selectedStatusFilter : true
+        );
+
+    const handleDeleteClick = (contact) => {
+        setContactToDelete(contact);
+        setShowDeleteModal(true);
+    };
+    const handleConfirmDelete = async () => {
+        if (contactToDelete) {
+            // Perform the deletion action here, e.g., send a DELETE request to your API
+            try {
+                const response = await axios.delete(`/api/contact/${contactToDelete._id}`);
+                if (response.status === 200) {
+                    // Remove the deleted contact from the state
+                    const updatedContacts = contacts.filter(
+                        (contact) => contact._id !== contactToDelete._id
+                    );
+                    setContacts(updatedContacts);
+                    toast.success('Contact deleted successfully');
+                }
+            } catch (error) {
+                console.error('Error deleting contact', error);
+            }
+        }
+        // Close the delete confirmation modal
+        setShowDeleteModal(false);
+    };
 
     return (
-        <div className="section">
-            <div className="row">
-                <div className="col-lg-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">All Contacts</h5>
-                            <input
-                                type="text"
-                                placeholder="Search by Name"
-                                onChange={(e) => setSearchText(e.target.value)}
-                            />
-                            {contacts.length > 0 && (
-                                <DataTable
-                                    title="Contacts"
-                                    columns={columns}
-                                    data={filteredContacts}
-                                    pagination
-                                    paginationPerPage={perPage}
-                                    onChangeRowsPerPage={setPerPage}
-                                />
-                            )}
+        <>
+            <div className="section">
+                <div className="row">
+                    <div className="col-lg-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">All Contacts</h5>
+                                <div className="d-flex justify-content-between">
+                                    <input
+                                        type="text"
+                                        placeholder="Search by Name"
+                                        onChange={(e) => setSearchText(e.target.value)}
+                                    />{' '}
+                                    <div>
+                                        <label htmlFor="statusFilter">Filter by Status:</label>
+                                        <select
+                                            id="statusFilter"
+                                            value={selectedStatusFilter}
+                                            onChange={(e) =>
+                                                setSelectedStatusFilter(e.target.value)
+                                            }
+                                        >
+                                            <option value="">All</option>
+                                            {statusOptions.map((option) => (
+                                                <option key={option} value={option}>
+                                                    {option}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                {contacts.length > 0 && (
+                                    <DataTable
+                                        title="Contacts"
+                                        columns={columns}
+                                        data={filteredContacts}
+                                        pagination
+                                        paginationPerPage={perPage}
+                                        onChangeRowsPerPage={setPerPage}
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Contact</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this contact?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={handleConfirmDelete}>
+                        Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }

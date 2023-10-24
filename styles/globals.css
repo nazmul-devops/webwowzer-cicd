@@ -1,3 +1,28 @@
 .nowrap-table table tr td {
     white-space: nowrap;
 }
+
+.nav-link:hover i.bi {
+    color: crimson !important;
+}
+
+.nav-link.active:hover i.bi {
+    color: #fff !important;
+}
+
+.nav-link.active {
+    background-color: crimson !important;
+    color: #fff;
+}
+
+.nav-link.active span {
+    color: #fff;
+}
+
+.nav-link.active i.bi {
+    color: #fff;
+}
+
+.nav-link.active:hover {
+    color: #fff;
+}

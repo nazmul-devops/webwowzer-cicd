@@ -1,8 +1,8 @@
 // Import necessary modules and schemas
+import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import Contact from '@/models/Contact';
-import { NextResponse } from 'next/server';
 
 export async function PATCH(request, { params }) {
     const { id } = params;
@@ -27,5 +27,21 @@ export async function PATCH(request, { params }) {
         );
     } catch (error) {
         return NextResponse.json('Failed to update status', { status: 500 });
+    }
+}
+export async function DELETE(request, { params }) {
+    const { id } = params;
+    await connectMongoDB();
+    try {
+        const deletedContact = await Contact.findByIdAndDelete(id);
+        if (!deletedContact) {
+            return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
+        }
+        return NextResponse.json(
+            { message: 'Contact deleted', deleteContact: deletedContact },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
