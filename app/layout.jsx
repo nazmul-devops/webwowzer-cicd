@@ -1,5 +1,6 @@
 import Script from 'next/script';
 
+import AOSInit from '@/components/Aos';
 import AuthProvider from '@/components/AuthProvider';
 import ProgressBarProvider from '@/components/ProgressBarProvider';
 import ToasterProvider from '@/components/ToastProvider';
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
                     href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css"
                 />
             </head>
+            <AOSInit />
 
             <body>
                 <AuthProvider>
