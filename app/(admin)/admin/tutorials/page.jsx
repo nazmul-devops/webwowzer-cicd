@@ -1,6 +1,7 @@
 'use client';
 
 import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
+import EditTutorialModal from '@/components/admin/Tutorial/EditTutorial';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -13,7 +14,9 @@ export default function TutorialPage() {
     const [filteredData, setFilteredData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeFilter, setActiveFilter] = useState('all');
-    const [showModal, setShowModal] = useState(false); // State to control the modal visibility
+    const [showModal, setShowModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selecteTutorial, setSelectedTurorial] = useState(null);
 
     async function fetchTutorials() {
         try {
@@ -79,7 +82,7 @@ export default function TutorialPage() {
                     height={100}
                     className="img-thumbnail my-2"
                     width={100}
-                    alt="blog thumb"
+                    alt="turorial thumb"
                 />
             ),
         },
@@ -97,11 +100,12 @@ export default function TutorialPage() {
             name: 'Duration',
             selector: 'duration',
             sortable: true,
+            cell: (row) => <span>{row.duration} minutes</span>,
         },
         {
             name: 'Status',
             selector: 'active',
-            sortable: true,
+            sortable: false,
             cell: (row) => (
                 <div className="form-check form-switch">
                     <input
@@ -115,11 +119,56 @@ export default function TutorialPage() {
                 </div>
             ),
         },
+        {
+            name: 'Action',
+            selector: 'active',
+            sortable: true,
+            cell: (row) => (
+                <div className="d-flex gap-2 align-items-center">
+                    <button
+                        onClick={() => handleEdit(row)}
+                        type="button"
+                        className="btn btn-primary btn-small "
+                    >
+                        <i className="bi bi-pencil-square " />
+                    </button>
+
+                    <button
+                        onClick={() => deleteTutorial(row._id)}
+                        type="button"
+                        className="btn btn-danger btn-small"
+                    >
+                        <i className="bi bi-trash" />
+                    </button>
+                </div>
+            ),
+        },
     ];
 
     const handlePlayClick = (row) => {
         const videoURL = row.video_url;
         window.open(videoURL, '_blank'); // Open the video URL in a new tab
+    };
+    const deleteTutorial = async (id) => {
+        const confirmed = window.confirm('Are you sure you want to delete this tutorial ?');
+        if (confirmed) {
+            try {
+                const response = await axios.delete(`/api/tutorial/${id}`);
+
+                if (response.status === 200) {
+                    toast.success(response.data.message);
+                    fetchTutorials();
+                } else {
+                    toast.error('Failed to delete the tutorial');
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    };
+    const handleEdit = (tutorial) => {
+        setSelectedTurorial(tutorial);
+        setShowEditModal(true);
     };
 
     // Function to open the Create Tutorial modal
@@ -134,41 +183,69 @@ export default function TutorialPage() {
 
     return (
         <div>
-            <div>
-                <label>
-                    Filter by:
-                    <select onChange={(e) => setActiveFilter(e.target.value)}>
-                        <option value="all">All</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                </label>
-                <input
-                    type="text"
-                    placeholder="Search"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button onClick={openCreateModal}>Add Tutorial</button>
+            <div className="row">
+                <div className="col-12">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="d-flex justify-content-between align-items-start">
+                                <h5 className="card-title">All Tutorials </h5>
+                                <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    onClick={openCreateModal}
+                                >
+                                    <i className="bi bi-plus-circle" /> Add Tutorial
+                                </button>
+                            </div>
+                            <div className="d-flex justify-content-between mb-4">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Search"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <select
+                                        className="form-control"
+                                        onChange={(e) => setActiveFilter(e.target.value)}
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="table-responsive nowrap-table">
+                                {filteredData.length > 0 && (
+                                    <DataTable
+                                        title="Tutorials"
+                                        columns={columns}
+                                        data={filteredData}
+                                        paginationPerPage={perPage}
+                                        keyField="_id"
+                                        onChangeRowsPerPage={setPerPage}
+                                    />
+                                )}
+                            </div>
+                            {/* Create Tutorial Modal */}
+                            <TutorialCreateModal
+                                show={showModal}
+                                onHide={closeCreateModal}
+                                onSave={fetchTutorials}
+                            />
+                            <EditTutorialModal
+                                show={showEditModal}
+                                onHide={() => setShowEditModal(false)}
+                                tutorial={selecteTutorial}
+                                onSave={fetchTutorials}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            {filteredData.length > 0 && (
-                <DataTable
-                    title="Tutorials"
-                    columns={columns}
-                    data={filteredData}
-                    paginationPerPage={perPage}
-                    keyField="_id"
-                    onChangeRowsPerPage={setPerPage}
-                />
-            )}
-
-            {/* Create Tutorial Modal */}
-            <TutorialCreateModal
-                show={showModal}
-                onHide={closeCreateModal}
-                onSave={fetchTutorials}
-            />
         </div>
     );
 }

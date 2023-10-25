@@ -1,70 +1,54 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 
-export default function TutorialCreateModal({ show, onHide, onSave }) {
-    const initialFormData = {
+export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
+    const [formData, setFormData] = useState({
         title: '',
         thumbnail_img: '',
         video_url: '',
-        duration: 0,
-    };
+        duration: '0',
+    });
 
-    const [formData, setFormData] = useState(initialFormData);
+    useEffect(() => {
+        if (tutorial) {
+            setFormData({
+                title: tutorial.title || '',
+                thumbnail_img: tutorial.thumbnail_img || '',
+                video_url: tutorial.video_url || '',
+                duration: tutorial.duration || '0',
+            });
+        }
+    }, [tutorial]);
 
     const handleFormChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-    const resetForm = () => {
-        setFormData(initialFormData);
-    };
 
-    // const handleSave = () => {
-    //     onSave(formData);
-    // };
     const handleSubmit = async () => {
-        if (!formData.title.trim()) {
-            toast.error('Title is required');
-            return;
-        }
-        if (!formData.thumbnail_img.trim()) {
-            toast.error('Thumbnail Image is required');
-            return;
-        }
-        if (!formData.video_url.trim()) {
-            toast.error('Video URL is required');
-            return;
-        }
-        if (formData.duration <= 0) {
-            toast.error('Duration must be greater than 0');
-            return;
-        }
-
         try {
             // Prepare the data to send to the server
             const tutorialData = {
                 title: formData.title,
                 thumbnail_img: formData.thumbnail_img,
                 video_url: formData.video_url,
-                duration: formData.duration,
+                duration: formData.duration.toString(),
             };
 
-            // Make an API POST request to create a new tutorial
-            const response = await axios.post('/api/tutorial', tutorialData);
+            // Make an API PUT request to update the tutorial
+            const response = await axios.put(`/api/tutorial/${tutorial._id}`, tutorialData);
 
             if (response.status === 200) {
-                // Tutorial created successfully
-                onHide(); // Close the modal
-                toast.success('Added a new tutorial');
-                resetForm();
-                onSave(); // Trigger the refresh
+                onSave(formData);
+                onHide();
+                toast.success('Tutorial updated successfully ');
             } else {
-                console.log('Tutorial creation failed:', response.data);
+                console.log('Tutorial update failed:', response.data);
             }
         } catch (error) {
-            console.error('Error saving the blog', error);
+            console.error('Error updating tutorial', error);
             const errorData = error.response.data.error.issues;
             errorData.forEach((err) => {
                 const errorMessage = `${err.path.join('.')}: ${err.message}`;
@@ -76,7 +60,7 @@ export default function TutorialCreateModal({ show, onHide, onSave }) {
     return (
         <Modal show={show} onHide={onHide} size="lg">
             <Modal.Header closeButton>
-                <Modal.Title>Add Tutorial</Modal.Title>
+                <Modal.Title>Edit Tutorial</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>

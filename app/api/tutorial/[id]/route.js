@@ -15,6 +15,7 @@ export async function PUT(request, { params }) {
             video_url,
             duration,
         });
+
         await connectMongoDB();
 
         const updatedTutorial = await Tutorial.findByIdAndUpdate(id, validateData, { new: true });
@@ -28,6 +29,7 @@ export async function PUT(request, { params }) {
             { status: 200 }
         );
     } catch (error) {
+        console.log(error);
         return NextResponse.json({ error }, { status: 500 });
     }
 }
@@ -64,7 +66,9 @@ export async function PATCH(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+    console.log('ok');
     const { id } = params;
+    console.log(id);
 
     // Connect to your MongoDB database
     await connectMongoDB();

@@ -18,7 +18,7 @@ const TutorialSchema = new Schema({
         trim: true,
     },
     duration: {
-        type: Number,
+        type: String,
         required: true,
     },
     created_at: {
