@@ -3,11 +3,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import '../../public/admin/assets/css/style.css';
-import '../../public/admin/assets/vendor/bootstrap-icons/bootstrap-icons.css';
 import '../../public/admin/assets/vendor/bootstrap/css/bootstrap.min.css';
+
+import '../../public/admin/assets/vendor/bootstrap-icons/bootstrap-icons.css';
 import '../../public/admin/assets/vendor/boxicons/css/boxicons.min.css';
 import '../../public/admin/assets/vendor/simple-datatables/style.css';
+
+import '../../public/admin/assets/css/style.css';
 
 export default function AdminHeader() {
     return (
@@ -131,7 +133,6 @@ export default function AdminHeader() {
                             <li>
                                 <a
                                     className="dropdown-item d-flex align-items-center"
-                                    href="users-profile.html"
                                 >
                                     <i className="bi bi-person" />
                                     <span>My Profile</span>
