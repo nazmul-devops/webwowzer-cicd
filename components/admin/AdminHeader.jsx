@@ -1,7 +1,10 @@
 'use client';
 
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 import '../../public/admin/assets/vendor/bootstrap/css/bootstrap.min.css';
 
@@ -12,6 +15,17 @@ import '../../public/admin/assets/vendor/simple-datatables/style.css';
 import '../../public/admin/assets/css/style.css';
 
 export default function AdminHeader() {
+    const router = useRouter();
+
+    const handleLoggedOut = () => {
+        signOut({
+            redirect: false,
+        }).then(() => {
+            router.push('/login');
+            toast.success('Logged out successfully!');
+        });
+    };
+
     return (
         <header id="header" className="header fixed-top d-flex align-items-center">
             <div className="d-flex align-items-center justify-content-between">
@@ -131,9 +145,7 @@ export default function AdminHeader() {
                             </li>
 
                             <li>
-                                <a
-                                    className="dropdown-item d-flex align-items-center"
-                                >
+                                <a className="dropdown-item d-flex align-items-center">
                                     <i className="bi bi-person" />
                                     <span>My Profile</span>
                                 </a>
@@ -142,13 +154,15 @@ export default function AdminHeader() {
                                 <hr className="dropdown-divider" />
                             </li>
                             <li>
-                                <div
+                                <button
+                                    type="button"
                                     className="dropdown-item d-flex align-items-center cp"
-                                    href="#"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={handleLoggedOut}
                                 >
                                     <i className="bi bi-box-arrow-right" />
                                     <span>Sign Out</span>
-                                </div>
+                                </button>
                             </li>
                         </ul>
                     </li>
