@@ -13,9 +13,26 @@ export async function GET() {
 }
 
 export async function POST(request) {
+    function getVideoId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+
+        return match && match[2].length === 11 ? match[2] : null;
+    }
+
     try {
         // Extract data from the request body
         const requestData = await request.json();
+
+        // change requestData and make youtube video url to embed url
+        const { video_url } = requestData;
+
+        const videoId = getVideoId(video_url);
+
+        if (videoId) {
+            requestData.video_url = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            requestData.thumbnail_img = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        }
 
         // Validate the request data against the schema
         const validatedData = tutorialSchema.parse(requestData);
