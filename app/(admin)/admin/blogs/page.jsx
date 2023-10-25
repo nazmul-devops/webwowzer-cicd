@@ -202,7 +202,7 @@ export default function page() {
                 <div className="col-lg-12">
                     <div className="card">
                         <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-start">
+                            <div className="d-flex justify-content-between align-items-center">
                                 <h5 className="card-title">All Blogs </h5>
                                 <button
                                     type="button"
