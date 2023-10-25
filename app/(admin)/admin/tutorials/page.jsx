@@ -1,13 +1,15 @@
+/* eslint-disable react/no-unstable-nested-components */
 'use client';
 
-import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
-import EditTutorialModal from '@/components/admin/Tutorial/EditTutorial';
-import customStyles from '@/lib/customTables';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import toast from 'react-hot-toast';
+
+import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
+import EditTutorialModal from '@/components/admin/Tutorial/EditTutorial';
+import customStyles from '@/lib/customTables';
 
 export default function TutorialPage() {
     const [tutorials, setTutorials] = useState([]);
@@ -51,7 +53,7 @@ export default function TutorialPage() {
             return false;
         });
         setFilteredData(filtered);
-    }, [searchTerm, activeFilter]);
+    }, [searchTerm, activeFilter, tutorials]);
 
     const handleCheckboxChange = async (tutorialId, isActive) => {
         try {
@@ -64,6 +66,34 @@ export default function TutorialPage() {
             }
         } catch (error) {
             console.log('Cannot change status', error);
+        }
+    };
+
+    const handlePlayClick = (row) => {
+        const videoURL = row.video_url;
+        window.open(videoURL, '_blank'); // Open the video URL in a new tab
+    };
+
+    const handleEdit = (tutorial) => {
+        setSelectedTurorial(tutorial);
+        setShowEditModal(true);
+    };
+
+    const deleteTutorial = async (id) => {
+        const confirmed = window.confirm('Are you sure you want to delete this tutorial ?');
+        if (confirmed) {
+            try {
+                const response = await axios.delete(`/api/tutorial/${id}`);
+
+                if (response.status === 200) {
+                    toast.success(response.data.message);
+                    fetchTutorials();
+                } else {
+                    toast.error('Failed to delete the tutorial');
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
     };
 
@@ -92,7 +122,11 @@ export default function TutorialPage() {
             selector: 'video_url',
             sortable: true,
             cell: (row) => (
-                <button className="btn btn-small btn-success" onClick={() => handlePlayClick(row)}>
+                <button
+                    type="button"
+                    className="btn btn-small btn-success"
+                    onClick={() => handlePlayClick(row)}
+                >
                     Play
                 </button>
             ),
@@ -145,32 +179,6 @@ export default function TutorialPage() {
             ),
         },
     ];
-
-    const handlePlayClick = (row) => {
-        const videoURL = row.video_url;
-        window.open(videoURL, '_blank'); // Open the video URL in a new tab
-    };
-    const deleteTutorial = async (id) => {
-        const confirmed = window.confirm('Are you sure you want to delete this tutorial ?');
-        if (confirmed) {
-            try {
-                const response = await axios.delete(`/api/tutorial/${id}`);
-
-                if (response.status === 200) {
-                    toast.success(response.data.message);
-                    fetchTutorials();
-                } else {
-                    toast.error('Failed to delete the tutorial');
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    };
-    const handleEdit = (tutorial) => {
-        setSelectedTurorial(tutorial);
-        setShowEditModal(true);
-    };
 
     // Function to open the Create Tutorial modal
     const openCreateModal = () => {
@@ -237,13 +245,13 @@ export default function TutorialPage() {
                             <TutorialCreateModal
                                 show={showModal}
                                 onHide={closeCreateModal}
-                                onSave={fetchTutorials}
+                                onSave={() => fetchTutorials}
                             />
                             <EditTutorialModal
                                 show={showEditModal}
                                 onHide={() => setShowEditModal(false)}
                                 tutorial={selecteTutorial}
-                                onSave={fetchTutorials}
+                                onSave={() => fetchTutorials}
                             />
                         </div>
                     </div>

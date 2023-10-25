@@ -8,7 +8,7 @@ export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
         title: '',
         thumbnail_img: '',
         video_url: '',
-        duration: '0',
+        duration: 0,
     });
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
                 title: tutorial.title || '',
                 thumbnail_img: tutorial.thumbnail_img || '',
                 video_url: tutorial.video_url || '',
-                duration: tutorial.duration || '0',
+                duration: parseInt(tutorial.duration, 10) || 0,
             });
         }
     }, [tutorial]);
@@ -27,14 +27,16 @@ export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         try {
             // Prepare the data to send to the server
             const tutorialData = {
                 title: formData.title,
                 thumbnail_img: formData.thumbnail_img,
                 video_url: formData.video_url,
-                duration: formData.duration.toString(),
+                duration: parseInt(formData.duration, 10),
             };
 
             // Make an API PUT request to update the tutorial
@@ -106,7 +108,7 @@ export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
                 <Button variant="secondary" onClick={onHide}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant="primary" onClick={(e) => handleSubmit(e)}>
                     Save Tutorial
                 </Button>
             </Modal.Footer>
