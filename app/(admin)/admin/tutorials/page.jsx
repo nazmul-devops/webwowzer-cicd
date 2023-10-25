@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
+
 'use client';
 
 import axios from 'axios';
@@ -196,7 +197,7 @@ export default function TutorialPage() {
                 <div className="col-12">
                     <div className="card">
                         <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-start">
+                            <div className="d-flex justify-content-between align-items-center">
                                 <h5 className="card-title">All Tutorials </h5>
                                 <button
                                     type="button"

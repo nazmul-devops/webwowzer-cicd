@@ -2,8 +2,20 @@
     white-space: nowrap;
 }
 
+.sidebar-nav .nav-link {
+    color: hsl(201, 63%, 12%) !important;
+}
+
+.sidebar-nav .nav-link i {
+    color: hsl(201, 63%, 12%) !important;
+}
+
+.sidebar-nav .nav-link.active i {
+    color: #fff !important;
+}
+
 .nav-link:hover i.bi {
-    color: crimson !important;
+    /* color: hsl(28, 91%, 54%) !important; */
 }
 
 .nav-link.active:hover i.bi {
@@ -11,7 +23,7 @@
 }
 
 .nav-link.active {
-    background-color: crimson !important;
+    background-color: hsl(28, 91%, 54%) !important;
     color: #fff;
 }
 
@@ -37,5 +49,24 @@
 }
 
 .form-control:focus {
+    box-shadow: none !important;
+}
+
+.btn-primary {
+    background-color: #1cb3e9 !important;
+    border-color: #1cb3e9 !important;
+}
+
+.btn-success {
+    background-color: #1cb3e9 !important;
+    border-color: #1cb3e9 !important;
+}
+
+.form-check-input:checked {
+    background-color: #1cb3e9 !important;
+    border-color: #1cb3e9 !important;
+}
+
+.form-check-input:focus {
     box-shadow: none !important;
 }
