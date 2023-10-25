@@ -26,6 +26,7 @@
 .nav-link.active:hover {
     color: #fff;
 }
+
 .customlink {
     text-decoration: none !important;
 }
@@ -33,4 +34,8 @@
 .customlink:hover {
     text-decoration: none !important;
     color: tomato !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
 }

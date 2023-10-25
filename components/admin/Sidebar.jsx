@@ -53,6 +53,15 @@ function Sidebar() {
                         <span>Contacts</span>
                     </Link>
                 </li>
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link ${isLinkActive('/admin/email-subscriptions')}`}
+                        href="/admin/email-subscriptions"
+                    >
+                        <i className="bi bi-envelope" />
+                        <span>Email Subsctiptions</span>
+                    </Link>
+                </li>
             </ul>
         </aside>
     );

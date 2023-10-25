@@ -109,7 +109,7 @@ export default function ContactPage() {
                 <select
                     value={row.status}
                     onChange={(e) => handleStatusChange(row._id, e.target.value)}
-                    className="customSelect"
+                    className="form-control"
                     style={{
                         backgroundColor:
                             row.status === 'Pending'
@@ -185,19 +185,22 @@ export default function ContactPage() {
                             <div className="card-body">
                                 <h5 className="card-title">All Contacts</h5>
                                 <div className="d-flex justify-content-between">
-                                    <input
-                                        type="text"
-                                        placeholder="Search by Name"
-                                        onChange={(e) => setSearchText(e.target.value)}
-                                    />{' '}
                                     <div>
-                                        <label htmlFor="statusFilter">Filter by Status:</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Search by Name"
+                                            className="form-control"
+                                            onChange={(e) => setSearchText(e.target.value)}
+                                        />{' '}
+                                    </div>
+                                    <div>
                                         <select
                                             id="statusFilter"
                                             value={selectedStatusFilter}
                                             onChange={(e) =>
                                                 setSelectedStatusFilter(e.target.value)
                                             }
+                                            className="form-control"
                                         >
                                             <option value="">All</option>
                                             {statusOptions.map((option) => (

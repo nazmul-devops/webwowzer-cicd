@@ -2,6 +2,7 @@
 
 import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
 import EditTutorialModal from '@/components/admin/Tutorial/EditTutorial';
+import customStyles from '@/lib/customTables';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -224,8 +225,10 @@ export default function TutorialPage() {
                                         title="Tutorials"
                                         columns={columns}
                                         data={filteredData}
+                                        pagination
                                         paginationPerPage={perPage}
                                         keyField="_id"
+                                        customStyles={customStyles}
                                         onChangeRowsPerPage={setPerPage}
                                     />
                                 )}
