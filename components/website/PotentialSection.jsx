@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import potentialThumbnail from '../public/assets/images/home/potential-thumbnail.png';
+import potentialThumbnail from '@/public/assets/images/home/potential-thumbnail.png';
 
 export default function PotentialSection() {
     return (

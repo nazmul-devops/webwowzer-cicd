@@ -1,4 +1,4 @@
-import PotentialSection from '@/components/PotentialSection';
+import PotentialSection from '@/components/website/PotentialSection';
 
 /* eslint-disable react/button-has-type */
 export default function TemplatePage() {

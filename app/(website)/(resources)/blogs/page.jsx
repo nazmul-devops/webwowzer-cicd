@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import PotentialSection from '@/components/PotentialSection';
+import PotentialSection from '@/components/website/PotentialSection';
 import axios from '@/lib/axios';
 
 async function getBlogs() {

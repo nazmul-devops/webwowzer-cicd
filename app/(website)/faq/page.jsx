@@ -1,4 +1,4 @@
-import PotentialSection from '@/components/PotentialSection';
+import PotentialSection from '@/components/website/PotentialSection';
 
 export default function FAQPage() {
     return (

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import TutorialSkeletonCard from '@/app/(website)/(resources)/tutorials/TutorialSkeletonCard';
-import YouTubeModal from '@/components/dashboard/tutorials/YoutubeModal';
+import YouTubeModal from '@/components/website/tutorials/YoutubeModal';
 import PotentialSection from '@/components/website/PotentialSection';
 import axios from '@/lib/axios';
 

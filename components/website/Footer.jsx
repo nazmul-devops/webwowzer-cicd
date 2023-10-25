@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import EmailSubscription from '@/components/EmailSubscription';
+import EmailSubscription from '@/components/website/EmailSubscription';
 
 export default function Footer() {
     return (

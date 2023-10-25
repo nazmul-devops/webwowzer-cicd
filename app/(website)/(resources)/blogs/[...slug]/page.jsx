@@ -1,8 +1,9 @@
+/* eslint-disable react/no-danger */
 import Image from 'next/image';
-
-import PotentialSection from '@/components/PotentialSection';
-import axios from '@/lib/axios';
 import Link from 'next/link';
+
+import PotentialSection from '@/components/website/PotentialSection';
+import axios from '@/lib/axios';
 
 async function getBlog(id) {
     const response = await axios.get(`/api/blog/${id}`);

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import PotentialSection from '@/components/PotentialSection';
+import PotentialSection from '@/components/website/PotentialSection';
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({

@@ -13,7 +13,7 @@ function Sidebar() {
             <ul className="sidebar-nav" id="sidebar-nav">
                 <li className="nav-item">
                     <Link className={`nav-link ${isLinkActive('/admin')}`} href="/admin">
-                        <i className="bi bi-grid" />
+                        <i className="bi bi-speedometer2" />
                         <span>Dashboard</span>
                     </Link>
                 </li>
@@ -22,8 +22,17 @@ function Sidebar() {
                         className={`nav-link ${isLinkActive('/admin/users')}`}
                         href="/admin/users"
                     >
-                        <i className="bi bi-people" />
+                        <i className="bi bi-person-lines-fill" />
                         <span>Users</span>
+                    </Link>
+                </li>
+                <li className="nav-item">
+                    <Link
+                        className={`nav-link ${isLinkActive('/admin/tutorials')}`}
+                        href="/admin/tutorials"
+                    >
+                        <i className="bi bi-layout-sidebar-inset-reverse" />
+                        <span>Tutorials</span>
                     </Link>
                 </li>
                 <li className="nav-item">
@@ -31,7 +40,7 @@ function Sidebar() {
                         className={`nav-link ${isLinkActive('/admin/blogs')}`}
                         href="/admin/blogs"
                     >
-                        <i className="bi bi-substack" />
+                        <i className="bi bi-file-break" />
                         <span>Blogs</span>
                     </Link>
                 </li>
@@ -40,17 +49,8 @@ function Sidebar() {
                         className={`nav-link ${isLinkActive('/admin/contacts')}`}
                         href="/admin/contacts"
                     >
-                        <i className="bi bi-envelope" />
+                        <i className="bi bi-person-rolodex" />
                         <span>Contacts</span>
-                    </Link>
-                </li>
-                <li className="nav-item">
-                    <Link
-                        className={`nav-link ${isLinkActive('/admin/tutorials')}`}
-                        href="/admin/tutorials"
-                    >
-                        <i className="bi bi-play-btn-fill" />
-                        <span>Tutorials </span>
                     </Link>
                 </li>
             </ul>

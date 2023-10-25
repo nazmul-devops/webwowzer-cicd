@@ -1,7 +1,7 @@
 import { Space_Grotesk } from 'next/font/google';
 
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import Footer from '@/components/website/Footer';
+import Header from '@/components/website/Header';
 
 const spaceGrotesk = Space_Grotesk({
     display: 'swap',
