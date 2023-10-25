@@ -2,9 +2,12 @@
 
 'use client';
 
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 import brandLogo from '@/public/assets/images/logo/logo.svg';
 
@@ -15,12 +18,37 @@ import '@/public/assets/css/swiper/swiper-bundle.min.css';
 import '@/public/assets/css/style.css';
 
 export default function Header() {
+    const headerRef = useRef(null);
     const pathname = usePathname();
+
+    useEffect(() => {
+        // Initialize GSAP with ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Define the animation
+        const showAnim = gsap
+            .from(headerRef.current, {
+                yPercent: -100,
+                paused: true,
+                duration: 0.2,
+            })
+            .progress(1);
+
+        // Create the ScrollTrigger
+        ScrollTrigger.create({
+            start: 'top top',
+            end: 99999,
+            onUpdate: (self) => {
+                self.direction === -1 ? showAnim.play() : showAnim.reverse();
+            },
+            toggleClass: { targets: headerRef.current, className: 'scrolled' },
+        });
+    }, []);
 
     const isLinkActive = (href) => (pathname === href ? 'active' : '');
 
     return (
-        <header className="header">
+        <header className="header" ref={headerRef}>
             <div className="container position-relative">
                 <nav id="header-nav" className="header-nav" aria-labelledby="header-nav">
                     {/* <!-- HAMBURGER-MENU --> */}

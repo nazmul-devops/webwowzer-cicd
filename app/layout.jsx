@@ -30,10 +30,6 @@ export default function RootLayout({ children }) {
             </body>
 
             {/* Required Script */}
-            <Script src="/assets/js/gsap/gsap.min.js" strategy="afterInteractive" />
-            <Script src="/assets/js/gsap/ScrollTrigger.min.js" strategy="afterInteractive" />
-            <Script src="/assets/js/header/header.js" strategy="afterInteractive" />
-            {/* <Script src="/assets/js/copyright/copyright.js" strategy="lazyOnload" /> */}
             <Script src="/assets/js/back-top/back-top.js" strategy="afterInteractive" />
             <Script src="/assets/js/back-top/backtotop.js" strategy="afterInteractive" />
             <Script src="/assets/js/swiper/swiper-bundle.min.js" strategy="afterInteractive" />
