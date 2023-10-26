@@ -1,3 +1,4 @@
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
@@ -13,6 +14,12 @@ export async function GET() {
 }
 
 export async function POST(request) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         // Extract data from the request body
         const requestData = await request.json();
