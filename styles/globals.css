@@ -70,3 +70,7 @@
 .form-check-input:focus {
     box-shadow: none !important;
 }
+
+.form-select:focus {
+    box-shadow: none !important;
+}

@@ -53,6 +53,11 @@ export default function UsersPage() {
             sortable: true,
         },
         {
+            name: 'Phone Number',
+            selector: 'phone_number',
+            sortable: true,
+        },
+        {
             name: 'Role',
             selector: 'role',
             sortable: true,
@@ -66,37 +71,48 @@ export default function UsersPage() {
             name: 'Active',
             selector: 'active',
             sortable: true,
-            cell: (row) => (row.active ? 'Active' : 'Inactive'),
+            cell: (row) => (
+                <div className="form-check form-switch">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        role="button"
+                        onChange={() => handleCheckboxChange(row._id, row.active)}
+                        checked={row.active}
+                        id={`flexSwitchCheck-${row._id}`}
+                    />
+                </div>
+            ),
         },
         {
-            name: 'Country',
-            selector: 'country',
-            sortable: true,
+            name: 'Address',
+            sortable: 'false',
+            cell: (row) => (
+                <div className="d-flex flex-column gap-1 py-2 " style={{ whiteSpace: 'nowrap' }}>
+                    <div className="d-flex gap-1">
+                        <b>Region:</b>
+                        <span>{row.region}</span>
+                    </div>
+                    <div className="d-flex gap-1">
+                        <b>Postal Code:</b>
+                        <span>{row.postal_code}</span>
+                    </div>
+                    <div className="d-flex gap-1">
+                        <b>City:</b>
+                        <span>{row.city}</span>
+                    </div>
+                    <div className="d-flex gap-3">
+                        <b>Country:</b>
+                        <span>{row.country}</span>
+                    </div>
+                </div>
+            ),
         },
-        {
-            name: 'City',
-            selector: 'city',
-            sortable: true,
-        },
-        {
-            name: 'Region',
-            selector: 'region',
-            sortable: true,
-        },
-        {
-            name: 'Postal Code',
-            selector: 'postal_code',
-            sortable: true,
-        },
-        {
-            name: 'Phone Number',
-            selector: 'phone_number',
-            sortable: true,
-        },
+
         {
             name: 'Actions',
             cell: (row) => (
-                <div className="d-flex gap-2 align-items-center">
+                <div className="d-flex gap-2 align-items-center ps-4">
                     <button
                         // onClick={() => handleEdit(row)}
                         type="button"
@@ -138,6 +154,20 @@ export default function UsersPage() {
         setShowDeleteModal(false);
     };
 
+    const handleCheckboxChange = async (userId, isActive) => {
+        try {
+            const response = await axios.patch(`/api/users/${userId}`, {
+                active: !isActive,
+            });
+            if (response.status === 200) {
+                toast.success(response.data.message);
+                fetchUsers();
+            }
+        } catch (error) {
+            console.log('Cannot change status', error);
+        }
+    };
+
     return (
         <div>
             <div className="section">
@@ -159,7 +189,7 @@ export default function UsersPage() {
                                     <div className="d-flex align-items-center gap-2">
                                         <select
                                             value={roleFilter}
-                                            className="form-control"
+                                            className="form-select"
                                             onChange={(e) => setRoleFilter(e.target.value)}
                                         >
                                             <option value="all">All Roles</option>
@@ -168,7 +198,7 @@ export default function UsersPage() {
                                         </select>
                                         <select
                                             value={activeFilter}
-                                            className="form-control"
+                                            className="form-select"
                                             onChange={(e) => setActiveFilter(e.target.value)}
                                         >
                                             <option value="all">All</option>

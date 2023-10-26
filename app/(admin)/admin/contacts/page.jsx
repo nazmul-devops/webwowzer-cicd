@@ -109,7 +109,7 @@ export default function ContactPage() {
                 <select
                     value={row.status}
                     onChange={(e) => handleStatusChange(row._id, e.target.value)}
-                    className="form-control"
+                    className="form-select"
                     style={{
                         backgroundColor:
                             row.status === 'Pending'
@@ -200,7 +200,7 @@ export default function ContactPage() {
                                             onChange={(e) =>
                                                 setSelectedStatusFilter(e.target.value)
                                             }
-                                            className="form-control"
+                                            className="form-select"
                                         >
                                             <option value="">All</option>
                                             {statusOptions.map((option) => (

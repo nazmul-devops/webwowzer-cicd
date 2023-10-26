@@ -219,7 +219,7 @@ export default function TutorialPage() {
                                 </div>
                                 <div className="form-group">
                                     <select
-                                        className="form-control"
+                                        className="form-select"
                                         onChange={(e) => setActiveFilter(e.target.value)}
                                     >
                                         <option value="all">All</option>
