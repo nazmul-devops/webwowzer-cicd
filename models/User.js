@@ -12,6 +12,11 @@ const UserSchema = new Schema({
         required: true,
         trim: true,
     },
+    company_name: {
+        type: String,
+        required: false,
+        trim: true,
+    },
     country: {
         type: String,
         required: true,

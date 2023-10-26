@@ -1,8 +1,77 @@
+'use client';
+
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
 import AnnouncementSection from '@/components/dashboard/AnnouncementSection';
 import ChangePasswordModal from '@/components/dashboard/ChangePasswordModal';
+import axios from '@/lib/axios';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 export default function AccountSettingsPage() {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+    const session = useSession();
+
+    const fetchUserInfo = useCallback(async () => {
+        try {
+            const userId = session?.data?.user?.id;
+            const response = await axios.get(`/api/users/${userId}`);
+
+            if (response?.status === 200) {
+                setFirstName(response?.data.user.first_name);
+                setLastName(response?.data.user.last_name);
+                setEmail(response?.data.user.email);
+                setCompanyName(response?.data.user.company_name);
+                setPhoneNumber(response?.data.user.phone_number);
+            }
+        } catch (error) {
+            toast.error('something went wrong');
+        }
+    }, [session]);
+
+    useEffect(() => {
+        if (session.status === 'authenticated') {
+            fetchUserInfo();
+        }
+    }, [session, fetchUserInfo]);
+
+    if (session.status === 'loading') {
+        return <p>Loading...</p>;
+    }
+
+    if (session.status === 'unauthenticated') {
+        return <p>Access Denied</p>;
+    }
+
+    const handleUpdateUserInfo = async (e) => {
+        e.preventDefault();
+
+        try {
+            const userId = session?.data?.user?.id;
+
+            // Prepare the data to send to the server
+            const userData = {
+                first_name: firstName,
+                last_name: lastName,
+                company_name: companyName,
+                phone_number: phoneNumber,
+            };
+
+            const response = await axios.put(`/api/users/${userId}`, userData);
+
+            if (response.status === 200) {
+                toast.success('Your Account Information Updated Successfully.');
+            }
+        } catch (error) {
+            toast.error('something went wrong');
+        }
+    };
+
     return (
         <>
             <AnnouncementSection />
@@ -32,17 +101,43 @@ export default function AccountSettingsPage() {
                                                                 htmlFor="fullname"
                                                                 className="inputlabel"
                                                             >
-                                                                Full name <span>*</span>
+                                                                First name <span>*</span>
+                                                                <input
+                                                                    value={firstName}
+                                                                    onChange={(e) =>
+                                                                        setFirstName(e.target.value)
+                                                                    }
+                                                                    type="text"
+                                                                    id="firstName"
+                                                                    placeholder="Enter first name"
+                                                                    className="textfield"
+                                                                    autoComplete="off"
+                                                                    required
+                                                                />
                                                             </label>
+                                                        </div>
+                                                    </div>
 
-                                                            <input
-                                                                type="text"
-                                                                id="fullname"
-                                                                placeholder="Enter full name"
-                                                                className="textfield"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
+                                                    <div className="col-lg-6">
+                                                        <div className="inputbox">
+                                                            <label
+                                                                htmlFor="fullname"
+                                                                className="inputlabel"
+                                                            >
+                                                                Last name <span>*</span>
+                                                                <input
+                                                                    value={lastName}
+                                                                    onChange={(e) =>
+                                                                        setLastName(e.target.value)
+                                                                    }
+                                                                    type="text"
+                                                                    id="lastName"
+                                                                    placeholder="Enter last name"
+                                                                    className="textfield"
+                                                                    autoComplete="off"
+                                                                    required
+                                                                />
+                                                            </label>
                                                         </div>
                                                     </div>
 
@@ -52,24 +147,28 @@ export default function AccountSettingsPage() {
                                                                 htmlFor="email"
                                                                 className="inputlabel"
                                                             >
-                                                                Full name <span>*</span>
+                                                                Email <span>*</span>
+                                                                <input
+                                                                    value={email}
+                                                                    onChange={(e) =>
+                                                                        setEmail(e.target.value)
+                                                                    }
+                                                                    type="email"
+                                                                    id="email"
+                                                                    placeholder="Enter email address"
+                                                                    className="textfield"
+                                                                    autoComplete="off"
+                                                                    required
+                                                                    disabled
+                                                                />
                                                             </label>
-
-                                                            <input
-                                                                type="email"
-                                                                id="email"
-                                                                placeholder="Enter email address"
-                                                                className="textfield"
-                                                                autoComplete="off"
-                                                                required
-                                                                disabled
-                                                            />
 
                                                             <button
                                                                 type="button"
-                                                                className="btn-showhide"
+                                                                className="mb-4 btn-showhide"
                                                                 style={{
                                                                     transform: 'translateY(50%)',
+                                                                    top: '35%',
                                                                 }}
                                                             >
                                                                 <svg
@@ -112,16 +211,21 @@ export default function AccountSettingsPage() {
                                                                 className="inputlabel"
                                                             >
                                                                 Company Name
+                                                                <input
+                                                                    value={companyName}
+                                                                    onChange={(e) =>
+                                                                        setCompanyName(
+                                                                            e.target.value
+                                                                        )
+                                                                    }
+                                                                    type="text"
+                                                                    id="companyname"
+                                                                    placeholder="Enter company name"
+                                                                    className="textfield"
+                                                                    autoComplete="off"
+                                                                    required
+                                                                />
                                                             </label>
-
-                                                            <input
-                                                                type="text"
-                                                                id="companyname"
-                                                                placeholder="Enter company name"
-                                                                className="textfield"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
                                                         </div>
                                                     </div>
 
@@ -132,39 +236,26 @@ export default function AccountSettingsPage() {
                                                                 className="inputlabel"
                                                             >
                                                                 Phone <span>*</span>
+                                                                <input
+                                                                    value={phoneNumber}
+                                                                    onChange={(e) =>
+                                                                        setPhoneNumber(
+                                                                            e.target.value
+                                                                        )
+                                                                    }
+                                                                    type="tel"
+                                                                    id="phonenumber"
+                                                                    placeholder="Enter phone number"
+                                                                    className="textfield"
+                                                                    autoComplete="off"
+                                                                    required
+                                                                />
                                                             </label>
-
-                                                            <input
-                                                                type="tel"
-                                                                id="phonenumber"
-                                                                placeholder="Enter phone number"
-                                                                className="textfield"
-                                                                autoComplete="off"
-                                                                required
-                                                            />
                                                         </div>
                                                     </div>
 
                                                     <div className="col-lg-6">
                                                         <div className="d-flex flex-column gap-2">
-                                                            <div className="inputbox">
-                                                                <label
-                                                                    htmlFor="password"
-                                                                    className="inputlabel"
-                                                                >
-                                                                    Password
-                                                                </label>
-
-                                                                <input
-                                                                    type="password"
-                                                                    id="password"
-                                                                    placeholder="*****************"
-                                                                    className="textfield"
-                                                                    autoComplete="off"
-                                                                    required
-                                                                />
-                                                            </div>
-
                                                             <button
                                                                 type="button"
                                                                 className="btn-change"
@@ -181,6 +272,9 @@ export default function AccountSettingsPage() {
                                                             <button
                                                                 className="btn-submit"
                                                                 type="submit"
+                                                                onClick={(e) =>
+                                                                    handleUpdateUserInfo(e)
+                                                                }
                                                             >
                                                                 Save
                                                             </button>

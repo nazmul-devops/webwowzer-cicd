@@ -1,6 +1,72 @@
+'use client';
+
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+
+import axios from '@/lib/axios';
 
 export default function ChangePasswordModal() {
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewpassword, setConfirmNewPassword] = useState('');
+
+    const session = useSession();
+    const router = useRouter();
+
+    const hideModal = useRef(null);
+
+    const handlePasswordChange = async (e) => {
+        e.preventDefault();
+
+        if (!currentPassword) {
+            toast.error('Please enter your current password');
+            return;
+        }
+
+        if (!newPassword) {
+            toast.error('Please enter your new password');
+            return;
+        }
+
+        if (newPassword !== confirmNewpassword) {
+            toast.error('Your new password and confirm password does not match');
+            return;
+        }
+
+        try {
+            const data = {
+                current_password: currentPassword,
+                new_password: newPassword,
+            };
+
+            const userId = session?.data?.user?.id;
+
+            const response = await axios.patch(`/api/users/change-password?id=${userId}`, data);
+
+            if (response.status === 200) {
+                toast.success(response?.data.message);
+                setCurrentPassword('');
+                setNewPassword('');
+                setConfirmNewPassword('');
+
+                // Close the modal after successful password change
+                hideModal.current.click();
+
+                signOut({
+                    redirect: false,
+                }).then(() => {
+                    router.push('/login');
+                    toast.success('Logged out successfully!');
+                });
+            }
+        } catch (err) {
+            toast.error(err?.response.data.message);
+        }
+    };
+
     return (
         <div
             className="modal fade pe-0 changemodal"
@@ -36,6 +102,10 @@ export default function ChangePasswordModal() {
                                                 >
                                                     Current password
                                                     <input
+                                                        value={currentPassword}
+                                                        onChange={(e) =>
+                                                            setCurrentPassword(e.target.value)
+                                                        }
                                                         type="password"
                                                         id="currentpassword"
                                                         placeholder="Enter your current password"
@@ -108,9 +178,13 @@ export default function ChangePasswordModal() {
                                                 <label htmlFor="newpassword" className="inputlabel">
                                                     New password
                                                     <input
+                                                        value={newPassword}
+                                                        onChange={(e) =>
+                                                            setNewPassword(e.target.value)
+                                                        }
                                                         type="password"
                                                         id="newpassword"
-                                                        placeholder="Enter your current password"
+                                                        placeholder="Enter your new password"
                                                         className="textfield"
                                                         autoComplete="off"
                                                         required
@@ -185,9 +259,13 @@ export default function ChangePasswordModal() {
                                             >
                                                 Confirm new password
                                                 <input
+                                                    value={confirmNewpassword}
+                                                    onChange={(e) =>
+                                                        setConfirmNewPassword(e.target.value)
+                                                    }
                                                     type="password"
                                                     id="confirmnewpassword"
-                                                    placeholder="Enter your current password"
+                                                    placeholder="Confirm new password"
                                                     className="textfield"
                                                     autoComplete="off"
                                                     required
@@ -255,10 +333,15 @@ export default function ChangePasswordModal() {
                             type="button"
                             className="login-link fw-bold"
                             data-bs-dismiss="modal"
+                            ref={hideModal}
                         >
                             Cancel
                         </button>
-                        <button type="button" className="btn-submit">
+                        <button
+                            type="submit"
+                            className="btn-submit"
+                            onClick={(e) => handlePasswordChange(e)}
+                        >
                             Save
                         </button>
                     </div>
