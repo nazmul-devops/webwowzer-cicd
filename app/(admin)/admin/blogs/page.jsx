@@ -1,5 +1,6 @@
 'use client';
 
+import Loader from '@/components/Loader';
 import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
 import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
 import customStyles from '@/lib/customTables';
@@ -234,19 +235,22 @@ export default function page() {
                                     </select>
                                 </div>
                             </div>
-
-                            <div className="table-responsive nowrap-table">
-                                {blogs.length > 0 && (
-                                    <DataTable
-                                        columns={columns}
-                                        data={filteredBlogs}
-                                        pagination
-                                        customStyles={customStyles}
-                                        paginationPerPage={perPage}
-                                        onChangeRowsPerPage={setPerPage}
-                                    />
-                                )}
-                            </div>
+                            {loading ? (
+                                <Loader />
+                            ) : (
+                                <div className="table-responsive nowrap-table">
+                                    {blogs.length > 0 && (
+                                        <DataTable
+                                            columns={columns}
+                                            data={filteredBlogs}
+                                            pagination
+                                            customStyles={customStyles}
+                                            paginationPerPage={perPage}
+                                            onChangeRowsPerPage={setPerPage}
+                                        />
+                                    )}
+                                </div>
+                            )}
                             <BlogCreateModal
                                 show={showCreateModal}
                                 onHide={() => setShowCreateModal(false)}

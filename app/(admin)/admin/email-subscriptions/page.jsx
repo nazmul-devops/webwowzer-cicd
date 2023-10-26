@@ -1,5 +1,6 @@
 'use client';
 
+import Loader from '@/components/Loader';
 import customStyles from '@/lib/customTables';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -108,15 +109,21 @@ export default function EmailSubscriptionPage() {
                                         />
                                     </div>
                                 </div>
-                                {subscriptions.length > 0 && (
-                                    <DataTable
-                                        columns={columns}
-                                        data={filteredSubscriptions}
-                                        pagination
-                                        customStyles={customStyles}
-                                        paginationPerPage={perPage}
-                                        onChangeRowsPerPage={setPerPage}
-                                    />
+                                {loading ? (
+                                    <Loader />
+                                ) : (
+                                    <div className="table-responsive">
+                                        {subscriptions.length > 0 && (
+                                            <DataTable
+                                                columns={columns}
+                                                data={filteredSubscriptions}
+                                                pagination
+                                                customStyles={customStyles}
+                                                paginationPerPage={perPage}
+                                                onChangeRowsPerPage={setPerPage}
+                                            />
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>

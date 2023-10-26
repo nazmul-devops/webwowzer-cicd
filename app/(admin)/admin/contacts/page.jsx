@@ -2,6 +2,7 @@
 
 'use client';
 
+import Loader from '@/components/Loader';
 import customStyles from '@/lib/customTables';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -211,16 +212,22 @@ export default function ContactPage() {
                                         </select>
                                     </div>
                                 </div>
-                                {contacts.length > 0 && (
-                                    <DataTable
-                                        title="Contacts"
-                                        columns={columns}
-                                        data={filteredContacts}
-                                        pagination
-                                        customStyles={customStyles}
-                                        paginationPerPage={perPage}
-                                        onChangeRowsPerPage={setPerPage}
-                                    />
+                                {loading ? (
+                                    <Loader />
+                                ) : (
+                                    <div className="table-responsive nowrap-table">
+                                        {contacts.length > 0 && (
+                                            <DataTable
+                                                title="Contacts"
+                                                columns={columns}
+                                                data={filteredContacts}
+                                                pagination
+                                                customStyles={customStyles}
+                                                paginationPerPage={perPage}
+                                                onChangeRowsPerPage={setPerPage}
+                                            />
+                                        )}{' '}
+                                    </div>
                                 )}
                             </div>
                         </div>

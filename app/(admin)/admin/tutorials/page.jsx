@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import toast from 'react-hot-toast';
 
+import Loader from '@/components/Loader';
 import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
 import EditTutorialModal from '@/components/admin/Tutorial/EditTutorial';
 import customStyles from '@/lib/customTables';
@@ -21,12 +22,14 @@ export default function TutorialPage() {
     const [showModal, setShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selecteTutorial, setSelectedTurorial] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     async function fetchTutorials() {
         try {
             const response = await axios.get('/api/tutorial');
             setTutorials(response.data.tutorials);
             setFilteredData(response.data.tutorials);
+            setLoading(false);
         } catch (error) {
             console.log('Error fetching tutorials', error);
         }
@@ -228,20 +231,24 @@ export default function TutorialPage() {
                                     </select>
                                 </div>
                             </div>
-                            <div className="table-responsive nowrap-table">
-                                {filteredData.length > 0 && (
-                                    <DataTable
-                                        title="Tutorials"
-                                        columns={columns}
-                                        data={filteredData}
-                                        pagination
-                                        paginationPerPage={perPage}
-                                        keyField="_id"
-                                        customStyles={customStyles}
-                                        onChangeRowsPerPage={setPerPage}
-                                    />
-                                )}
-                            </div>
+                            {loading ? (
+                                <Loader />
+                            ) : (
+                                <div className="table-responsive nowrap-table">
+                                    {filteredData.length > 0 && (
+                                        <DataTable
+                                            title="Tutorials"
+                                            columns={columns}
+                                            data={filteredData}
+                                            pagination
+                                            paginationPerPage={perPage}
+                                            keyField="_id"
+                                            customStyles={customStyles}
+                                            onChangeRowsPerPage={setPerPage}
+                                        />
+                                    )}
+                                </div>
+                            )}
                             {/* Create Tutorial Modal */}
                             <TutorialCreateModal
                                 show={showModal}

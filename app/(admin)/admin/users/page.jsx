@@ -1,5 +1,6 @@
 'use client';
 
+import Loader from '@/components/Loader';
 import customStyles from '@/lib/customTables';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ export default function UsersPage() {
     const [roleFilter, setRoleFilter] = useState('all');
     const [activeFilter, setActiveFilter] = useState('all');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [userToDelete, setUserToDelete] = useState(null);
 
@@ -20,6 +22,7 @@ export default function UsersPage() {
         try {
             const response = await axios.get('/api/users'); // Replace with your API endpoint
             setUsers(response.data.users);
+            setLoading(false);
         } catch (error) {
             console.log('Error fetching users', error);
         }
@@ -212,14 +215,18 @@ export default function UsersPage() {
                     </div>
                 </div>
             </div>
-            <DataTable
-                columns={columns}
-                data={filteredUsers}
-                pagination
-                customStyles={customStyles}
-                paginationPerPage={10} // You can adjust the number of rows per page
-                paginationRowsPerPageOptions={[10, 20, 30]}
-            />
+            {loading ? (
+                <Loader />
+            ) : (
+                <DataTable
+                    columns={columns}
+                    data={filteredUsers}
+                    pagination
+                    customStyles={customStyles}
+                    paginationPerPage={10} // You can adjust the number of rows per page
+                    paginationRowsPerPageOptions={[10, 20, 30]}
+                />
+            )}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Delete Contact</Modal.Title>

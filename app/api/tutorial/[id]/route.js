@@ -36,7 +36,6 @@ export async function PUT(request, { params }) {
 
 export async function GET(request, { params }) {
     const { id } = params;
-
     await connectMongoDB();
     const tutorial = await Tutorial.findOne({ _id: id });
 
