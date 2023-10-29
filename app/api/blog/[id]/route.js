@@ -4,8 +4,14 @@ import { NextResponse } from 'next/server';
 import connectMongoDB from '@/lib/mongodb';
 import { blogSchema } from '@/lib/validation';
 import Blog from '@/models/Blog';
+import { getToken } from 'next-auth/jwt';
 
 export async function PUT(request, { params }) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = params;
     const { title, blog_content, author_name, blog_cover_img, read_time } = await request.json();
 
@@ -15,7 +21,7 @@ export async function PUT(request, { params }) {
             blog_content,
             author_name,
             blog_cover_img,
-            read_time,
+            read_time: parseInt(read_time),
         });
         await connectMongoDB();
 
@@ -95,6 +101,11 @@ export async function GET(request, { params }) {
 }
 
 export async function PATCH(request, { params }) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = params;
     const { active } = await request.json();
 
@@ -119,6 +130,11 @@ export async function PATCH(request, { params }) {
 // Import necessary modules and dependencies
 
 export async function DELETE(request, { params }) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = params;
 
     // Connect to your MongoDB database

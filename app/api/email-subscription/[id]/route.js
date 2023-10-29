@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import connectMongoDB from '@/lib/mongodb';
 import { emailSubscriptionSchema } from '@/lib/validation';
 import EmailSubscription from '@/models/EmailSubscription';
+import { getToken } from 'next-auth/jwt';
 
 export async function PUT(request, { params }) {
     const { id } = params;
@@ -69,6 +70,11 @@ export async function PATCH(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const { id } = params;
 
     // Connect to your MongoDB database

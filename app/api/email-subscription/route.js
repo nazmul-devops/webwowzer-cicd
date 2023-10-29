@@ -3,8 +3,14 @@ import { NextResponse } from 'next/server';
 import connectMongoDB from '@/lib/mongodb';
 import { emailSubscriptionSchema } from '@/lib/validation';
 import EmailSubscription from '@/models/EmailSubscription';
+import { getToken } from 'next-auth/jwt';
 
-export async function GET() {
+export async function GET(request) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     await connectMongoDB();
 
     const allEmailSubscriptons = await EmailSubscription.find();

@@ -23,9 +23,17 @@ export async function POST(request) {
     try {
         // Extract data from the request body
         const requestData = await request.json();
+        const { title, blog_cover_img, author_name, read_time, blog_content } = requestData;
+        console.log(typeof read_time);
 
         // Validate the request data against the schema
-        const validatedData = blogSchema.parse(requestData);
+        const validatedData = blogSchema.parse({
+            title,
+            blog_cover_img,
+            author_name,
+            read_time: parseInt(read_time),
+            blog_content,
+        });
 
         await connectMongoDB();
 
