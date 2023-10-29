@@ -12,7 +12,7 @@ export async function GET() {
 export async function PATCH(request) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
-    if (!token || token.role !== 'admin') {
+    if (!token) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
     const id = request.nextUrl.searchParams.get('id');

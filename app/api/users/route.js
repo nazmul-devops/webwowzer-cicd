@@ -69,7 +69,7 @@ export async function DELETE(request) {
     // const id = request.nextUrl.searchParams.get('id');
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
-    if (!token || token.role !== 'admin') {
+    if (!token && token.role !== 'admin') {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
     const { id } = await request.json();
