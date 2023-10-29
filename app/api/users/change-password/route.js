@@ -3,12 +3,18 @@ import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import User from '@/models/User';
+import { getToken } from 'next-auth/jwt';
 
 export async function GET() {
     return NextResponse.json({ message: 'Not Allowed' }, { status: 405 });
 }
 
 export async function PATCH(request) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!token || token.role !== 'admin') {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
     const id = request.nextUrl.searchParams.get('id');
 
     const { current_password, new_password } = await request.json();
