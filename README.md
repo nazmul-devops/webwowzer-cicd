@@ -7,10 +7,12 @@ npm install
 - after installing all the dependencies, setup the `.env` file in the root directory of the project.
 
 ```bash
-NEXTAUTH_URL=
+NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=
 
 MONGODB_URI=
+
+BASE_API_URL=http://localhost:3000
 ```
 
 ## Table of Contents
