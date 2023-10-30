@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import User from '@/models/User';
-import { getToken } from 'next-auth/jwt';
 
 export async function GET() {
     return NextResponse.json({ message: 'Not Allowed' }, { status: 405 });
@@ -15,6 +15,7 @@ export async function PATCH(request) {
     if (!token) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
+
     const id = request.nextUrl.searchParams.get('id');
 
     const { current_password, new_password } = await request.json();

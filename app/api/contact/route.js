@@ -1,8 +1,7 @@
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
-import { getToken } from 'next-auth/jwt';
-
 import { contactSchema } from '@/lib/validation';
 import Contact from '@/models/Contact';
 
@@ -12,6 +11,7 @@ export async function GET(request) {
     if (!token && token.role !== 'admin') {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
+
     try {
         await connectMongoDB();
 

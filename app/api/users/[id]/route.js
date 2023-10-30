@@ -1,9 +1,9 @@
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import { userSchema } from '@/lib/validation';
 import User from '@/models/User';
-import { getToken } from 'next-auth/jwt';
 
 export async function PUT(request, { params }) {
     const { id } = params;

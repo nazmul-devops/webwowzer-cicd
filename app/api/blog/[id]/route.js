@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import { blogSchema } from '@/lib/validation';
 import Blog from '@/models/Blog';
-import { getToken } from 'next-auth/jwt';
 
 export async function PUT(request, { params }) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
@@ -12,6 +12,7 @@ export async function PUT(request, { params }) {
     if (!token && token.role !== 'admin') {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
+
     const { id } = params;
     const { title, blog_content, author_name, blog_cover_img, read_time } = await request.json();
 
@@ -21,7 +22,7 @@ export async function PUT(request, { params }) {
             blog_content,
             author_name,
             blog_cover_img,
-            read_time: parseInt(read_time),
+            read_time: parseInt(read_time, 10),
         });
         await connectMongoDB();
 

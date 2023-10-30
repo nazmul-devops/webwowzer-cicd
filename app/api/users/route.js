@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import User from '@/models/User';
-import { getToken } from 'next-auth/jwt';
 
 export async function GET() {
     await connectMongoDB();

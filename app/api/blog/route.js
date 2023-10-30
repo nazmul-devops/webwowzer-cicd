@@ -31,7 +31,7 @@ export async function POST(request) {
             title,
             blog_cover_img,
             author_name,
-            read_time: parseInt(read_time),
+            read_time: parseInt(read_time, 10),
             blog_content,
         });
 

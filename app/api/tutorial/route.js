@@ -1,9 +1,9 @@
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import { tutorialSchema } from '@/lib/validation';
 import Tutorial from '@/models/Tutorial';
-import { getToken } from 'next-auth/jwt';
 
 export async function GET() {
     await connectMongoDB();
@@ -19,6 +19,7 @@ export async function POST(request) {
     if (!token && token.role !== 'admin') {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
+
     function getVideoId(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = url.match(regExp);

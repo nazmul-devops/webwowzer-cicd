@@ -1,9 +1,9 @@
 // Import necessary modules and schemas
+import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
 import connectMongoDB from '@/lib/mongodb';
 import Contact from '@/models/Contact';
-import { getToken } from 'next-auth/jwt';
 
 export async function PATCH(request, { params }) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
@@ -11,6 +11,7 @@ export async function PATCH(request, { params }) {
     if (!token && token.role !== 'admin') {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
+
     const { id } = params;
     const { status } = await request.json();
 
