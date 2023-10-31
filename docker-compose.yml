@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webwowzer-nextjs-app
+    ports:
+      - "3002:3000" # Map the container's port 3000 to the host
+    volumes:
+      - .:/app # Mount the local directory to the container
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongodb:27017/webwowzer
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: webwowzer-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=nazmul
+      - MONGO_INITDB_ROOT_PASSWORD=nazmul
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
