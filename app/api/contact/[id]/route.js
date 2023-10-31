@@ -36,6 +36,7 @@ export async function PATCH(request, { params }) {
         return NextResponse.json('Failed to update status', { status: 500 });
     }
 }
+
 export async function DELETE(request, { params }) {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 

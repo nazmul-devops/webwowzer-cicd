@@ -1,8 +1,14 @@
-import JoditEditor from 'jodit-react'; // Import Jodit editor
+/* eslint-disable no-unused-vars */
+
+'use client';
+
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 import globalJoditConfig from '@/lib/joditConfig';
+
+const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 export default function BlogCreateModal({ show, onHide, onSave }) {
     const [formData, setFormData] = useState({

@@ -1,26 +1,30 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-alert */
+
 'use client';
 
-import Loader from '@/components/Loader';
-import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
-import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
-import customStyles from '@/lib/customTables';
-import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import toast from 'react-hot-toast';
 
-export default function page() {
+import Loader from '@/components/Loader';
+import BlogCreateModal from '@/components/admin/Blog/BlogCreateModal';
+import BlogEditModal from '@/components/admin/Blog/BlogEditModal';
+import axios from '@/lib/axios';
+import customStyles from '@/lib/customTables';
+
+export default function AdminBlogPage() {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedBlog, setSelectedBlog] = useState(null);
-    const [selectedStatus, setSelectedStatus] = useState('');
     const [perPage, setPerPage] = useState(10);
     const [searchText, setSearchText] = useState('');
     const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'active', or 'inactive'
 
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+
     async function fetchBlog() {
         try {
             const response = await axios.get(`/api/blog`);
@@ -31,9 +35,11 @@ export default function page() {
             console.error('Error fetching blogs', error);
         }
     }
+
     useEffect(() => {
         fetchBlog();
     }, []);
+
     const handleCheckboxChange = async (blogId, isActive) => {
         try {
             const response = await axios.patch(`/api/blog/${blogId}`, { active: !isActive });
@@ -45,6 +51,7 @@ export default function page() {
             console.log('cannot change status', error);
         }
     };
+
     const deleteBlog = async (id) => {
         const confirmed = window.confirm('Are you sure you want to delete this blog ?');
         if (confirmed) {
@@ -61,6 +68,7 @@ export default function page() {
             }
         }
     };
+
     const handleEdit = (blog) => {
         setSelectedBlog(blog);
         setShowEditModal(true);
@@ -101,6 +109,7 @@ export default function page() {
             });
         }
     };
+
     const filteredBlogs = blogs.filter((blog) => {
         if (filterStatus === 'all') {
             return blog.title.toLowerCase().includes(searchText.toLowerCase());

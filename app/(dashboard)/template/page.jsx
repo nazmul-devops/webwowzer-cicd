@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import AnnouncementSection from '@/components/dashboard/AnnouncementSection';
 
 /* eslint-disable react/button-has-type */

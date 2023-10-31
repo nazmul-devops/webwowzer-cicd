@@ -1,12 +1,17 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-use-before-define */
+
 'use client';
 
-import Loader from '@/components/Loader';
-import customStyles from '@/lib/customTables';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import toast from 'react-hot-toast';
+
+import Loader from '@/components/Loader';
+import axios from '@/lib/axios';
+import customStyles from '@/lib/customTables';
 
 export default function EmailSubscriptionPage() {
     const [subscriptions, setSubscriptions] = useState([]);

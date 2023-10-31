@@ -1,3 +1,3 @@
 export default function AccountSettingsPage() {
-    return null;
+    return <h1>Account Page</h1>;
 }

@@ -1,8 +1,8 @@
+/* eslint-disable no-alert */
 /* eslint-disable react/no-unstable-nested-components */
 
 'use client';
 
-import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import Loader from '@/components/Loader';
 import TutorialCreateModal from '@/components/admin/Tutorial/CreateTutorial';
 import EditTutorialModal from '@/components/admin/Tutorial/EditTutorial';
+import axios from '@/lib/axios';
 import customStyles from '@/lib/customTables';
 
 export default function TutorialPage() {
@@ -253,13 +254,13 @@ export default function TutorialPage() {
                             <TutorialCreateModal
                                 show={showModal}
                                 onHide={closeCreateModal}
-                                onSave={() => fetchTutorials}
+                                onSave={() => fetchTutorials()}
                             />
                             <EditTutorialModal
                                 show={showEditModal}
                                 onHide={() => setShowEditModal(false)}
                                 tutorial={selecteTutorial}
-                                onSave={() => fetchTutorials}
+                                onSave={() => fetchTutorials()}
                             />
                         </div>
                     </div>

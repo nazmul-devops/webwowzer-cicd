@@ -1,8 +1,10 @@
-import JoditEditor from 'jodit-react';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 import globalJoditConfig from '@/lib/joditConfig';
+
+const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 export default function BlogEditModal({ show, onHide, blog, onSave }) {
     const [formData, setFormData] = useState({

@@ -25,6 +25,7 @@
         "react-data-table-component": "^7.5.4",
         "react-dom": "^18",
         "react-hot-toast": "^2.4.1",
+        "sharp": "^0.32.6",
         "zod": "^3.22.4"
     },
     "devDependencies": {

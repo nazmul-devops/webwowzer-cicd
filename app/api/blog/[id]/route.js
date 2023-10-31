@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
 
@@ -45,60 +44,9 @@ export async function GET(request, { params }) {
     const { id } = params;
 
     await connectMongoDB();
-    const blog = await Blog.aggregate([
-        {
-            $match: { _id: ObjectId(id) },
-        },
-        {
-            $lookup: {
-                from: 'blogs',
-                let: { blogId: '$_id' },
-                pipeline: [
-                    {
-                        $match: {
-                            $and: [
-                                {
-                                    $expr: {
-                                        $ne: ['$_id', '$$blogId'],
-                                    },
-                                },
-                                {
-                                    $expr: {
-                                        $eq: ['$active', true],
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        $sample: { size: 2 },
-                    },
-                ],
-                as: 'more',
-            },
-        },
-        {
-            $project: {
-                _id: 1,
-                title: 1,
-                blog_cover_img: 1,
-                author_name: 1,
-                read_time: 1,
-                blog_content: 1,
-                created_at: 1,
-                active: 1,
-                more: {
-                    _id: 1,
-                    title: 1,
-                    blog_cover_img: 1,
-                    author_name: 1,
-                    active: 1,
-                    created_at: 1,
-                },
-            },
-        },
-    ]);
-    return NextResponse.json({ blog: blog[0] }, { status: 200 });
+    const blog = await Blog.findOne({ _id: id });
+
+    return NextResponse.json({ blog }, { status: 200 });
 }
 
 export async function PATCH(request, { params }) {

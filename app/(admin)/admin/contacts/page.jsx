@@ -1,19 +1,22 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-use-before-define */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-nested-ternary */
 
 'use client';
 
-import Loader from '@/components/Loader';
-import customStyles from '@/lib/customTables';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import toast from 'react-hot-toast';
 
+import Loader from '@/components/Loader';
+import axios from '@/lib/axios';
+import customStyles from '@/lib/customTables';
+
 export default function ContactPage() {
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedStatus, setSelectedStatus] = useState('');
     const [searchText, setSearchText] = useState('');
     const [perPage, setPerPage] = useState(10);
     const [showDeleteModal, setShowDeleteModal] = useState(false);

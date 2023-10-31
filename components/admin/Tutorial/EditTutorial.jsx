@@ -17,7 +17,7 @@ export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
                 title: tutorial.title || '',
                 thumbnail_img: tutorial.thumbnail_img || '',
                 video_url: tutorial.video_url || '',
-                duration: parseInt(tutorial.duration, 10) || 0,
+                duration: parseFloat(tutorial.duration) || 0,
             });
         }
     }, [tutorial]);
@@ -36,7 +36,7 @@ export default function EditTutorialModal({ show, onHide, tutorial, onSave }) {
                 title: formData.title,
                 thumbnail_img: formData.thumbnail_img,
                 video_url: formData.video_url,
-                duration: parseInt(formData.duration, 10),
+                duration: parseFloat(formData.duration),
             };
 
             // Make an API PUT request to update the tutorial

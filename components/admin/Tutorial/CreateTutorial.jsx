@@ -48,7 +48,7 @@ export default function TutorialCreateModal({ show, onHide, onSave }) {
                 title: formData.title,
                 thumbnail_img: formData.thumbnail_img,
                 video_url: formData.video_url,
-                duration: formData.duration,
+                duration: parseFloat(formData.duration),
             };
 
             // Make an API POST request to create a new tutorial

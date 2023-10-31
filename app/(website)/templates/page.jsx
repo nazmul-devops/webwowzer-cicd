@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import PotentialSection from '@/components/website/PotentialSection';
 
 /* eslint-disable react/button-has-type */

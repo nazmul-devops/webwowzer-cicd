@@ -1,13 +1,16 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
+
 'use client';
-import axios from 'axios';
+
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 
+import axios from '@/lib/axios';
 
 export default function ContactPage() {
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedStatus, setSelectedStatus] = useState('');
     const [searchText, setSearchText] = useState('');
     const [perPage, setPerPage] = useState(10); // Number of rows per page
 
@@ -89,13 +92,14 @@ export default function ContactPage() {
                     value={row.status}
                     onChange={(e) => handleStatusChange(row._id, e.target.value)}
                     style={{
-                        backgroundColor: row.status === 'Pending'
-                            ? 'lightyellow'
-                            : row.status === 'Contacted'
+                        backgroundColor:
+                            row.status === 'Pending'
+                                ? 'lightyellow'
+                                : row.status === 'Contacted'
                                 ? 'lightgreen'
                                 : row.status === 'Resolved'
-                                    ? 'lightblue'
-                                    : 'transparent',
+                                ? 'lightblue'
+                                : 'transparent',
                     }}
                 >
                     {statusOptions.map((option) => (
@@ -108,7 +112,8 @@ export default function ContactPage() {
         },
     ];
 
-    const filteredContacts = contacts.filter((contact) => contact.full_name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredContacts = contacts.filter((contact) =>
+        contact.full_name.toLowerCase().includes(searchText.toLowerCase())
     );
 
     return (
@@ -121,7 +126,8 @@ export default function ContactPage() {
                             <input
                                 type="text"
                                 placeholder="Search by Name"
-                                onChange={(e) => setSearchText(e.target.value)} />
+                                onChange={(e) => setSearchText(e.target.value)}
+                            />
                             {contacts.length > 0 && (
                                 <DataTable
                                     title="Contacts"
@@ -129,7 +135,8 @@ export default function ContactPage() {
                                     data={filteredContacts}
                                     pagination
                                     paginationPerPage={perPage}
-                                    onChangeRowsPerPage={setPerPage} />
+                                    onChangeRowsPerPage={setPerPage}
+                                />
                             )}
                         </div>
                     </div>
