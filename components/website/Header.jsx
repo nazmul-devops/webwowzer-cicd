@@ -299,7 +299,7 @@ export default function Header() {
                   href="/about"
                   className={`desktoplist-link ${isLinkActive("/about")}`}
                 >
-                  Nazmul
+                  Nazmul Islam
                 </Link>
               </li>
 
