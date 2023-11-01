@@ -23,6 +23,8 @@ jobs:
 
       - name: Build Next.js app
         run: npm run build
+      - name: List contents of out directory
+        run: ls -R out
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v3
