@@ -1,34 +1,49 @@
-name: Nextjs app automatic deployment with github action CI/CD for
+name: Deploy Next.js App to AWS EC2 and Start with PM2
 
 on:
   push:
     branches:
-      - ci-cd # Change this to your main branch name
+      - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the Next.js app
+      - name: Build Next.js app
         run: npm run build
 
-      - name: Deploy to EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@13.232.143.157 "cd /home/ubuntu/WebWowZer-NextJs && git pull && npm install && pm2 restart webwowzer-nextjs-app"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: out
 
-      - name: Notify deployment success
-        run: echo "Deployment successful OK"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Copy build artifacts to project directory
+        run: cp -r build-artifacts/nextjs-app /home/ubuntu/WebWowZer-NextJs
+
+      - name: restart Next.js app with PM2
+        run: pm2 restart webwowzer-nextjs-app
