@@ -1,5 +1,4 @@
 name: Deploy Next.js App to AWS EC2 and Start with PM2
-
 on:
   push:
     branches:
@@ -24,7 +23,7 @@ jobs:
       - name: Build Next.js app
         run: npm run build
       - name: List contents of out directory
-        run: ls -R out
+        run: ls -a
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v3
