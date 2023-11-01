@@ -1,0 +1,34 @@
+name: Nextjs app automatic deployment with github action CI/CD for
+
+on:
+  push:
+    branches:
+      - ci-cd # Change this to your main branch name
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the Next.js app
+        run: npm run build
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@13.232.143.157 "cd /home/ubuntu/WebWowZer-NextJs && git pull && npm install && pm2 restart webwowzer-nextjs-app"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Notify deployment success
+        run: echo "Deployment successful"
