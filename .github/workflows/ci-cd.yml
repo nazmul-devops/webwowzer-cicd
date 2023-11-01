@@ -42,9 +42,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+      - name: List contents of downloaded artifacts
+        run: ls -R /home/runner/work/webwowzer-cicd/webwowzer-cicd/build-artifacts
 
       - name: Copy build artifacts to project directory
-        run: cp -r build-artifacts/nextjs-app /home/ubuntu/WebWowZer-NextJs
+        run: cp -r /home/runner/work/webwowzer-cicd/webwowzer-cicd/build-artifacts/nextjs-app /home/ubuntu/WebWowZer-NextJs
 
       - name: restart Next.js app with PM2
         run: pm2 restart webwowzer-nextjs-app
