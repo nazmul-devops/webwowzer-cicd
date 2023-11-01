@@ -43,7 +43,7 @@ jobs:
         with:
           name: build-artifacts
       - name: List contents of downloaded artifacts
-        run: ls -R /home/runner/work/webwowzer-cicd/webwowzer-cicd/build-artifacts
+        run: ls -a
 
       - name: Copy build artifacts to project directory
         run: cp -r /home/runner/work/webwowzer-cicd/webwowzer-cicd/build-artifacts/nextjs-app /home/ubuntu/WebWowZer-NextJs
