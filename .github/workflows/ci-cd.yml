@@ -26,7 +26,6 @@ jobs:
       - name: List contents of out directory
         run: ls -a
 
-    post: # This section will run after the main steps of the "build" job
       - name: Archive build artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -45,11 +44,8 @@ jobs:
         with:
           name: build-artifacts
 
-      - name: List contents of downloaded artifacts
-        run: ls -a
-
-      - name: Copy build artifacts to project directory
-        run: cp -r .next /home/ubuntu/WebWowZer-NextJs
+      - name: Move build artifacts to project directory
+        run: mv .next /home/ubuntu/WebWowZer-NextJs
 
       - name: restart Next.js app with PM2
         run: pm2 restart webwowzer-nextjs-app
