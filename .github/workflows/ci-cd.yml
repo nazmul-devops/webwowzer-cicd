@@ -24,11 +24,20 @@ jobs:
       - name: Build Next.js app
         run: npm run build
 
-      - name: Archive build artifacts
+      - name: Upload build artifacts to S3 bucket
+        uses: aws-actions/aws-cli@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ap-south-1
+          command: aws s3 cp build-artifacts/nextjs-app s3://webwowzer/nextjs-app
+
+      - name: Archive build artifacts for GitHub Actions
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
-          path: out
+          path: build-artifacts
+
 
   deploy:
     needs: build
@@ -37,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download build artifacts
+      - name: Download build artifacts from S3 bucket
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
@@ -45,5 +54,5 @@ jobs:
       - name: Copy build artifacts to project directory
         run: cp -r build-artifacts/nextjs-app /home/ubuntu/WebWowZer-NextJs
 
-      - name: restart Next.js app with PM2
-        run: pm2 restart webwowzer-nextjs-app
+      - name: Start Next.js app with PM2
+        run: pm2 start npm --name webwowzer-nextjs-app -- start
