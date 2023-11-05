@@ -26,7 +26,7 @@ jobs:
           zip -r app.zip .next
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nextjs-build
           path: ./app.zip
@@ -49,6 +49,9 @@ jobs:
         with:
           name: nextjs-build
           path: ./
+          
+      - name: Install PM2
+        run: npm install -g pm2
 
       - name: Debug SSH Private Key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}"
@@ -61,10 +64,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Add PM2 to PATH
-        run: echo "export PATH=\$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin/pm2" >> $GITHUB_ENV
 
       - name: SSH into server and perform deployment
-        shell: bash
         run: |
-          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.233.223.26 'unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && pm2 restart webwowzer-nextjs-app'
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.233.223.26 'unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && /home/ubuntu/.nvm/versions/node/v18.18.2/bin/pm2 restart webwowzer-nextjs-app'
