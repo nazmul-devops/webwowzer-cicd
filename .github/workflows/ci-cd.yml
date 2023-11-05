@@ -57,7 +57,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Add PM2 to PATH
-        run: echo "export PATH=\$PATH:/path/to/pm2" >> $GITHUB_ENV
+        run: echo "export PATH=\$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin/pm2" >> $GITHUB_ENV
 
       - name: SSH into server and perform deployment
         shell: bash
