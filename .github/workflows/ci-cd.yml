@@ -56,6 +56,6 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: SSH into server and perform deployment
+        shell: bash
         run: |
-          npm install -g pm2
           ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.233.223.26 'unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && pm2 restart webwowzer-nextjs-app'
