@@ -55,6 +55,10 @@ jobs:
           scp -i ssh_key.pem -o StrictHostKeyChecking=no ./app.zip ubuntu@13.233.223.26:/home/ubuntu/WebWowZer-NextJs/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add PM2 to PATH
+        run: echo "export PATH=\$PATH:/path/to/pm2" >> $GITHUB_ENV
+
       - name: SSH into server and perform deployment
         shell: bash
         run: |
