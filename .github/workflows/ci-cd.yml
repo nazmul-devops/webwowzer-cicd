@@ -46,6 +46,9 @@ jobs:
       - name: list files
         run: ls -a
 
+      - name: Debug SSH Private Key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}"
+
       - name: Copy artifact to server via SCP
         run: |
           scp -r -i ${{ secrets.SSH_PRIVATE_KEY }} ./app.zip ubuntu@13.233.223.26:/home/ubuntu/WebWowZer-NextJs
