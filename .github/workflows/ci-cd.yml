@@ -43,6 +43,8 @@ jobs:
         with:
           name: nextjs-build
           path: ./
+      - name: list files
+        run: ls -a
 
       - name: Copy artifact to server via SCP
         run: |
