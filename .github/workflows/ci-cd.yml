@@ -36,27 +36,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: nextjs-build
           path: ./
-      - name: list files
-        run: ls -a
 
       - name: Debug SSH Private Key
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Copy artifact to server via SCP
         run: |
-          scp -r -i ${{ secrets.SSH_PRIVATE_KEY }} ./app.zip ubuntu@13.233.223.26:/home/ubuntu/WebWowZer-NextJs
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key.pem
+          chmod 600 ssh_key.pem
+          scp -i ssh_key.pem -o StrictHostKeyChecking=no ./app.zip ubuntu@13.233.223.26:/home/ubuntu/WebWowZer-NextJs/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # - name: Move build artifacts to project directory
-      #   run: mv .next /home/ubuntu/WebWowZer-NextJs
-
-      # - name: restart Next.js app with PM2
-      #   run: pm2 restart webwowzer-nextjs-app
