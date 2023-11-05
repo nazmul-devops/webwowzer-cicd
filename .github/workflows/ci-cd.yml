@@ -23,14 +23,20 @@ jobs:
       - name: Build Next.js app
         run: npm run build
 
+      - name: Build and Export Next.js app
+        run: |
+          npm run build
+          npm run export
+          zip -r app.zip .next
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: nextjs-build
+          path: ./app.zip
+
       - name: List contents of out directory
         run: ls -a
-
-      - name: Archive build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: .next
 
   deploy:
     needs: build
