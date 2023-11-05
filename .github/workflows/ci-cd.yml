@@ -1,4 +1,4 @@
-name: Deploy Next.js App to AWS EC2 and Start with PM2
+name: Deploy Next.js App to AWS EC2 and Start with PM2 asdad
 on:
   push:
     branches:
