@@ -20,9 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # - name: Build Next.js app
-      #   run: npm run build
-
       - name: Build and Export Next.js app
         run: |
           npm run build
@@ -34,9 +31,6 @@ jobs:
           name: nextjs-build
           path: ./app.zip
 
-      - name: List contents of out directory
-        run: ls -a
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -45,12 +39,19 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
-          name: build-artifacts
+          name: nextjs-build
+          path: ./
 
-      - name: Move build artifacts to project directory
-        run: mv .next /home/ubuntu/WebWowZer-NextJs
+      - name: Copy artifact to server via SCP
+        run: |
+          scp -r -i ${{ secrets.SSH_PRIVATE_KEY }} ./app.zip ubuntu@13.233.223.26:/home/ubuntu/WebWowZer-NextJs
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: restart Next.js app with PM2
-        run: pm2 restart webwowzer-nextjs-app
+      # - name: Move build artifacts to project directory
+      #   run: mv .next /home/ubuntu/WebWowZer-NextJs
+
+      # - name: restart Next.js app with PM2
+      #   run: pm2 restart webwowzer-nextjs-app
