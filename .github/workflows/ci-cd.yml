@@ -60,10 +60,10 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key.pem
           chmod 600 ssh_key.pem
-          scp -i ssh_key.pem -o StrictHostKeyChecking=no ./app.zip ubuntu@13.233.223.26:/home/ubuntu/WebWowZer-NextJs/
+          scp -i ssh_key.pem -o StrictHostKeyChecking=no ./app.zip ubuntu@13.127.8.146:/home/ubuntu/WebWowZer-NextJs/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: SSH into server and perform deployment
         run: |
-          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.233.223.26 'export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin && unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && cd /home/ubuntu/WebWowZer-NextJs/ && pm2 restart webwowzer-nextjs-app'
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.127.8.146 'export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin && unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && cd /home/ubuntu/WebWowZer-NextJs/ && pm2 restart webwowzer-nextjs-app'
