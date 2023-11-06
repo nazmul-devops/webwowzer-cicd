@@ -1,3 +1,124 @@
+# Deployment guide
+
+## Step 01:
+
+- Create server on the cloud
+
+- change the server name sudo hostnamectl set-hostname webwowzer-prod-server
+
+- sudo su ubuntu
+
+## Step 02:
+
+- ssh to your server and run below commands
+
+```bash
+
+# Add Docker's official GPG key:
+sudo apt-get update
+
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+sudo usermod -aG docker ubuntu
+
+sudo su ubuntu
+
+docker run --restart always --name mongodb -d -p 27017:27017 mongodb/mongodb-community-server:7.0-ubuntu2204
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+nvm -v
+
+nvm install 18
+
+node -v
+
+npm install pm2@latest -g
+
+pm2 -v
+
+pm2 completion install
+
+pm2 startup
+
+sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin /home/ubuntu/.nvm/versions/node/v18.18.2/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
+
+npm install -g npm@10.2.3
+
+git clone git@github.com:qtecsolution/WebWowZer-NextJs.git
+
+cd WebWowZer-NextJs
+
+cp .env.example .env
+
+nano .env and paste
+
+NEXTAUTH_URL=http://3.211.9.168:3000
+NEXTAUTH_SECRET=mysecret
+BASE_API_URL=http://3.211.9.168:3000
+MONGODB_URI=mongodb://3.211.9.168:27017/webwowzer?retryWrites=true&w=majority
+
+ctrl + s
+
+npm i
+
+npm run build
+
+pm2 start npm --name webwowzer-prod-nextjs-app -- start
+
+sudo apt install nginx -y
+
+sudo systemctl status nginx
+
+sudo systemctl enable nginx
+
+sudo nano /etc/nginx/sites-available/default
+
+upstream webwowzer-prod {
+  server 0.0.0.0:3000;
+}
+
+server {
+  listen 80;
+  server_name webwowzer-prod.inneedcloud.com;
+
+  location / {
+    proxy_pass http://webwowzer-prod;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+  }
+}
+
+sudo nginx -t
+
+sudo systemctl restart nginx
+
+sudo systemctl reload nginx
+
+sudo systemctl status nginx
+
+sudo apt install unzip
+
+```
+
+- hit your public IP. Deployment done successfully
+
 ### WebWowZer Project Guide.
 
 ```bash
@@ -16,135 +137,3 @@ BASE_API_URL=http://localhost:3000
 ```
 
 ## Table of Contents
-
-### Editor Setup (Optional)
-
-You can use any editor but as I personally prefer `VS Code`. I will give some instructions about how I prefer VS code to be setup For This Project.
-
-### Plugins
-
-You need to install Below Plagins
-
--   ESLint by Dirk Baeumer
--   Prettier - Code formatter by Prettier
-
-`.vscode/settings.json`
-
-```json
-{
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    "typescript.enablePromptUseWorkspaceTsdk": true,
-    // Theme
-    "workbench.colorTheme": "Dracula Soft",
-
-    // config related to code formatting
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "[javascript]": {
-        "editor.formatOnSave": false,
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascriptreact]": {
-        "editor.formatOnSave": false,
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "javascript.validate.enable": false, //disable all built-in syntax checking
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.tslint": true,
-        "source.organizeImports": true
-    },
-    "eslint.alwaysShowStatus": true,
-    // emmet
-    "emmet.triggerExpansionOnTab": true,
-    "emmet.includeLanguages": {
-        "javascript": "javascriptreact"
-    },
-    "prettier.tabWidth": 4,
-    // space indentation
-    "editor.tabSize": 4,
-
-    // editor setup
-    "editor.cursorSmoothCaretAnimation": "on",
-    "editor.cursorBlinking": "expand",
-    "editor.fontFamily": "Fira Code, Operator Mono",
-    "editor.fontLigatures": true,
-    "editor.wordWrap": "on",
-    "editor.minimap.enabled": false,
-    "editor.tokenColorCustomizations": {
-        "textMateRules": [
-            {
-                "scope": "comment",
-                "settings": {
-                    "fontStyle": "italic"
-                }
-            }
-        ]
-    },
-
-    "editor.detectIndentation": true,
-    "editor.cursorStyle": "line",
-    "editor.cursorWidth": 2,
-    "editor.fontSize": 15,
-    "editor.lineHeight": 20
-}
-```
-
--   If You Prefer liniting (We Are Using AirBnb Linting Rules)
--   Create a `.eslintrc` file in the project root and enter the below contents:
-
-```json
-{
-    "extends": [
-        "airbnb",
-        "airbnb/hooks",
-        "eslint:recommended",
-        "prettier",
-        "plugin:jsx-a11y/recommended"
-    ],
-    // "parser": "babel-eslint",
-    // We don't need to use babel-eslint anymore since we are using the latest version of eslint
-
-    "parserOptions": {
-        "ecmaVersion": 2020
-    },
-    "env": {
-        "browser": true,
-        "node": true,
-        "es6": true,
-        "jest": true
-    },
-    "rules": {
-        "jsx-a11y/anchor-is-valid": 0,
-        "import/extensions": 0,
-        "import/no-unresolved": 0,
-        "react/react-in-jsx-scope": 0,
-        "react-hooks/rules-of-hooks": "error",
-        "no-console": 0,
-        "react/state-in-constructor": 0,
-        "indent": 0,
-        "linebreak-style": 0,
-        "react/prop-types": 0,
-        "jsx-a11y/click-events-have-key-events": 0,
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [".js", ".jsx"]
-            }
-        ],
-
-        "prettier/prettier": [
-            "error",
-            {
-                "trailingComma": "es5",
-                "singleQuote": true,
-                "printWidth": 100,
-                "tabWidth": 4,
-                "semi": true,
-                "endOfLine": "auto"
-            }
-        ]
-    },
-    "plugins": ["prettier", "react", "react-hooks"]
-}
-```
