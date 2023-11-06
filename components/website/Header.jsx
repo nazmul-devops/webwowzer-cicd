@@ -294,14 +294,6 @@ export default function Header() {
                 </Link>
               </li>
 
-              <li className="desktoplist-item">
-                <Link
-                  href="/about"
-                  className={`desktoplist-link ${isLinkActive("/about")}`}
-                >
-                  Nazmul Islam
-                </Link>
-              </li>
 
               <li className="desktoplist-item">
                 <Link
