@@ -30,6 +30,13 @@ jobs:
         with:
           name: nextjs-build
           path: ./app.zip
+          
+      - name: Upload build artifact to S3
+        run: |
+          aws s3 cp ./app.zip s3://inneed-assets/webwowzer-build-artifacts/app.zip
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   deploy:
     needs: build
