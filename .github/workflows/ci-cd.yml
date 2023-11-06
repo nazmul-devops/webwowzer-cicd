@@ -66,4 +66,4 @@ jobs:
 
       - name: SSH into server and perform deployment
         run: |
-          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.127.8.146 'export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin && unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && cd /home/ubuntu/WebWowZer-NextJs/ && pm2 restart webwowzer-nextjs-app'
+          ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@13.127.8.146 'export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v18.18.2/bin && unzip -o /home/ubuntu/WebWowZer-NextJs/app.zip -d /home/ubuntu/WebWowZer-NextJs/ && cd /home/ubuntu/WebWowZer-NextJs/ && pm2 restart webwowzer-inneed-test'
